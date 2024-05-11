@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#FF019267</color>
+    <color name="orange">#FFFFA500</color>
+    <color name="orange_opacity_20">#1AFFA500</color>
+    <color name="grey">#FF858585</color>
+    <color name="light_grey">#FFA1A1A1</color>
+
+    <color name="primary">#FF019267</color>
+    <color name="primary_opacity_20">#1A019267</color>
+    <color name="secondary">#FFFFA500</color>
+    <color name="disabledButton">#FFA1A1A1</color>
+</resources>

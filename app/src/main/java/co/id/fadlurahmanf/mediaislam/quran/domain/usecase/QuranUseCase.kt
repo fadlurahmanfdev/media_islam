@@ -1,0 +1,10 @@
+package co.id.fadlurahmanf.mediaislam.quran.domain.usecase
+
+import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.DetailSurahModel
+import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
+import io.reactivex.rxjava3.core.Observable
+
+interface QuranUseCase {
+    fun getListSurah(): Observable<List<SurahModel>>
+    fun getDetailSurah(surahNo: Int):Observable<DetailSurahModel>
+}

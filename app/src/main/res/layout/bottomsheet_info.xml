@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="20dp">
+
+    <ImageView
+        android:id="@+id/iv_asset"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/il_sad" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/Font.TitleBottomsheet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Title Bottomsheet" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        style="@style/Font.MessageBottomsheet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Body Bottomsheet" />
+
+    <co.id.fadlurahmanf.mediaislam.core.ui.button.ButtonCustomFilled
+        android:id="@+id/btn_bottomsheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:text="Okey" />
+
+</LinearLayout>

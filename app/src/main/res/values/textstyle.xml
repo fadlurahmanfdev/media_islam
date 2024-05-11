@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Font">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="Font.TitleBottomsheet">
+        <item name="android:fontFamily">@font/notosans_semibold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Font.MessageBottomsheet">
+        <item name="android:fontFamily">@font/notosans_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font.Thin">
+        <item name="android:fontFamily">@font/notosans_thin</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Font.Regular">
+        <item name="android:fontFamily">@font/gotham_regular</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Font.Medium">
+        <item name="android:fontFamily">@font/gotham_medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Font.SemiBold">
+        <item name="android:fontFamily">@font/gotham_semi_bold</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Font.Bold">
+        <item name="android:fontFamily">@font/gotham_bold</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Font.Thin.10">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="Font.Regular.10">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="Font.Thin.12">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font.Regular.12">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font.SemiBold.12">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font.Bold.12">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Font.Thin.14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font.Regular.14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font.Medium.14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font.SemiBold.14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font.Bold.14">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Font.Thin.16">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Font.Regular.16">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Font.Medium.16">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Font.SemiBold.16">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Font.Bold.16">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Font.Regular.18">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Font.Bold.18">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Font.Regular.20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Font.SemiBold.20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Font.Bold.20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Font.SemiBold.25">
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="Font.Bold.30">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Font.Regular.35">
+        <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="Font.Medium.35">
+        <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="Font.SemiBold.35">
+        <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="Font.Bold.35">
+        <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="Font.Bold.40">
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <style name="Font.SemiBold.45">
+        <item name="android:textSize">45sp</item>
+    </style>
+
+    <style name="Font.Regular.14.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+</resources>

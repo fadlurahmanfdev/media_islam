@@ -1,0 +1,106 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt") version "1.9.23"
+    id("kotlin-parcelize")
+}
+
+android {
+    namespace = "co.id.fadlurahmanf.mediaislam"
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "co.id.fadlurahmanf.mediaislam"
+        minSdk = 21
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+
+        buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/\"")
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
+    flavorDimensions.add("environment")
+
+    productFlavors {
+        create("fake") {
+            dimension = "environment"
+            applicationIdSuffix = ".fake"
+            resValue("string", "app_name", "Media Islam Fake")
+        }
+
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "Media Islam Dev")
+        }
+
+        create("staging") {
+            dimension = "environment"
+            applicationIdSuffix = ".staging"
+            resValue("string", "app_name", "Media Islam Staging")
+        }
+
+        create("prod") {
+            dimension = "environment"
+            resValue("string", "app_name", "Media Islam")
+        }
+    }
+}
+
+dependencies {
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    // dependency injection
+    implementation("com.google.dagger:dagger:2.51.1")
+    kapt("com.google.dagger:dagger-compiler:2.51.1")
+
+    // asynchronus
+    implementation("io.reactivex.rxjava3:rxjava:3.1.8")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
+    implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
+
+    // retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    // view-model
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+    // chucker
+    implementation("com.github.chuckerteam.chucker:library:4.0.0")
+
+    // shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+}
