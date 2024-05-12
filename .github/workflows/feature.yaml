@@ -21,7 +21,11 @@ jobs:
         run: |
           cd app
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > release.jks
+          echo "APP DIRECTORY"
+          ls
           cd ..
+          echo "PROJECT DIRECTORY"
+          ls
           echo "" > signingRelease.properties
           echo "keyAlias=$KEYSTORE_ALIAS" >> signing.properties
           echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signing.properties
@@ -34,6 +38,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Gradlew Clean
-        run: ./gradlew :app:clean
+        run: |
+          ls
+          ./gradlew :app:clean
       - name: Build APK Dev
         run: ./gradlew :app:assembleDevRelease
