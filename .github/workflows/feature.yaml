@@ -23,4 +23,3 @@ jobs:
           ls
           echo "keyAlias=$KEYSTORE_ALIAS" >> signing.properties
           cat signing.properties
-          cat signing.properties
