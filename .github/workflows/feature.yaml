@@ -13,11 +13,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Create Signing Properties
-        env: 'dev'
+        env:
+          KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
         run: |
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > keystore.jks
           ls
           echo "" > signing.properties
           ls
-          echo "keyAlias=${{ vars.KEYSTORE_ALIAS }}" >> signing.properties
+          echo "keyAlias=$KEYSTORE_ALIAS" >> signing.properties
           cat signing.properties
