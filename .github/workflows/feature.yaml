@@ -20,7 +20,7 @@ jobs:
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
           cd app
-          echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > keystore.jks
+          echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > release.jks
           ls
           echo "" > signing.properties
           ls
