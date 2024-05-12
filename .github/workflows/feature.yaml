@@ -21,16 +21,12 @@ jobs:
         run: |
           cd app
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > release.jks
-          echo "APP DIRECTORY"
-          ls
           cd ..
-          echo "PROJECT DIRECTORY"
-          ls
           echo "" > signingRelease.properties
-          echo "keyAlias=$KEYSTORE_ALIAS" >> signing.properties
-          echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signing.properties
-          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> signing.properties
-          echo "storeFilePath=$KEYSTORE_STORE_FILE_PATH" >> signing.properties
+          echo "keyAlias=$KEYSTORE_ALIAS" >> signingRelease.properties
+          echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signingRelease.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> signingRelease.properties
+          echo "storeFilePath=$KEYSTORE_STORE_FILE_PATH" >> signingRelease.properties
           cat signingRelease.properties
       - name: Setup Gradle
         uses: actions/setup-java@v3
@@ -38,9 +34,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Gradlew Clean
-        run: |
-          ls
-          cat signingRelease.properties
-          ./gradlew :app:clean
+        run: ./gradlew :app:clean
       - name: Build APK Dev
         run: ./gradlew :app:assembleDevRelease
