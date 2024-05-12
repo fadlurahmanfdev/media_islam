@@ -36,3 +36,5 @@ jobs:
           distribution: 'temurin'
       - name: Gradlew Clean
         run: ./gradlew :app:clean
+      - name: Build APK Dev
+        run: ./gradlew :app:assembleDevRelease
