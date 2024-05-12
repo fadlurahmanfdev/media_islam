@@ -38,8 +38,8 @@ jobs:
       - name: Build APK Dev
         run: ./gradlew :app:assembleDevRelease
       - uses: r0adkll/sign-android-release@v1
-        name: Sign App APK
-        id: sign_apk
+        name: Sign App
+        id: sign_app
         with:
           releaseDirectory: app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.BASE64_KEYSTORE }}
