@@ -28,5 +28,10 @@ jobs:
           echo "storePassword=$KEYSTORE_STORE_FILE_PATH" >> signing.properties
           echo "storeFilePath=$KEYSTORE_STORE_PASSWORD" >> signing.properties
           cat signing.properties
+      - name: Setup Gradle
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
       - name: Gradlew Clean
         run: ./gradlew :app:clean
