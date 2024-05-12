@@ -15,10 +15,18 @@ jobs:
       - name: Create Signing Properties
         env:
           KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
+          KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
+          KEYSTORE_STORE_FILE_PATH: ${{ vars.KEYSTORE_ALIAS_PATH }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > keystore.jks
           ls
           echo "" > signing.properties
           ls
           echo "keyAlias=$KEYSTORE_ALIAS" >> signing.properties
+          echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signing.properties
+          echo "storePassword=$KEYSTORE_STORE_FILE_PATH" >> signing.properties
+          echo "storeFilePath=$KEYSTORE_STORE_PASSWORD" >> signing.properties
           cat signing.properties
+      - name: Gradlew Clean
+        run: ./gradlew :app:clean
