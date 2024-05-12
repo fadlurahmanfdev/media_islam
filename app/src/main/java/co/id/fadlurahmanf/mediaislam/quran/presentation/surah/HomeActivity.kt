@@ -23,8 +23,7 @@ class HomeActivity :
     }
 
     override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
-        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars =
-            false
+        setAppearanceLightStatusBar(false)
         initAppBar()
         initAdapter()
         initObserver()

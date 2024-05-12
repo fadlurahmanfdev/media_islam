@@ -29,6 +29,7 @@ class DetailSurahActivity :
     }
 
     override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
+        setAppearanceLightStatusBar(false)
         val surahNo = intent.getIntExtra(SURAH_NO, -1)
         val surahName = intent.getStringExtra(SURAH_NAME)
         binding.toolbar.tvTitle.text = surahName
