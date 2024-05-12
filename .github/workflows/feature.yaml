@@ -20,5 +20,5 @@ jobs:
           ls
           echo "" > signing.properties
           ls
-          echo "keyAlias=${{ vars.KEYSTORE_ALIAS }}" >> signing.properties
+          echo "keyAlias=$KEYSTORE_ALIAS" >> signing.properties
           cat signing.properties
