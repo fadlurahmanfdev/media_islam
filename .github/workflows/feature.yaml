@@ -19,6 +19,7 @@ jobs:
           KEYSTORE_STORE_FILE_PATH: ${{ vars.KEYSTORE_ALIAS_PATH }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
+          cd app
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > keystore.jks
           ls
           echo "" > signing.properties
