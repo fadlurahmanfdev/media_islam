@@ -9,12 +9,12 @@ name: "Build Dev APK"
 jobs:
   buildApkDev:
     runs-on: ubuntu-latest
+    environment: 'dev'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Create Signing Properties
         env:
-          name: 'dev'
           KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
         run: |
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > keystore.jks
