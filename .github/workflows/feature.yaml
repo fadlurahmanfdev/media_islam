@@ -26,8 +26,8 @@ jobs:
           ls
           echo "keyAlias=$KEYSTORE_ALIAS" >> signing.properties
           echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signing.properties
-          echo "storePassword=$KEYSTORE_STORE_FILE_PATH" >> signing.properties
-          echo "storeFilePath=$KEYSTORE_STORE_PASSWORD" >> signing.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> signing.properties
+          echo "storeFilePath=$KEYSTORE_STORE_FILE_PATH" >> signing.properties
           cat signing.properties
       - name: Setup Gradle
         uses: actions/setup-java@v3
