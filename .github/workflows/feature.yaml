@@ -37,14 +37,10 @@ jobs:
         run: ./gradlew :app:clean
       - name: Build APK Dev
         run: ./gradlew :app:assembleDevRelease
-      - uses: r0adkll/sign-android-release@v1
-        name: Sign App
-        id: sign_app
+      - name: Upload App to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          releaseDirectory: app/build/outputs/apk/dev/release
-          signingKeyBase64: ${{ secrets.BASE64_KEYSTORE }}
-          alias: ${{ secrets.KEYSTORE_ALIAS }}
-          keyStorePassword: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
-          keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "34.0.0"
+          appId: ${{ vars.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT_FIREBASE }}
+          groups: internal
+          file: app/build/outputs/apk/dev/release/app-dev-release.apk
