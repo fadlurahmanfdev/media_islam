@@ -26,7 +26,7 @@ android {
         minSdk = 21
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1"
 
         buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/\"")
 
