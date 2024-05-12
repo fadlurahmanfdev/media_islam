@@ -40,6 +40,7 @@ jobs:
       - name: Gradlew Clean
         run: |
           ls
+          cat signingRelease.properties
           ./gradlew :app:clean
       - name: Build APK Dev
         run: ./gradlew :app:assembleDevRelease
