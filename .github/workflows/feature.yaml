@@ -21,9 +21,7 @@ jobs:
         run: |
           cd app
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > release.jks
-          ls
           echo "" > signingRelease.properties
-          ls
           echo "keyAlias=$KEYSTORE_ALIAS" >> signing.properties
           echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signing.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> signing.properties
