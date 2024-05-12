@@ -13,6 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Create Signing Properties
+        env: 'dev'
         run: |
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > keystore.jks
           ls
