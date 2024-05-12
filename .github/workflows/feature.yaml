@@ -1,0 +1,52 @@
+on:
+  push:
+    branches:
+      - "feature/*"
+      - "bugfix/*"
+      - "hotfix/*"
+name: "Build Dev APK"
+
+jobs:
+  buildApkDev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Signing Properties
+        run: |
+          echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > keystore.jks
+          ls
+          echo "" > signing.properties
+          ls
+          echo "keyAlias=${{ vars.KEYSTORE_ALIAS }}" >> signing.properties
+#               keyAlias = keystoreProperties["keyAlias"] as String
+#                              keyPassword = keystoreProperties["keyPassword"] as String
+#                              storeFile = file(keystoreProperties["storeFilePath"] as String)
+#                              storePassword = keystoreProperties["storePassword"] as String
+#          echo "release.keystore=keystore.jks" >> signing.properties
+#          echo "release.keystore.keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> signing.properties
+#          echo "release.keystore.storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> signing.properties
+          cat signing.properties
+#      - name: Setup Gradle
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '19'
+#          distribution: 'temurin'
+#      - name: Clean Mapp
+#        run: ./gradlew :mapp:clean
+#      - name: Build Dev Apk
+#        run: ./gradlew :mapp:assembleDevRelease
+#      - name: Upload Apk Dev
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: apk
+#          path: mapp/build/outputs/apk/dev/release/mapp-dev-release.apk
+#      - name: Get APK Info
+#        id: apk-info
+#        uses: hkusu/apk-info-action@v1
+#        with:
+#          apk-path: mapp/build/outputs/apk/dev/release/mapp-dev-release.apk
+#      - name: Print APK Info
+#        run: |
+#          echo '${{ steps.apk-info.outputs.version-name }}'
+#          echo '${{ steps.apk-info.outputs.version-code }}'
