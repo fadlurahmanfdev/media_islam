@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "dev"
+      - "feature/*"
 
 jobs:
   buildApkDev:
@@ -37,7 +38,7 @@ jobs:
         run: ./gradlew :app:assembleDevRelease
       - name: Upload App to Firebase App Distribution
         env:
-          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.CREDENTIAL_FILE_CONTENT_FIREBASE }}
+          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
           FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
