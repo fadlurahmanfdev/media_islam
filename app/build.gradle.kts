@@ -7,6 +7,7 @@ plugins {
     kotlin("kapt") version "1.9.23"
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("com.google.firebase.appdistribution")
 }
 
 val debugPropertiesFile = rootProject.file("signingDebug.properties")
@@ -16,6 +17,10 @@ debugProperties.load(FileInputStream(debugPropertiesFile))
 val releasePropertiesFile = rootProject.file("signingRelease.properties")
 val releaseProperties = Properties()
 releaseProperties.load(FileInputStream(releasePropertiesFile))
+
+val firebaseAppDistributionDevFile = rootProject.file("firebaseAppDistributionDev.properties")
+val firebaseAppDistributionDev = Properties()
+firebaseAppDistributionDev.load(FileInputStream(firebaseAppDistributionDevFile))
 
 android {
     namespace = "co.id.fadlurahmanf.mediaislam"
@@ -35,16 +40,16 @@ android {
 
     signingConfigs {
         getByName("debug") {
-            keyAlias = debugProperties["keyAlias"] as String
-            keyPassword = debugProperties["keyPassword"] as String
-            storeFile = file(debugProperties["storeFilePath"] as String)
-            storePassword = debugProperties["storePassword"] as String
+            keyAlias = (debugProperties["keyAlias"] as String?) ?: ""
+            keyPassword = (debugProperties["keyPassword"] as String?) ?: ""
+            storeFile = file((debugProperties["storeFilePath"] as String?) ?: "")
+            storePassword = (debugProperties["storePassword"] as String?) ?: ""
         }
         create("release") {
-            keyAlias = releaseProperties["keyAlias"] as String
-            keyPassword = releaseProperties["keyPassword"] as String
-            storeFile = file(releaseProperties["storeFilePath"] as String)
-            storePassword = releaseProperties["storePassword"] as String
+            keyAlias = (releaseProperties["keyAlias"] as String?) ?: ""
+            keyPassword = (releaseProperties["keyPassword"] as String?) ?: ""
+            storeFile = file((releaseProperties["storeFilePath"] as String?) ?: "")
+            storePassword = (releaseProperties["storePassword"] as String?) ?: ""
         }
     }
 
@@ -88,6 +93,13 @@ android {
             dimension = "environment"
             applicationIdSuffix = ".dev"
             resValue("string", "app_name", "Media Islam Dev")
+            firebaseAppDistribution {
+                artifactType = "APK"
+                appId = (firebaseAppDistributionDev["firebaseAppId"] as String?) ?: ""
+                groups = (firebaseAppDistributionDev["firebaseDistributionGroups"] as String?) ?: ""
+                serviceCredentialsFile =
+                    (firebaseAppDistributionDev["googleCredentialFilePath"] as String?) ?: ""
+            }
         }
 
         create("staging") {

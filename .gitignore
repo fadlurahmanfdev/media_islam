@@ -17,3 +17,5 @@ local.properties
 *.aab
 app/release.jks
 signingRelease.properties
+firebaseAppDistributionDev.properties
+google-credential-content-firebase.json
