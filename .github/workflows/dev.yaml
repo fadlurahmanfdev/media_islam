@@ -39,10 +39,11 @@ jobs:
       - name: Upload App to Firebase App Distribution
         env:
           GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
+          GOOGLE_CREDENTIAL_FILE_URL: ${{ secrets.GOOGLE_CREDENTIAL_FILE_URL }}
           FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: $FIREBASE_APP_ID
-          serviceCredentialsFileContent: $GOOGLE_CREDENTIAL_FILE_CONTENT
+          serviceCredentialsFile: $GOOGLE_CREDENTIAL_FILE_URL
           groups: internal
           file: app/build/outputs/apk/dev/release/app-dev-release.apk
