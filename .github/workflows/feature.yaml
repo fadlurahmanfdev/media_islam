@@ -2,7 +2,7 @@ name: "Feature Branch Workflow"
 on:
   push:
     branches:
-#      - "feature/*"
+      - "feature/*"
       - "bugfix/*"
       - "hotfix/*"
 
