@@ -1,0 +1,39 @@
+name: "Feature Branch Workflow"
+on:
+  push:
+    branches:
+      - "feature/*"
+      - "bugfix/*"
+      - "hotfix/*"
+
+jobs:
+  buildApkDev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Signing Properties
+        env:
+          KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
+          KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
+          KEYSTORE_STORE_FILE_PATH: ${{ vars.KEYSTORE_ALIAS_PATH }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          cd app
+          echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > release.jks
+          cd ..
+          echo "" > signingRelease.properties
+          echo "keyAlias=$KEYSTORE_ALIAS" >> signingRelease.properties
+          echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signingRelease.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> signingRelease.properties
+          echo "storeFilePath=$KEYSTORE_STORE_FILE_PATH" >> signingRelease.properties
+          cat signingRelease.properties
+      - name: Setup Gradle
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Gradlew Clean
+        run: ./gradlew :app:clean
+      - name: Build APK Dev
+        run: ./gradlew :app:assembleDevRelease

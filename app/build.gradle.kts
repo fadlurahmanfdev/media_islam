@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -5,6 +8,14 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
 }
+
+val debugPropertiesFile = rootProject.file("signingDebug.properties")
+val debugProperties = Properties()
+debugProperties.load(FileInputStream(debugPropertiesFile))
+
+val releasePropertiesFile = rootProject.file("signingRelease.properties")
+val releaseProperties = Properties()
+releaseProperties.load(FileInputStream(releasePropertiesFile))
 
 android {
     namespace = "co.id.fadlurahmanf.mediaislam"
@@ -15,16 +26,36 @@ android {
         minSdk = 21
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1"
 
         buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        getByName("debug") {
+            keyAlias = debugProperties["keyAlias"] as String
+            keyPassword = debugProperties["keyPassword"] as String
+            storeFile = file(debugProperties["storeFilePath"] as String)
+            storePassword = debugProperties["storePassword"] as String
+        }
+        create("release") {
+            keyAlias = releaseProperties["keyAlias"] as String
+            keyPassword = releaseProperties["keyPassword"] as String
+            storeFile = file(releaseProperties["storeFilePath"] as String)
+            storePassword = releaseProperties["storePassword"] as String
+        }
+    }
+
     buildTypes {
-        release {
+        getByName("debug") {
+            isDebuggable = true
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
