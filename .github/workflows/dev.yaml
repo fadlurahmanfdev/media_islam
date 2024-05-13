@@ -6,7 +6,7 @@ on:
       - "feature/*"
 
 jobs:
-  buildApkDev:
+  buildAndDeployApkDev:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
