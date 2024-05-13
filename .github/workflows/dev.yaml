@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - "dev"
-      - "feature/*"
 
 jobs:
   buildAndDeployApkDev:
@@ -11,7 +10,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Create Signing Properties
+      - name: Create Signing Release Properties
         env:
           KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
           KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
@@ -27,6 +26,25 @@ jobs:
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> signingRelease.properties
           echo "storeFilePath=$KEYSTORE_STORE_FILE_PATH" >> signingRelease.properties
           cat signingRelease.properties
+      - name: Create Google Credential File Content
+        env:
+          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
+        run: |
+          echo "$GOOGLE_CREDENTIAL_FILE_CONTENT" > google-credential-content-firebase.json
+          ls
+      - name: Create Firebase App Distribution Properties
+        env:
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
+          FIREBASE_DISTRIBUTION_GROUPS: ${{ vars.FIREBASE_DISTRIBUTION_GROUPS }}
+          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
+          GOOGLE_CREDENTIAL_FILE_PATH: "google-credential-content-firebase.json"
+        run: |
+          ls
+          echo "" > firebaseAppDistributionDev.properties
+          echo "firebaseAppId=$FIREBASE_APP_ID" >> firebaseAppDistributionDev.properties
+          echo "firebaseDistributionGroups=$FIREBASE_DISTRIBUTION_GROUPS" >> firebaseAppDistributionDev.properties
+          echo "googleCredentialFilePath=$GOOGLE_CREDENTIAL_FILE_PATH" >> firebaseAppDistributionDev.properties
+          cat firebaseAppDistributionDev.properties
       - name: Setup Gradle
         uses: actions/setup-java@v3
         with:
@@ -36,13 +54,21 @@ jobs:
         run: ./gradlew :app:clean
       - name: Build APK Dev
         run: ./gradlew :app:assembleDevRelease
-      - name: Upload App to Firebase App Distribution
+      - name: Upload app to Firebase App Distribution using Gradlew
         env:
-          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
-          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: $FIREBASE_APP_ID
-          serviceCredentialsFileContent: $GOOGLE_CREDENTIAL_FILE_CONTENT
-          groups: internal
-          file: app/build/outputs/apk/dev/release/app-dev-release.apk
+          FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
+        run: |
+          ls
+          export FIREBASE_TOKEN=$FIREBASE_CI_TOKEN
+          ./gradlew assembleDevRelease appDistributionUploadDevRelease
+#      - name: Upload App to Firebase App Distribution
+#        env:
+#          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
+#          GOOGLE_CREDENTIAL_FILE_URL: ${{ secrets.GOOGLE_CREDENTIAL_FILE_URL }}
+#          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1
+#        with:
+#          appId: $FIREBASE_APP_ID
+#          serviceCredentialsFileContent: $GOOGLE_CREDENTIAL_FILE_CONTENT
+#          groups: internal
+#          file: app/build/outputs/apk/dev/release/app-dev-release.apk
