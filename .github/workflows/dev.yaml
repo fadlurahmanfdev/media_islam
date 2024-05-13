@@ -27,15 +27,6 @@ jobs:
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> signingRelease.properties
           echo "storeFilePath=$KEYSTORE_STORE_FILE_PATH" >> signingRelease.properties
           cat signingRelease.properties
-      - name: Setup Gradle
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Gradlew Clean
-        run: ./gradlew :app:clean
-      - name: Build APK Dev
-        run: ./gradlew :app:assembleDevRelease
       - name: Create Google Credential File Content
         env:
           GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
@@ -55,6 +46,15 @@ jobs:
           echo "firebaseDistributionGroups=$FIREBASE_DISTRIBUTION_GROUPS" >> firebaseAppDistributionDev.properties
           echo "googleCredentialFilePath=$GOOGLE_CREDENTIAL_FILE_PATH" >> firebaseAppDistributionDev.properties
           cat firebaseAppDistributionDev.properties
+      - name: Setup Gradle
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Gradlew Clean
+        run: ./gradlew :app:clean
+      - name: Build APK Dev
+        run: ./gradlew :app:assembleDevRelease
       - name: Upload app to Firebase App Distribution using Gradlew
         env:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
