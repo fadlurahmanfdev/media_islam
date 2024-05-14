@@ -1,6 +1,8 @@
 name: "Feature Branch Workflow"
 on:
   push:
+    paths:
+      - 'build.gradle.kts'
     branches:
       - "feature/*"
       - "bugfix/*"
