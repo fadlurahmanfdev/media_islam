@@ -9,3 +9,6 @@ on:
 jobs:
   reuse-job:
     uses: ./.github/workflows/buildApkDev.yaml
+    secrets:
+      keystoreAliasPassword: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
+      keystorePassword: ${{ secrets.KEYSTORE_STORE_PASSWORD }}

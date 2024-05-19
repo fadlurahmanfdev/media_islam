@@ -1,6 +1,11 @@
 name: "Reusable Workflow Call"
 on:
   workflow_call:
+    secrets:
+      keystoreAliasPassword:
+        required: true
+      keystorePassword:
+        required: true
 
 jobs:
   buildApkDev:
@@ -11,9 +16,9 @@ jobs:
       - name: Create Signing Properties
         env:
           KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
-          KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
+          KEYSTORE_ALIAS_PASSWORD: ${{ secrets.keystoreAliasPassword }} # from secret parameter above
           KEYSTORE_STORE_FILE_PATH: ${{ vars.KEYSTORE_ALIAS_PATH }}
-          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.keystorePassword }} # from secret parameter above
         run: |
           cd app
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > release.jks
