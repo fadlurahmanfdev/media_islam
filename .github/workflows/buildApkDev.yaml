@@ -1,8 +1,6 @@
-name: "Dev Branch Workflow"
+name: "Reusable Workflow Call"
 on:
-  push:
-    branches:
-      - "dev"
+  workflow_call:
 
 jobs:
   buildApkDev:
@@ -10,7 +8,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Create Signing Release Properties
+      - name: Create Signing Properties
         env:
           KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
           KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
@@ -54,25 +52,3 @@ jobs:
         run: ./gradlew :app:clean
       - name: Build APK Dev
         run: ./gradlew :app:assembleDevRelease
-  deployApkDev:
-    needs: [buildApkDev]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Upload app to Firebase App Distribution using Gradlew
-        env:
-          FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
-        run: |
-          ls
-          export FIREBASE_TOKEN=$FIREBASE_CI_TOKEN
-          ./gradlew assembleDevRelease appDistributionUploadDevRelease
-#      - name: Upload App to Firebase App Distribution
-#        env:
-#          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
-#          GOOGLE_CREDENTIAL_FILE_URL: ${{ secrets.GOOGLE_CREDENTIAL_FILE_URL }}
-#          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
-#        uses: wzieba/Firebase-Distribution-Github-Action@v1
-#        with:
-#          appId: $FIREBASE_APP_ID
-#          serviceCredentialsFileContent: $GOOGLE_CREDENTIAL_FILE_CONTENT
-#          groups: internal
-#          file: app/build/outputs/apk/dev/release/app-dev-release.apk
