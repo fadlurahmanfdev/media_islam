@@ -7,5 +7,5 @@ on:
       - "hotfix/*"
 
 jobs:
-  buildApkDev:
+  reuse-job:
     uses: ./.github/workflows/buildApkDev.yaml
