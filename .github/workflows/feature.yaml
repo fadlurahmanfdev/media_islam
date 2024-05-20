@@ -21,8 +21,7 @@ jobs:
         env:
           KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
           KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
-          KEYSTORE_STORE_FILE_PATH: ${{ vars.KEYSTORE_ALIAS_PATH }}
-          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
           cd app
           echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > release.jks
@@ -30,8 +29,8 @@ jobs:
           echo "" > signingRelease.properties
           echo "keyAlias=$KEYSTORE_ALIAS" >> signingRelease.properties
           echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signingRelease.properties
-          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> signingRelease.properties
-          echo "storeFilePath=$KEYSTORE_STORE_FILE_PATH" >> signingRelease.properties
+          echo "storePassword=$KEYSTORE_PASSWORD" >> signingRelease.properties
+          echo "storeFilePath=release.jks" >> signingRelease.properties
           cat signingRelease.properties
       - name: Create Google Credential File Content
         env:
