@@ -10,7 +10,9 @@ jobs:
     name: 'Upload App to Firebase Distribution'
     runs-on: ubuntu-latest
     steps:
-      - name: Upload app to Firebase App Distribution using Gradlew
+      - name: "Checkout"
+        uses: actions/checkout@v3
+      - name: "Upload app to Firebase App Distribution using Gradlew"
         env:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
         run: |
