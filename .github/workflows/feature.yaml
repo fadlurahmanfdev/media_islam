@@ -2,12 +2,14 @@ name: "Feature Branch Workflow"
 on:
   push:
     branches:
-      - "feature/*"
-      - "bugfix/*"
-      - "hotfix/*"
+      - "tes/*"
+#      - "feature/*"
+#      - "bugfix/*"
+#      - "hotfix/*"
 
 jobs:
-  reuse-job:
+  buildApkDev:
+    name: 'Build APK Development'
     uses: ./.github/workflows/buildApkDev.yaml
     with:
       KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
