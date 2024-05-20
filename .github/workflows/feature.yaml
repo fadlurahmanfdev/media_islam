@@ -37,6 +37,7 @@ jobs:
           GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
         run: |
           echo "$GOOGLE_CREDENTIAL_FILE_CONTENT" > google-credential-content-firebase.json
+          cat google-credential-content-firebase.json
           ls
       - name: Create Firebase App Distribution Properties
         env:
