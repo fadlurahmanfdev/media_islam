@@ -12,6 +12,8 @@ on:
         required: true
         type: string
     secrets:
+      BASE64_KEYSTORE:
+        required: true
       KEYSTORE_ALIAS_PASSWORD:
         required: true
       KEYSTORE_PASSWORD:
@@ -27,12 +29,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Create Signing Properties
         env:
+          BASE64_KEYSTORE: ${{ secrets.BASE64_KEYSTORE }}
           KEYSTORE_ALIAS: ${{ inputs.KEYSTORE_ALIAS }}
           KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
           cd app
-          echo ${{ secrets.BASE64_KEYSTORE }} | base64 -d > release.jks
+          echo $BASE64_KEYSTORE | base64 -d > release.jks
           cd ..
           echo "" > signingRelease.properties
           echo "keyAlias=$KEYSTORE_ALIAS" >> signingRelease.properties
