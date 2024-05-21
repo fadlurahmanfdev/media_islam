@@ -75,12 +75,14 @@ jobs:
         run: ./gradlew :app:clean
       - name: "Assemble Dev Release"
         run: ./gradlew :app:assembleDevRelease
-      - uses: actions/upload-artifact@v4
+      - name: "Upload app-module artifacts"
+        uses: actions/upload-artifact@v4
         with:
           name: app-necessary-artifact
           path: |
-            release.jks
-      - uses: actions/upload-artifact@v4
+            app/release.jks
+      - name: "Upload module artifacts"
+        uses: actions/upload-artifact@v4
         with:
           name: module-necessary-artifact
           path: |
