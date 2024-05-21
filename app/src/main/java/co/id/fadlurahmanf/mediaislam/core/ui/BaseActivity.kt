@@ -39,7 +39,7 @@ abstract class BaseActivity<VB : ViewBinding>(
     open fun setOnApplyWindowInsetsListener(view: View) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(view.paddingLeft, systemBars.top, view.paddingRight, systemBars.bottom)
+            v.setPadding(0, 0, 0, systemBars.bottom)
             insets
         }
     }

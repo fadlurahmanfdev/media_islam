@@ -17,8 +17,12 @@ class ListSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     fun setList(list: ArrayList<SurahModel>) {
-        this.surahs.clear()
-        this.surahs.addAll(list)
+        val oldSize = surahs.size
+        if (oldSize > 0) {
+            surahs.clear()
+            notifyItemRangeRemoved(0, oldSize)
+        }
+        surahs.addAll(list)
         notifyItemRangeInserted(0, list.size)
     }
 
