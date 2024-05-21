@@ -26,8 +26,15 @@ class ListSurahActivity :
         initAppBar()
         initAdapter()
         initObserver()
+        initAction()
 
         viewModel.getListSurah()
+    }
+
+    private fun initAction() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getListSurah()
+        }
     }
 
     private fun initAppBar() {
@@ -64,6 +71,7 @@ class ListSurahActivity :
                 }
 
                 is EQuranNetworkState.ERROR -> {
+                    binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
 //                    binding.tvError.text = it.exception.toProperMessage(this)
                     binding.tvError.visibility = View.VISIBLE
@@ -85,6 +93,7 @@ class ListSurahActivity :
                     listSurah.addAll(it.data)
                     adapter.setList(listSurah)
 
+                    binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
                     binding.tvError.visibility = View.GONE
                     binding.rv.visibility = View.VISIBLE

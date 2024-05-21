@@ -9,6 +9,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewbinding.ViewBinding
+import co.id.fadlurahmanf.mediaislam.BaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
 
 typealias InflateActivity<T> = (LayoutInflater) -> T
 
@@ -16,12 +18,15 @@ abstract class BaseActivity<VB : ViewBinding>(
     private val inflater: InflateActivity<VB>
 ) : AppCompatActivity() {
 
+    lateinit var firebaseAnalytics: FirebaseAnalytics
+
     private lateinit var _binding: VB
     val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        firebaseAnalytics = (application as BaseApp).firebaseAnalytics
         onBaseBindingActivity()
         onBaseCreateSubComponent()
         onBaseCreate(savedInstanceState)
