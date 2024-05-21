@@ -7,7 +7,7 @@ on:
 
 jobs:
   apkDev:
-    name: 'Upload App to Firebase Distribution'
+    name: 'APK Development'
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
