@@ -1,6 +1,5 @@
-package co.id.fadlurahmanf.mediaislam.quran
+package co.id.fadlurahmanf.mediaislam.core.di.modules
 
-import co.id.fadlurahmanf.mediaislam.core.di.modules.SharedModule
 import co.id.fadlurahmanf.mediaislam.core.network.api.EQuranAPI
 import co.id.fadlurahmanf.mediaislam.quran.data.datasources.EQuranDatasourceRepository
 import co.id.fadlurahmanf.mediaislam.quran.data.datasources.EQuranDatasourceRepositoryImpl
@@ -9,5 +8,15 @@ import co.id.fadlurahmanf.mediaislam.quran.domain.usecase.QuranUseCaseImpl
 import dagger.Module
 import dagger.Provides
 
-@Module(subcomponents = [QuranSubComponent::class], includes = [SharedModule::class])
-class QuranModule {}
+@Module
+class SharedModule {
+    @Provides
+    fun provideEQuranDatasourceModule(eQuranAPI: EQuranAPI): EQuranDatasourceRepository {
+        return EQuranDatasourceRepositoryImpl(eQuranAPI)
+    }
+
+    @Provides
+    fun provideQuranUseCase(eQuranDatasourceRepository: EQuranDatasourceRepository): QuranUseCase {
+        return QuranUseCaseImpl(eQuranDatasourceRepository)
+    }
+}

@@ -1,7 +1,7 @@
 package co.id.fadlurahmanf.mediaislam.quran
 
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.DetailSurahActivity
-import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.HomeActivity
+import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.ListSurahActivity
 import dagger.Subcomponent
 
 @Subcomponent
@@ -11,6 +11,6 @@ interface QuranSubComponent {
         fun create(): QuranSubComponent
     }
 
-    fun inject(activity: HomeActivity)
+    fun inject(activity: ListSurahActivity)
     fun inject(activity: DetailSurahActivity)
 }

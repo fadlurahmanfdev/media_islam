@@ -20,7 +20,10 @@
             android:name=".quran.presentation.surah.DetailSurahActivity"
             android:exported="false" />
         <activity
-            android:name=".quran.presentation.surah.HomeActivity"
+            android:name=".quran.presentation.surah.ListSurahActivity"
+            android:exported="false" />
+        <activity
+            android:name=".main.presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

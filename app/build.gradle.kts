@@ -145,10 +145,12 @@ dependencies {
     // chucker
     implementation("com.github.chuckerteam.chucker:library:4.0.0")
 
-    // shimmer
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
-
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-analytics")
+
+    // ui related
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    // shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }
