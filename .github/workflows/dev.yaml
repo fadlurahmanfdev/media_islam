@@ -2,7 +2,7 @@ name: "Dev Branch Workflow"
 on:
   push:
     branches:
-      - "feature/*"
+      - "dev"
 
 jobs:
   devBuild:
