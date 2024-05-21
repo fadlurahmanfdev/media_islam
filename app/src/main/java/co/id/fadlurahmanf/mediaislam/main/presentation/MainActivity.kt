@@ -2,11 +2,11 @@ package co.id.fadlurahmanf.mediaislam.main.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.R
+import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticEvent
+import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticParam
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.core.ui.bottomsheet.InfoBottomsheet
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityMainBinding
@@ -17,7 +17,10 @@ import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.DetailSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.ListSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.adapter.ListSurahAdapter
+import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject
+import com.google.firebase.analytics.FirebaseAnalytics.Event
+import com.google.firebase.analytics.FirebaseAnalytics.Param
 
 class MainActivity :
     BaseMainActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -30,6 +33,9 @@ class MainActivity :
     }
 
     override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
+        firebaseAnalytics.logEvent(Event.SCREEN_VIEW, Bundle().apply {
+            putString(Param.VALUE, MainActivity::class.java.simpleName)
+        })
         setOnApplyWindowInsetsListener(binding.main)
         setAppearanceLightStatusBar(false)
         initAppBar()
@@ -87,6 +93,10 @@ class MainActivity :
         surahAdapter = ListSurahAdapter()
         surahAdapter.setCallBack(object : ListSurahAdapter.CallBack {
             override fun onClicked(surah: SurahModel) {
+                firebaseAnalytics.logEvent(Event.SELECT_ITEM, Bundle().apply {
+                    putInt(AnalyticParam.SURAH_NO, surah.surahNo)
+                    putString(AnalyticParam.SURAH_TITLE, surah.latin)
+                })
                 val intent = Intent(this@MainActivity, DetailSurahActivity::class.java)
                 intent.putExtra(DetailSurahActivity.SURAH_NAME, surah.latin)
                 intent.putExtra(DetailSurahActivity.SURAH_NO, surah.surahNo)
