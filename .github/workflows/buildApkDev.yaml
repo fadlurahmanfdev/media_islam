@@ -1,0 +1,91 @@
+name: "Reusable Workflow Call"
+on:
+  workflow_call:
+    inputs:
+      KEYSTORE_ALIAS:
+        required: true
+        type: string
+      FIREBASE_APP_ID:
+        required: true
+        type: string
+      FIREBASE_DISTRIBUTION_GROUPS:
+        required: true
+        type: string
+    secrets:
+      BASE64_KEYSTORE:
+        required: true
+      KEYSTORE_ALIAS_PASSWORD:
+        required: true
+      KEYSTORE_PASSWORD:
+        required: true
+      GOOGLE_CREDENTIAL_FILE_CONTENT:
+        required: true
+
+jobs:
+  apkDev:
+    name: "APK Development"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+      - name: "Create Keystore"
+        env:
+          BASE64_KEYSTORE: ${{ secrets.BASE64_KEYSTORE }}
+        run: |
+          cd app
+          echo $BASE64_KEYSTORE | base64 -d > release.jks
+          cd ..
+      - name: "Create Signing Properties"
+        env:
+          KEYSTORE_ALIAS: ${{ inputs.KEYSTORE_ALIAS }}
+          KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          echo "" > signingRelease.properties
+          echo "keyAlias=$KEYSTORE_ALIAS" >> signingRelease.properties
+          echo "keyPassword=$KEYSTORE_ALIAS_PASSWORD" >> signingRelease.properties
+          echo "storePassword=$KEYSTORE_PASSWORD" >> signingRelease.properties
+          echo "storeFilePath=release.jks" >> signingRelease.properties
+          cat signingRelease.properties
+      - name: "Create Google Credential File Content"
+        env:
+          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
+        run: |
+          echo "$GOOGLE_CREDENTIAL_FILE_CONTENT" > google-credential-content-firebase.json
+          cat google-credential-content-firebase.json
+          ls
+      - name: "Create Firebase App Distribution Properties"
+        env:
+          FIREBASE_APP_ID: ${{ inputs.FIREBASE_APP_ID }}
+          FIREBASE_DISTRIBUTION_GROUPS: ${{ inputs.FIREBASE_DISTRIBUTION_GROUPS }}
+          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
+        run: |
+          ls
+          echo "" > firebaseAppDistributionDev.properties
+          echo "firebaseAppId=$FIREBASE_APP_ID" >> firebaseAppDistributionDev.properties
+          echo "firebaseDistributionGroups=$FIREBASE_DISTRIBUTION_GROUPS" >> firebaseAppDistributionDev.properties
+          echo "googleCredentialFilePath=google-credential-content-firebase.json" >> firebaseAppDistributionDev.properties
+          cat firebaseAppDistributionDev.properties
+      - name: "Setup Gradle"
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: "Clean"
+        run: ./gradlew :app:clean
+      - name: "Assemble Dev Release"
+        run: ./gradlew :app:assembleDevRelease
+      - name: "Upload app-module artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-necessary-artifact
+          path: |
+            app/release.jks
+      - name: "Upload module artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: module-necessary-artifact
+          path: |
+            signingRelease.properties
+            google-credential-content-firebase.json
+            firebaseAppDistributionDev.properties
