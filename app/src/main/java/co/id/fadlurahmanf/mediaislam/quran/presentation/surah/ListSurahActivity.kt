@@ -9,6 +9,8 @@ import co.id.fadlurahmanf.mediaislam.databinding.ActivityListSurahBinding
 import co.id.fadlurahmanf.mediaislam.quran.BaseQuranActivity
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.adapter.ListSurahAdapter
+import com.google.firebase.analytics.FirebaseAnalytics.Event
+import com.google.firebase.analytics.FirebaseAnalytics.Param
 import javax.inject.Inject
 
 class ListSurahActivity :
@@ -22,6 +24,9 @@ class ListSurahActivity :
     }
 
     override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
+        firebaseAnalytics.logEvent(Event.SCREEN_VIEW, Bundle().apply {
+            putString(Param.VALUE, ListSurahActivity::class.java.simpleName)
+        })
         setAppearanceLightStatusBar(false)
         initAppBar()
         initAdapter()
