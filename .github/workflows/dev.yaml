@@ -5,8 +5,8 @@ on:
       - "feature/*"
 
 jobs:
-  buildApkDev:
-    name: "Build APK Development"
+  devBuild:
+    name: "Build"
     uses: ./.github/workflows/buildApkDev.yaml
     with:
       KEYSTORE_ALIAS: ${{ vars.KEYSTORE_ALIAS }}
@@ -18,8 +18,8 @@ jobs:
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}
   deployApkDev:
-    name: "Deploy APK Development"
-    needs: [ buildApkDev ]
+    name: "Deploy"
+    needs: [ devBuild ]
     uses: ./.github/workflows/deployApkDev.yaml
     secrets:
       FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
