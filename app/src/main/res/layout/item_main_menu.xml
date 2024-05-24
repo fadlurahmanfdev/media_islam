@@ -9,13 +9,13 @@
 
     <ImageView
         android:id="@+id/iv_menu_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:elevation="5dp"
         android:layout_gravity="center"
         android:background="@drawable/rounded_primary_background"
-        android:padding="5dp"
-        android:src="@drawable/ic_quran" />
+        android:padding="12dp"
+        android:src="@drawable/il_iqra" />
 
     <TextView
         android:id="@+id/tv_menu_title"

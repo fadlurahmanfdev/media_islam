@@ -28,17 +28,30 @@ class DetailSurahActivity :
         component.inject(this)
     }
 
+    var surahNo: Int = -1
+    lateinit var surahName: String
     override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
         setAppearanceLightStatusBar(false)
-        val surahNo = intent.getIntExtra(SURAH_NO, -1)
-        val surahName = intent.getStringExtra(SURAH_NAME)
-        binding.toolbar.tvTitle.text = surahName
-        binding.toolbar.tvTitle.visibility = View.VISIBLE
+        surahNo = intent.getIntExtra(SURAH_NO, -1)
+        surahName = intent.getStringExtra(SURAH_NAME) ?: "-"
 
-        initObserver()
+        initAppBar()
         initAdapter()
+        initObserver()
+        initAction()
 
         viewModel.getDetailSurah(surahNo)
+    }
+
+    private fun initAppBar() {
+        binding.toolbar.tvTitle.text = surahName
+        binding.toolbar.tvTitle.visibility = View.VISIBLE
+    }
+
+    private fun initAction() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getDetailSurah(surahNo)
+        }
     }
 
     private lateinit var adapter: ListVerseAdapter
@@ -63,12 +76,14 @@ class DetailSurahActivity :
                     verses.addAll(state.data.verses)
                     adapter.setList(verses)
 
+                    binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
                     binding.layoutShimmerVerse.root.visibility = View.GONE
                     binding.rv.visibility = View.VISIBLE
                 }
 
                 is EQuranNetworkState.ERROR -> {
+                    binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
                     binding.layoutShimmerVerse.root.visibility = View.VISIBLE
                     binding.rv.visibility = View.GONE
