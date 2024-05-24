@@ -1,14 +1,21 @@
 package co.id.fadlurahmanf.mediaislam.core.network.dto.response.prayer_time
 
+import com.google.gson.annotations.SerializedName
+
 data class PrayersTimeResponse(
     val timings: Timing? = null,
     val date: Date? = null
 ) {
     data class Timing(
+        @SerializedName("Fajr")
         val fajr: String? = null,
+        @SerializedName("Dhuhr")
         val dhuhr: String? = null,
+        @SerializedName("Asr")
         val asr: String? = null,
+        @SerializedName("Maghrib")
         val maghrib: String? = null,
+        @SerializedName("Isha")
         val isha: String? = null,
     )
 

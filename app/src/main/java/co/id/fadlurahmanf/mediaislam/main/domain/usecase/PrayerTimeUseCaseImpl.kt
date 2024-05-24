@@ -59,7 +59,6 @@ class PrayerTimeUseCaseImpl(
         val year = calendar.get(Calendar.YEAR)
         val rawMonth = calendar.get(Calendar.MONTH)
         val month = rawMonth + 1
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
         val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val formattedDate = sdf.format(calendar.time)
         val indonesianSdf = SimpleDateFormat("dd MMM yyyy", Locale("id", "id"))
@@ -83,11 +82,11 @@ class PrayerTimeUseCaseImpl(
                 nextPrayerTime = "asa",
                 nextPrayer = "sa",
                 timing = PrayersTimeModel.Timing(
-                    fajr = "faj",
-                    dhuhr = "fa",
-                    asr = "sa",
-                    maghrib = "mah",
-                    isha = "isha"
+                    fajr = todayPrayerTime.timings?.fajr ?: "-",
+                    dhuhr = todayPrayerTime.timings?.dhuhr ?: "-",
+                    asr = todayPrayerTime.timings?.asr ?: "-",
+                    maghrib = todayPrayerTime.timings?.maghrib ?: "-",
+                    isha = todayPrayerTime.timings?.isha ?: "-"
                 )
             )
         }

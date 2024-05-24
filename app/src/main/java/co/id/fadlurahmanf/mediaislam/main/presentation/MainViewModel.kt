@@ -46,7 +46,9 @@ class MainViewModel @Inject constructor(
     val prayersTimeLive: LiveData<AladhanNetworkState<PrayersTimeModel>> = _prayersTimeLive
 
     fun getPrayerTime(context: Context) {
-        _prayersTimeLive.value = AladhanNetworkState.LOADING
+        if (_prayersTimeLive.value == AladhanNetworkState.IDLE) {
+            _prayersTimeLive.value = AladhanNetworkState.LOADING
+        }
         prayerTimeUseCase.getAddress(
             context,
             onSuccessGetAddress = { address ->

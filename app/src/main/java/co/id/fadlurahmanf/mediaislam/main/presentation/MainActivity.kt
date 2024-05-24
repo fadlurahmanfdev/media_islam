@@ -118,6 +118,12 @@ class MainActivity :
                     binding.tvDate.text = state.data.readableDate
                     binding.tvLocation.text = state.data.location
 
+                    binding.prayerTiming.tvFajrTime.text = state.data.timing.fajr
+                    binding.prayerTiming.tvDhuhrTime.text = state.data.timing.dhuhr
+                    binding.prayerTiming.tvAsrTime.text = state.data.timing.asr
+                    binding.prayerTiming.tvMaghribTime.text = state.data.timing.maghrib
+                    binding.prayerTiming.tvIshaTime.text = state.data.timing.isha
+
                     binding.llPrayerTime.visibility = View.VISIBLE
                 }
 
