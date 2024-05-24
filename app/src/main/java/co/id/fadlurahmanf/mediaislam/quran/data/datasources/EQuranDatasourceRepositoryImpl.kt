@@ -1,6 +1,5 @@
 package co.id.fadlurahmanf.mediaislam.quran.data.datasources
 
-import android.util.Log
 import co.id.fadlurahmanf.mediaislam.core.network.api.EQuranAPI
 import co.id.fadlurahmanf.mediaislam.core.network.dto.response.quran.DetailSurahResponse
 import co.id.fadlurahmanf.mediaislam.core.network.dto.response.quran.SurahResponse
@@ -23,7 +22,8 @@ class EQuranDatasourceRepositoryImpl @Inject constructor(
             if (!element.isSuccessful) {
                 throw EQuranException(
                     message = element.errorBody()?.string() ?: "",
-                    code = element.code()
+                    httpCode = element.code(),
+                    enumCode = "GET_DETAIL_00"
                 )
             }
         }.map { element ->

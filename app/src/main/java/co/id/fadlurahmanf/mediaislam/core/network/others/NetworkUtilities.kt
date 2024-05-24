@@ -2,6 +2,7 @@ package co.id.fadlurahmanf.mediaislam.core.network.others
 
 import android.content.Context
 import co.id.fadlurahmanf.mediaislam.BuildConfig
+import co.id.fadlurahmanf.mediaislam.core.network.api.AladhanAPI
 import co.id.fadlurahmanf.mediaislam.core.network.api.EQuranAPI
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -31,12 +32,21 @@ class NetworkUtilities {
         return OkHttpClient.Builder()
     }
 
-    fun createGuestIdentityNetwork(okHttpClient: OkHttpClient): EQuranAPI {
+    fun createEQuranNetwork(okHttpClient: OkHttpClient): EQuranAPI {
         return Retrofit.Builder().baseUrl(BuildConfig.EQURAN_BASE_URL)
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(EQuranAPI::class.java)
+    }
+
+    fun createAladhanNetwork(okHttpClient: OkHttpClient): AladhanAPI {
+        return Retrofit.Builder().baseUrl(BuildConfig.ALADHAN_BASE_URL)
+            .client(okHttpClient)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AladhanAPI::class.java)
     }
 }
