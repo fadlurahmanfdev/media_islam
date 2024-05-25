@@ -93,7 +93,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/rounded_yellow_background"
+                    android:background="@drawable/rounded_black_v2_background"
                     android:elevation="5dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -112,12 +112,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tafsir Lengkap"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/white" />
 
                         <TextView
                             style="@style/Font.Regular.14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/white"
                             android:text="Baca tafsir yang menjelaskan ayat demi ayat dengan jelas dan mendalam." />
                     </LinearLayout>
 
