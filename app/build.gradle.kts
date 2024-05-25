@@ -33,7 +33,8 @@ android {
         versionCode = 2
         versionName = "0.0.1 ($versionCode)"
 
-        buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/\"")
+        buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/api/\"")
+        buildConfigField("String", "ALADHAN_BASE_URL", "\"http://api.aladhan.com/\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -153,4 +154,6 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     // shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.4")
 }

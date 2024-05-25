@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticEvent
 import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticParam
+import co.id.fadlurahmanf.mediaislam.core.state.AladhanNetworkState
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.core.ui.bottomsheet.InfoBottomsheet
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityMainBinding
@@ -44,11 +45,13 @@ class MainActivity :
         initObserver()
         initAction()
 
+        viewModel.getPrayerTime(this)
         viewModel.getListSurah()
     }
 
     private fun initAction() {
         binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getPrayerTime(this)
             viewModel.getListSurah()
         }
     }
@@ -65,7 +68,7 @@ class MainActivity :
         ItemMainMenuModel(
             id = "SURAH",
             title = "Surat",
-            icon = R.drawable.ic_quran,
+            icon = R.drawable.il_iqra,
         )
     )
 
@@ -108,6 +111,28 @@ class MainActivity :
     }
 
     private fun initObserver() {
+        viewModel.prayersTimeLive.observe(this) { state ->
+            when (state) {
+                is AladhanNetworkState.SUCCESS -> {
+                    binding.tvHijriDate.text = state.data.readableDateInHijr
+                    binding.tvDate.text = state.data.readableDate
+                    binding.tvLocation.text = state.data.location
+
+                    binding.prayerTiming.tvFajrTime.text = state.data.timing.fajr
+                    binding.prayerTiming.tvDhuhrTime.text = state.data.timing.dhuhr
+                    binding.prayerTiming.tvAsrTime.text = state.data.timing.asr
+                    binding.prayerTiming.tvMaghribTime.text = state.data.timing.maghrib
+                    binding.prayerTiming.tvIshaTime.text = state.data.timing.isha
+
+                    binding.llPrayerTime.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    binding.llPrayerTime.visibility = View.GONE
+                }
+            }
+        }
+
         viewModel.listSurah.observe(this) {
             when (it) {
                 is EQuranNetworkState.LOADING -> {

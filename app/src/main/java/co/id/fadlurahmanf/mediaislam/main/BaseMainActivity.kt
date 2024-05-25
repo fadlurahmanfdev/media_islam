@@ -46,7 +46,7 @@ abstract class BaseMainActivity<VB : ViewBinding>(inflater: InflateActivity<VB>)
             )
             putString(
                 InfoBottomsheet.MESSAGE_TEXT,
-                "Terjadi kesalahan (${exception.code}). Silahkan coba beberapa saat lagi"
+                "Terjadi kesalahan (${exception.httpCode ?: exception.enumCode}). Silahkan coba beberapa saat lagi"
             )
             putString(
                 InfoBottomsheet.BUTTON_TEXT,

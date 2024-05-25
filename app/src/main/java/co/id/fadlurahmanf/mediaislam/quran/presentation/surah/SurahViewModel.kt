@@ -2,10 +2,9 @@ package co.id.fadlurahmanf.mediaislam.quran.presentation.surah
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import co.id.fadlurahmanf.mediaislam.core.network.exception.EQuranException
 import co.id.fadlurahmanf.mediaislam.core.network.exception.fromEQuranException
-import co.id.fadlurahmanf.mediaislam.core.ui.BaseViewModel
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
+import co.id.fadlurahmanf.mediaislam.core.ui.BaseViewModel
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.DetailSurahModel
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
 import co.id.fadlurahmanf.mediaislam.quran.domain.usecase.QuranUseCase
