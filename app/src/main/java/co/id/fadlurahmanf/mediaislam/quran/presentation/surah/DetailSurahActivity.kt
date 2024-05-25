@@ -60,6 +60,14 @@ class DetailSurahActivity :
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.getDetailSurah(surahNo)
         }
+
+        binding.llAudio.setOnClickListener {
+            val intent = Intent(this, AudioActivity::class.java)
+            intent.apply {
+                putExtra(AudioActivity.SURAH_NO, viewModel.detailSurahModel.surahNo)
+            }
+            startActivity(intent)
+        }
     }
 
     private lateinit var adapter: ListVerseAdapter

@@ -23,6 +23,68 @@ class QuranUseCaseImpl(private val quranRepository: EQuranDatasourceRepository) 
 
     override fun getDetailSurah(surahNo: Int): Observable<DetailSurahModel> {
         return quranRepository.getDetailSurah(surahNo).map { response ->
+            val audioFull = arrayListOf<DetailSurahModel.Audio>()
+            if (response.audio?.audio1 != null) {
+                audioFull.add(
+                    DetailSurahModel.Audio(
+                        url = response.audio.audio1,
+                        qari = "Abdullah Al-Juhany",
+                        qariId = "Abdullah-Al-Juhany"
+                    )
+                )
+            }
+
+            if (response.audio?.audio2 != null) {
+                audioFull.add(
+                    DetailSurahModel.Audio(
+                        url = response.audio.audio2,
+                        qari = "Abdul Muhsin Al-Qasim",
+                        qariId = "Abdul-Muhsin-Al-Qasim"
+                    )
+                )
+            }
+
+            if (response.audio?.audio3 != null) {
+                audioFull.add(
+                    DetailSurahModel.Audio(
+                        url = response.audio.audio3,
+                        qari = "Abdurrahman as-Sudais",
+                        qariId = "Abdurrahman-as-Sudais"
+                    )
+                )
+            }
+
+            if (response.audio?.audio4 != null) {
+                audioFull.add(
+                    DetailSurahModel.Audio(
+                        url = response.audio.audio4,
+                        qari = "Ibrahim Al-Dossari",
+                        qariId = "Ibrahim-Al-Dossari"
+                    )
+                )
+            }
+
+            if (response.audio?.audio4 != null) {
+                audioFull.add(
+                    DetailSurahModel.Audio(
+                        url = response.audio.audio4,
+                        qari = "Ibrahim Al-Dossari",
+                        qariId = "Ibrahim-Al-Dossari"
+                    )
+                )
+            }
+
+            if (response.audio?.audio5 != null) {
+                audioFull.add(
+                    DetailSurahModel.Audio(
+                        url = response.audio.audio5,
+                        qari = "Misyari Rasyid Al-Afasi",
+                        qariId = "Misyari-Rasyid-Al-Afasi"
+                    )
+                )
+            }
+
+
             DetailSurahModel(
                 surahNo = response.surahNo ?: -1,
                 arabic = response.arabic ?: "-",
@@ -31,12 +93,75 @@ class QuranUseCaseImpl(private val quranRepository: EQuranDatasourceRepository) 
                 origin = response.origin ?: "-",
                 desc = response.desc ?: "-",
                 totalVerse = response.totalVerse ?: -1,
+                audioFull = audioFull,
                 verses = ArrayList((response.verses ?: listOf())).map { verseResp ->
+                    val audio = arrayListOf<DetailSurahModel.Audio>()
+                    if (verseResp.audio?.audio1 != null) {
+                        audio.add(
+                            DetailSurahModel.Audio(
+                                url = verseResp.audio.audio1,
+                                qari = "Abdullah Al-Juhany",
+                                qariId = "Abdullah-Al-Juhany"
+                            )
+                        )
+                    }
+
+                    if (verseResp.audio?.audio2 != null) {
+                        audio.add(
+                            DetailSurahModel.Audio(
+                                url = verseResp.audio.audio2,
+                                qari = "Abdul Muhsin Al-Qasim",
+                                qariId = "Abdul-Muhsin-Al-Qasim"
+                            )
+                        )
+                    }
+
+                    if (verseResp.audio?.audio3 != null) {
+                        audio.add(
+                            DetailSurahModel.Audio(
+                                url = verseResp.audio.audio3,
+                                qari = "Abdurrahman as-Sudais",
+                                qariId = "Abdurrahman-as-Sudais"
+                            )
+                        )
+                    }
+
+                    if (verseResp.audio?.audio4 != null) {
+                        audio.add(
+                            DetailSurahModel.Audio(
+                                url = verseResp.audio.audio4,
+                                qari = "Ibrahim Al-Dossari",
+                                qariId = "Ibrahim-Al-Dossari"
+                            )
+                        )
+                    }
+
+                    if (verseResp.audio?.audio4 != null) {
+                        audio.add(
+                            DetailSurahModel.Audio(
+                                url = verseResp.audio.audio4,
+                                qari = "Ibrahim Al-Dossari",
+                                qariId = "Ibrahim-Al-Dossari"
+                            )
+                        )
+                    }
+
+                    if (verseResp.audio?.audio5 != null) {
+                        audio.add(
+                            DetailSurahModel.Audio(
+                                url = verseResp.audio.audio5,
+                                qari = "Misyari Rasyid Al-Afasi",
+                                qariId = "Misyari-Rasyid-Al-Afasi"
+                            )
+                        )
+                    }
+
                     DetailSurahModel.Verse(
                         no = verseResp.no ?: -1,
                         latinText = verseResp.latinText ?: "-",
                         indonesianText = verseResp.indonesianText ?: "-",
-                        arabicText = verseResp.arabicText ?: "-"
+                        arabicText = verseResp.arabicText ?: "-",
+                        audio = audio,
                     )
                 }.toList()
             )

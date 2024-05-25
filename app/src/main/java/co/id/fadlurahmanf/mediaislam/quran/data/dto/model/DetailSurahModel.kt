@@ -8,12 +8,20 @@ data class DetailSurahModel(
     val origin: String,
     val meaning: String,
     val desc: String,
+    val audioFull: List<Audio>,
     val verses: List<Verse>,
-){
+) {
+    data class Audio(
+        val url: String,
+        val qari: String,
+        val qariId: String,
+    )
+
     data class Verse(
-        val no:Int,
-        val arabicText:String,
-        val latinText:String,
-        val indonesianText:String,
+        val no: Int,
+        val arabicText: String,
+        val latinText: String,
+        val indonesianText: String,
+        val audio: List<Audio>,
     )
 }

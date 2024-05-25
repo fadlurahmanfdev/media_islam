@@ -17,9 +17,24 @@ data class DetailSurahResponse(
     val meaning: String? = null,
     @SerializedName("deskripsi")
     val desc: String? = null,
+    @SerializedName("audioFull")
+    val audio: Audio? = null,
     @SerializedName("ayat")
     val verses: List<Verse>? = null,
 ) {
+    data class Audio(
+        @SerializedName("01")
+        val audio1: String? = null,
+        @SerializedName("02")
+        val audio2: String? = null,
+        @SerializedName("03")
+        val audio3: String? = null,
+        @SerializedName("04")
+        val audio4: String? = null,
+        @SerializedName("05")
+        val audio5: String? = null,
+    )
+
     data class Verse(
         @SerializedName("nomorAyat")
         val no: Int? = null,
@@ -29,5 +44,7 @@ data class DetailSurahResponse(
         val latinText: String? = null,
         @SerializedName("teksIndonesia")
         val indonesianText: String? = null,
+        @SerializedName("audio")
+        val audio: Audio? = null,
     )
 }
