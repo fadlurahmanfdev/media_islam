@@ -29,6 +29,7 @@ class QuranUseCaseImpl(private val quranRepository: EQuranDatasourceRepository) 
                 latin = response.latin ?: "-",
                 meaning = response.meaning ?: "-",
                 origin = response.origin ?: "-",
+                desc = response.desc ?: "-",
                 totalVerse = response.totalVerse ?: -1,
                 verses = ArrayList((response.verses ?: listOf())).map { verseResp ->
                     DetailSurahModel.Verse(

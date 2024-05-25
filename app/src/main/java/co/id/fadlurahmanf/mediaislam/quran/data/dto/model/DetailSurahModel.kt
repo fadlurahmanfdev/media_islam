@@ -7,6 +7,7 @@ data class DetailSurahModel(
     val totalVerse: Int,
     val origin: String,
     val meaning: String,
+    val desc: String,
     val verses: List<Verse>,
 ){
     data class Verse(

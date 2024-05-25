@@ -7,6 +7,8 @@
     <color name="orange_opacity_20">#1AFFA500</color>
     <color name="grey">#FF858585</color>
     <color name="light_grey">#FFA1A1A1</color>
+    <color name="yellow">#FFD550</color>
+    <color name="yellow_v2">#FFA31D</color>
 
     <color name="primary">#FF019267</color>
     <color name="primary_opacity_20">#1A019267</color>

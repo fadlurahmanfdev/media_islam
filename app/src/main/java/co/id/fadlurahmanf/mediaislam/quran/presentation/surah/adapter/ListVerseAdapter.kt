@@ -6,6 +6,7 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import co.id.fadlurahmanf.mediaislam.R
@@ -35,17 +36,23 @@ class ListVerseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nomorAyah: TextView = view.findViewById(R.id.tv_number_ayah)
+//        val nomorAyah: TextView = view.findViewById(R.id.tv_number_ayah)
         val arabic: TextView = view.findViewById<TextView>(R.id.tv_arabic)
         val latin: TextView = view.findViewById(R.id.tv_latin)
         val indonesian: TextView = view.findViewById(R.id.tv_indonesian)
-//        val share: ImageView = view.findViewById(R.id.iv_share)
+        val share: ImageView = view.findViewById(R.id.iv_share)
 //        val favorite: ImageView = view.findViewById(R.id.iv_favorite)
+
+        init {
+            share.setOnClickListener {
+                callBack?.onVerseClickedShare(verses[adapterPosition])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_verse, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_verse_v2, parent, false)
         return ViewHolder(view)
     }
 
@@ -54,14 +61,14 @@ class ListVerseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         val mHolder = holder as ViewHolder
 
-        mHolder.nomorAyah.text = "${verse.no}"
+//        mHolder.nomorAyah.text = "${verse.no}"
         mHolder.arabic.text = verse.arabicText
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             mHolder.latin.text = Html.fromHtml(verse.latinText, Html.FROM_HTML_MODE_COMPACT)
         } else {
             mHolder.latin.text = Html.fromHtml(verse.latinText)
         }
-        mHolder.indonesian.text = verse.indonesianText
+        mHolder.indonesian.text = "${verse.no}. ${verse.indonesianText}"
 //        mHolder.favorite.imageTintList =
 //            ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green))
 //        if (verse.isFavorite == true) {
@@ -113,7 +120,7 @@ class ListVerseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     interface CallBack {
-//        fun onSharedClicked(ayah: AyahModel)
+        fun onVerseClickedShare(verse: DetailSurahModel.Verse)
 //        fun onFavoriteClicked(ayah: AyahModel)
     }
 }
