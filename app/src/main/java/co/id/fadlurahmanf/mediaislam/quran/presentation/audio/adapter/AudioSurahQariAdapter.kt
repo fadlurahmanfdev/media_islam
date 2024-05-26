@@ -82,7 +82,7 @@ class AudioSurahQariAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         if (audio.isPlaying) {
             mHolder.main.background =
-                ContextCompat.getDrawable(context, R.drawable.solid_primary_corner_15)
+                ContextCompat.getDrawable(context, R.drawable.solid_primary_corner_5)
             mHolder.qariName.setTextColor(ContextCompat.getColor(context, R.color.white))
         } else {
             mHolder.main.background =
