@@ -38,6 +38,7 @@ class SurahViewModel @Inject constructor(
 
     private val _detailSurahLive = MutableLiveData<EQuranNetworkState<DetailSurahModel>>()
     val detailSurahLive: LiveData<EQuranNetworkState<DetailSurahModel>> = _detailSurahLive
+    lateinit var detailSurahModel: DetailSurahModel
 
     fun getDetailSurah(surahNo: Int) {
         _detailSurahLive.value = EQuranNetworkState.LOADING
@@ -45,6 +46,7 @@ class SurahViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { data ->
+                    detailSurahModel = data
                     _detailSurahLive.value = EQuranNetworkState.SUCCESS(data = data)
                 },
                 { error ->

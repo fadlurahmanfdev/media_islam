@@ -155,5 +155,7 @@ dependencies {
     // shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
+    // our library
     implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.4")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.3")
 }
