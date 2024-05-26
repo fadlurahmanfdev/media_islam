@@ -37,17 +37,18 @@ class EQuranDatasourceRepositoryImpl @Inject constructor(
 
     override fun getQari(): Observable<List<QariResponse>> {
         return Observable.create<List<QariResponse>> { emitter ->
-            firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
-                val result = firebaseRemoteConfig.getString("QARI")
-                println("MASUK_MASUK $result")
-                val model = Gson().fromJson<Array<QariResponse>>(result, Array<QariResponse>::class.java)
-                model.forEach { qariResp ->
-                    println("MASUK_MASUK 2 $qariResp")
+            firebaseRemoteConfig.fetch(0).addOnSuccessListener {
+                firebaseRemoteConfig.activate().addOnSuccessListener { isSuccess ->
+                    val result = firebaseRemoteConfig.getString("QARI")
+                    val model = Gson().fromJson<Array<QariResponse>>(result, Array<QariResponse>::class.java)
+                    emitter.onNext(model.toList())
+                }.addOnFailureListener {
+                    emitter.onError(it)
+                }.addOnCompleteListener {
+                    emitter.onComplete()
                 }
-                emitter.onNext(model.toList())
             }.addOnFailureListener {
                 emitter.onError(it)
-            }.addOnCompleteListener {
                 emitter.onComplete()
             }
         }

@@ -33,6 +33,12 @@ class ListSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val indonesian: TextView = view.findViewById(R.id.tv_indonesian_title)
         val arabic: TextView = view.findViewById(R.id.tv_arabic_title)
         val totalAyah: TextView = view.findViewById(R.id.tv_total_ayah)
+
+        init {
+            view.setOnClickListener {
+                callBack.onClicked(surahs[absoluteAdapterPosition])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -51,9 +57,6 @@ class ListSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mHolder.arabic.text = surah.arabic
         mHolder.indonesian.text = surah.meaning
         mHolder.totalAyah.text = "${surah.totalVerse} Ayat"
-        mHolder.itemView.setOnClickListener {
-            callBack.onClicked(surah)
-        }
     }
 
     override fun getItemCount(): Int {

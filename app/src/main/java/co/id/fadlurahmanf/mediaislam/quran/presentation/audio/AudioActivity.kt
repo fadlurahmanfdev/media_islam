@@ -1,15 +1,16 @@
 package co.id.fadlurahmanf.mediaislam.quran.presentation.audio
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.media3.common.util.UnstableApi
+import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.core.other.GlideUrlCachedKey
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityAudioBinding
 import co.id.fadlurahmanf.mediaislam.quran.BaseQuranActivity
+import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.AudioQariModel
 import co.id.fadlurahmanf.mediaislam.quran.data.state.NowPlayingAudioState
-import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.SurahViewModel
+import co.id.fadlurahmanf.mediaislam.quran.presentation.audio.adapter.AudioSurahQariAdapter
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.common.BaseMusicPlayer
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.plugin.FeatureMusicPlayer
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.others.utilities.MusicPlayerUtilities
@@ -40,8 +41,20 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         featureMusicPlayer = FeatureMusicPlayer(this)
         featureMusicPlayer.setCallback(this)
         featureMusicPlayer.initialize()
+        initAdapter()
         initObserver()
+
         viewModel.getDetailSurah(surahNo)
+    }
+
+    private lateinit var audioQariAdapter: AudioSurahQariAdapter
+    private val audioQaris: ArrayList<AudioQariModel> = arrayListOf()
+    private fun initAdapter() {
+        audioQariAdapter = AudioSurahQariAdapter()
+        audioQariAdapter.setList(audioQaris)
+        val gm = GridLayoutManager(this, 2)
+        binding.rvListQari.layoutManager = gm
+        binding.rvListQari.adapter = audioQariAdapter
     }
 
     @UnstableApi
@@ -49,18 +62,50 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         viewModel.nowPlayingLive.observe(this) { state ->
             when (state) {
                 is NowPlayingAudioState.SUCCESS -> {
+                    binding.tvNowPlayingAr.text = state.nowPlayingArTitle
+                    binding.tvNowPlayingLatin.text = state.nowPlayingLatinTitle
+                    binding.tvNowPlayingIndonesia.text = state.nowPlayingIndonesaTitle
                     binding.tvNowPlayingQariName.text = state.qariName
                     if (state.qariImage != null) {
                         Glide.with(binding.ivNowPlayingQariImage)
                             .load(GlideUrlCachedKey(state.qariImage, state.qariImageKey))
+                            .centerCrop()
                             .into(binding.ivNowPlayingQariImage)
                     }
 
-                    binding.llNowPlayingQari.visibility = View.VISIBLE
+                    binding.shimmerNowPlayingVideo.visibility = View.GONE
+                    binding.llNowPlayingAudio.visibility = View.VISIBLE
+                    binding.llAudioController.visibility = View.VISIBLE
                 }
 
                 else -> {
-                    binding.llNowPlayingQari.visibility = View.GONE
+                    binding.llNowPlayingAudio.visibility = View.GONE
+                    binding.llAudioController.visibility = View.GONE
+                    binding.shimmerNowPlayingVideo.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        viewModel.audioFullLive.observe(this) { state ->
+            when (state) {
+                is EQuranNetworkState.SUCCESS -> {
+                    audioQaris.clear()
+                    audioQaris.addAll(state.data)
+                    audioQariAdapter.setList(audioQaris)
+
+                    if (state.data.isNotEmpty()) {
+                        val audioFirst = state.data.first()
+                        viewModel.selectAudio(
+                            detailSurah = viewModel.detailSurahModel,
+                            audio = audioFirst
+                        )
+                    }
+
+                    binding.llListAudioQari.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    binding.llListAudioQari.visibility = View.GONE
                 }
             }
         }
@@ -68,17 +113,14 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         viewModel.detailSurahLive.observe(this) { state ->
             when (state) {
                 is EQuranNetworkState.SUCCESS -> {
-                    binding.shimmerNowPlayingVideo.visibility = View.GONE
-                    binding.llNowPlayingAudio.visibility = View.VISIBLE
-                    binding.llAudioController.visibility = View.VISIBLE
+                    viewModel.getAudioFullDetail(state.data.audioFull)
                 }
 
                 else -> {
-                    binding.llAudioController.visibility = View.GONE
-                    binding.llNowPlayingAudio.visibility = View.GONE
-                    binding.shimmerNowPlayingVideo.visibility = View.VISIBLE
+
                 }
             }
+
         }
     }
 
