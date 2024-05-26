@@ -50,9 +50,7 @@ class QuranUseCaseImpl(private val quranRepository: EQuranDatasourceRepository) 
     override fun getAudioSurahFullFromQari(audioFull: List<DetailSurahModel.Audio>): Observable<List<AudioQariModel>> {
         return quranRepository.getQari().map { qaris ->
             val audios: ArrayList<AudioQariModel> = arrayListOf()
-            println("MASUK_MASUK QARI DARI REMOTE CONFIG: ${qaris.size}")
             audioFull.forEach { audio ->
-                println("MASUK_MASUK AUDIO DARI EQURAN $audio")
                 if (qaris.firstOrNull { elementQari -> elementQari.id == audio.qariId } != null) {
                     val qari = qaris.first { elementQari -> elementQari.id == audio.qariId }
                     audios.add(

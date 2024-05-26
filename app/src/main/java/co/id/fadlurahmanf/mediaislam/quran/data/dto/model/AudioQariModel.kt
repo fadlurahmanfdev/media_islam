@@ -6,4 +6,5 @@ data class AudioQariModel(
     val qariAudio: String,
     val qariImage: String? = null,
     val qariImageKey: String? = null,
+    var isPlaying: Boolean = false
 )

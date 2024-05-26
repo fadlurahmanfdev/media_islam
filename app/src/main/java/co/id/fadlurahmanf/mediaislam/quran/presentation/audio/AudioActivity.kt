@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide
 import javax.inject.Inject
 
 class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBinding::inflate),
-    BaseMusicPlayer.Callback {
+    BaseMusicPlayer.Callback, AudioSurahQariAdapter.CallBack {
     lateinit var featureMusicPlayer: FeatureMusicPlayer
 
     @Inject
@@ -36,6 +36,7 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
 
     @UnstableApi
     override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
+        setOnApplyWindowInsetsListener(binding.main)
         setAppearanceLightStatusBar(false)
         surahNo = intent.getIntExtra(SURAH_NO, -1)
         featureMusicPlayer = FeatureMusicPlayer(this)
@@ -48,10 +49,9 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
     }
 
     private lateinit var audioQariAdapter: AudioSurahQariAdapter
-    private val audioQaris: ArrayList<AudioQariModel> = arrayListOf()
     private fun initAdapter() {
         audioQariAdapter = AudioSurahQariAdapter()
-        audioQariAdapter.setList(audioQaris)
+        audioQariAdapter.setCallBack(this)
         val gm = GridLayoutManager(this, 2)
         binding.rvListQari.layoutManager = gm
         binding.rvListQari.adapter = audioQariAdapter
@@ -89,16 +89,13 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         viewModel.audioFullLive.observe(this) { state ->
             when (state) {
                 is EQuranNetworkState.SUCCESS -> {
-                    audioQaris.clear()
-                    audioQaris.addAll(state.data)
+                    val audioQaris = ArrayList(state.data)
                     audioQariAdapter.setList(audioQaris)
 
                     if (state.data.isNotEmpty()) {
                         val audioFirst = state.data.first()
-                        viewModel.selectAudio(
-                            detailSurah = viewModel.detailSurahModel,
-                            audio = audioFirst
-                        )
+                        audioQariAdapter.setWhichQariIsPlaying(audioFirst.qariId)
+                        viewModel.selectAudio(audioFirst)
                     }
 
                     binding.llListAudioQari.visibility = View.VISIBLE
@@ -142,6 +139,11 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
     override fun onDestroy() {
         featureMusicPlayer.destroy()
         super.onDestroy()
+    }
+
+    override fun onClicked(audio: AudioQariModel) {
+        audioQariAdapter.setWhichQariIsPlaying(audio.qariId)
+        viewModel.selectAudio(audio)
     }
 
 }

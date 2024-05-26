@@ -56,11 +56,11 @@ class AudioQuranViewModel @Inject constructor(
             ))
     }
 
-    fun selectAudio(detailSurah: DetailSurahModel, audio: AudioQariModel) {
+    fun selectAudio(audio: AudioQariModel) {
         _nowPlayingLive.value = NowPlayingAudioState.SUCCESS(
-            nowPlayingArTitle = detailSurah.arabic,
-            nowPlayingLatinTitle = detailSurah.latin,
-            nowPlayingIndonesaTitle = detailSurah.meaning,
+            nowPlayingArTitle = detailSurahModel.arabic,
+            nowPlayingLatinTitle = detailSurahModel.latin,
+            nowPlayingIndonesaTitle = detailSurahModel.meaning,
             qariId = audio.qariId,
             url = audio.qariAudio,
             qariName = audio.qariName,
