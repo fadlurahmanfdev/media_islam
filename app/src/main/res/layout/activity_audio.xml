@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_v2"
-    tools:context=".quran.presentation.surah.AudioActivity">
+    tools:context=".quran.presentation.audio.AudioActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -58,10 +58,7 @@
                     android:elevation="20dp"
                     android:orientation="vertical"
                     android:paddingHorizontal="20dp"
-                    android:paddingVertical="18dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar">
+                    android:paddingVertical="18dp">
 
                     <TextView
                         style="@style/Font.SemiBold.16"
@@ -83,13 +80,44 @@
                         android:layout_height="wrap_content"
                         android:text="Pertolongan"
                         android:textColor="@color/white" />
+                </LinearLayout>
 
-                    <TextView
-                        style="@style/Font.Bold.16"
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_now_playing_qari"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/solid_white_corner_15"
+                    android:elevation="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="18dp"
+                    android:visibility="visible"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Abdullah-Al-Juhany"
-                        android:textColor="@color/white" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_now_playing_qari_name"
+                            style="@style/Font.Regular.14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Misyari Rasyid Al-'Afasi" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_now_playing_qari_image"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:clipToOutline="true"
+                        android:background="@drawable/rounded_primary_background" />
                 </LinearLayout>
             </LinearLayout>
 

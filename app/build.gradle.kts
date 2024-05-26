@@ -149,12 +149,13 @@ dependencies {
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-config")
 
     // ui related
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     // shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
-
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     // our library
     implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.4")
     implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.3")

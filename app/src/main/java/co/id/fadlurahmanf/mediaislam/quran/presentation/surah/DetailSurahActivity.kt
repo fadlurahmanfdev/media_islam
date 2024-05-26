@@ -1,19 +1,13 @@
 package co.id.fadlurahmanf.mediaislam.quran.presentation.surah
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityDetailSurahBinding
 import co.id.fadlurahmanf.mediaislam.quran.BaseQuranActivity
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.DetailSurahModel
+import co.id.fadlurahmanf.mediaislam.quran.presentation.audio.AudioActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.adapter.ListVerseAdapter
 import javax.inject.Inject
 

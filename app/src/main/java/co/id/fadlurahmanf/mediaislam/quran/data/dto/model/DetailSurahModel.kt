@@ -13,7 +13,6 @@ data class DetailSurahModel(
 ) {
     data class Audio(
         val url: String,
-        val qari: String,
         val qariId: String,
     )
 

@@ -1,19 +1,19 @@
-package co.id.fadlurahmanf.mediaislam.quran.presentation.surah
+package co.id.fadlurahmanf.mediaislam.quran.presentation.audio
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.media3.common.util.UnstableApi
-import co.id.fadlurahmanf.mediaislam.R
+import co.id.fadlurahmanf.mediaislam.core.other.GlideUrlCachedKey
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityAudioBinding
 import co.id.fadlurahmanf.mediaislam.quran.BaseQuranActivity
+import co.id.fadlurahmanf.mediaislam.quran.data.state.NowPlayingAudioState
+import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.SurahViewModel
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.common.BaseMusicPlayer
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.plugin.FeatureMusicPlayer
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.others.utilities.MusicPlayerUtilities
+import com.bumptech.glide.Glide
 import javax.inject.Inject
 
 class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBinding::inflate),
@@ -21,7 +21,7 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
     lateinit var featureMusicPlayer: FeatureMusicPlayer
 
     @Inject
-    lateinit var viewModel: SurahViewModel
+    lateinit var viewModel: AudioQuranViewModel
 
     var surahNo: Int = -1
 
@@ -46,19 +46,36 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
 
     @UnstableApi
     private fun initObserver() {
+        viewModel.nowPlayingLive.observe(this) { state ->
+            when (state) {
+                is NowPlayingAudioState.SUCCESS -> {
+                    binding.tvNowPlayingQariName.text = state.qariName
+                    if (state.qariImage != null) {
+                        Glide.with(binding.ivNowPlayingQariImage)
+                            .load(GlideUrlCachedKey(state.qariImage, state.qariImageKey))
+                            .into(binding.ivNowPlayingQariImage)
+                    }
+
+                    binding.llNowPlayingQari.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    binding.llNowPlayingQari.visibility = View.GONE
+                }
+            }
+        }
+
         viewModel.detailSurahLive.observe(this) { state ->
             when (state) {
                 is EQuranNetworkState.SUCCESS -> {
                     binding.shimmerNowPlayingVideo.visibility = View.GONE
+                    binding.llNowPlayingAudio.visibility = View.VISIBLE
                     binding.llAudioController.visibility = View.VISIBLE
-
-                    if (state.data.audioFull.isNotEmpty()) {
-                        featureMusicPlayer.playRemoteAudio(state.data.audioFull.first().url)
-                    }
                 }
 
                 else -> {
                     binding.llAudioController.visibility = View.GONE
+                    binding.llNowPlayingAudio.visibility = View.GONE
                     binding.shimmerNowPlayingVideo.visibility = View.VISIBLE
                 }
             }

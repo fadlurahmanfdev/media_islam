@@ -1,5 +1,7 @@
 package co.id.fadlurahmanf.mediaislam.core.di.modules
 
+import android.content.Context
+import co.id.fadlurahmanf.mediaislam.BaseApp
 import co.id.fadlurahmanf.mediaislam.core.network.api.AladhanAPI
 import co.id.fadlurahmanf.mediaislam.core.network.api.EQuranAPI
 import co.id.fadlurahmanf.mediaislam.main.data.datasources.AladhanDatasourceRepository
@@ -23,8 +25,9 @@ class SharedModule {
     }
 
     @Provides
-    fun provideEQuranDatasourceModule(eQuranAPI: EQuranAPI): EQuranDatasourceRepository {
-        return EQuranDatasourceRepositoryImpl(eQuranAPI)
+    fun provideEQuranDatasourceModule(context: Context, eQuranAPI: EQuranAPI): EQuranDatasourceRepository {
+        val app = context.applicationContext as BaseApp
+        return EQuranDatasourceRepositoryImpl(eQuranAPI, app.firebaseRemoteConfig)
     }
 
     @Provides
