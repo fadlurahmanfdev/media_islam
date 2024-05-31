@@ -158,5 +158,5 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     // our library
     implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.4")
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.3")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.8")
 }

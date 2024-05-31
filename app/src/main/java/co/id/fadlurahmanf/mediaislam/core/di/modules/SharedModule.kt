@@ -10,6 +10,8 @@ import co.id.fadlurahmanf.mediaislam.main.domain.usecase.PrayerTimeUseCase
 import co.id.fadlurahmanf.mediaislam.main.domain.usecase.PrayerTimeUseCaseImpl
 import co.id.fadlurahmanf.mediaislam.quran.data.datasources.EQuranDatasourceRepository
 import co.id.fadlurahmanf.mediaislam.quran.data.datasources.EQuranDatasourceRepositoryImpl
+import co.id.fadlurahmanf.mediaislam.quran.data.repository.QuranNotificationRepository
+import co.id.fadlurahmanf.mediaislam.quran.data.repository.QuranNotificationRepositoryImpl
 import co.id.fadlurahmanf.mediaislam.quran.domain.usecase.QuranUseCase
 import co.id.fadlurahmanf.mediaislam.quran.domain.usecase.QuranUseCaseImpl
 import co.id.fadlurahmanfdev.kotlin_core_platform.data.repository.CorePlatformRepository
@@ -19,20 +21,35 @@ import dagger.Provides
 
 @Module
 class SharedModule {
+
     @Provides
     fun provideCorePlatformRepository(): CorePlatformRepository {
         return CorePlatformRepositoryImpl()
     }
 
     @Provides
-    fun provideEQuranDatasourceModule(context: Context, eQuranAPI: EQuranAPI): EQuranDatasourceRepository {
+    fun provideQuranNotificationRepositoryImpl(context: Context): QuranNotificationRepository {
+        return QuranNotificationRepositoryImpl(context)
+    }
+
+    @Provides
+    fun provideEQuranDatasourceModule(
+        context: Context,
+        eQuranAPI: EQuranAPI
+    ): EQuranDatasourceRepository {
         val app = context.applicationContext as BaseApp
         return EQuranDatasourceRepositoryImpl(eQuranAPI, app.firebaseRemoteConfig)
     }
 
     @Provides
-    fun provideQuranUseCase(eQuranDatasourceRepository: EQuranDatasourceRepository): QuranUseCase {
-        return QuranUseCaseImpl(eQuranDatasourceRepository)
+    fun provideQuranUseCase(
+        eQuranDatasourceRepository: EQuranDatasourceRepository,
+        quranNotificationRepository: QuranNotificationRepository
+    ): QuranUseCase {
+        return QuranUseCaseImpl(
+            quranRepository = eQuranDatasourceRepository,
+            quranNotificationRepository = quranNotificationRepository
+        )
     }
 
     @Provides

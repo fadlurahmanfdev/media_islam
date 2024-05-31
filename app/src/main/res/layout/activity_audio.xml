@@ -138,7 +138,7 @@
                     android:layout_marginTop="30dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
-                    android:progress="50"
+                    android:progress="0"
                     android:progressBackgroundTint="@color/white"
                     android:progressTint="@color/white" />
 
@@ -189,6 +189,7 @@
                         app:tint="@color/white" />
 
                     <ImageView
+                        android:id="@+id/iv_play_pause_audio"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/round_play_circle_24"

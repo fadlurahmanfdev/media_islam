@@ -16,6 +16,10 @@ import javax.inject.Inject
 class AudioQuranViewModel @Inject constructor(
     private val quranUseCase: QuranUseCase
 ) : BaseViewModel() {
+    fun createChannel() {
+        quranUseCase.createAudioMediaChannel()
+    }
+
     private val _nowPlayingLive = MutableLiveData<NowPlayingAudioState>(NowPlayingAudioState.IDLE)
     val nowPlayingLive: LiveData<NowPlayingAudioState> = _nowPlayingLive
 

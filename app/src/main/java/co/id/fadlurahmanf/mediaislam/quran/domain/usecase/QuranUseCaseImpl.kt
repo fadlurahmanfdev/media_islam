@@ -5,9 +5,17 @@ import co.id.fadlurahmanf.mediaislam.quran.data.datasources.EQuranDatasourceRepo
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.AudioQariModel
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.DetailSurahModel
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
+import co.id.fadlurahmanf.mediaislam.quran.data.repository.QuranNotificationRepository
 import io.reactivex.rxjava3.core.Observable
 
-class QuranUseCaseImpl(private val quranRepository: EQuranDatasourceRepository) : QuranUseCase {
+class QuranUseCaseImpl(
+    private val quranRepository: EQuranDatasourceRepository,
+    private val quranNotificationRepository: QuranNotificationRepository
+) : QuranUseCase {
+    override fun createAudioMediaChannel() {
+        return quranNotificationRepository.createMediaNotificationChannel()
+    }
+
     override fun getListSurah(): Observable<List<SurahModel>> {
         return quranRepository.getListSurah().map { response ->
             response.map { surah ->

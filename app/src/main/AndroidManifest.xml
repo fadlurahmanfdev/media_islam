@@ -35,6 +35,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".quran.domain.receiver.AudioQuranReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_PAUSE_AUDIO" />
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_RESUME_AUDIO" />
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_PREVIOUS_AUDIO" />
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_NEXT_AUDIO" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".quran.domain.service.AudioQuranService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_PLAY_REMOTE_AUDIO" />
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_PAUSE_AUDIO" />
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_RESUME_AUDIO" />
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_PREVIOUS_AUDIO" />
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.ACTION_NEXT_AUDIO" />
+                <action android:name="co.id.fadlurahmanfdev.kotlin_feature_media_player.SEND_INFO" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

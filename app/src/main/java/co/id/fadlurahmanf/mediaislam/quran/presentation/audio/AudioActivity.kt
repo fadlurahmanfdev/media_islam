@@ -2,24 +2,29 @@ package co.id.fadlurahmanf.mediaislam.quran.presentation.audio
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.GridLayoutManager
+import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.core.other.GlideUrlCachedKey
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityAudioBinding
 import co.id.fadlurahmanf.mediaislam.quran.BaseQuranActivity
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.AudioQariModel
 import co.id.fadlurahmanf.mediaislam.quran.data.state.NowPlayingAudioState
+import co.id.fadlurahmanf.mediaislam.quran.domain.service.AudioQuranService
 import co.id.fadlurahmanf.mediaislam.quran.presentation.audio.adapter.AudioSurahQariAdapter
+import co.id.fadlurahmanfdev.kotlin_feature_media_player.data.state.MusicPlayerState
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.common.BaseMusicPlayer
-import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.plugin.FeatureMusicPlayer
+import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.manager.FeatureMusicPlayerManager
+import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.manager.FeatureMusicPlayerReceiverManager
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.others.utilities.MusicPlayerUtilities
 import com.bumptech.glide.Glide
 import javax.inject.Inject
 
 class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBinding::inflate),
-    BaseMusicPlayer.Callback, AudioSurahQariAdapter.CallBack {
-    lateinit var featureMusicPlayer: FeatureMusicPlayer
+    BaseMusicPlayer.Listener, AudioSurahQariAdapter.CallBack,
+    FeatureMusicPlayerReceiverManager.CallBack {
 
     @Inject
     lateinit var viewModel: AudioQuranViewModel
@@ -30,6 +35,8 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         const val SURAH_NO = "SURAH_NO"
     }
 
+    lateinit var featureMusicPlayerReceiverManager: FeatureMusicPlayerReceiverManager
+
     override fun onBaseQuranInjectActivity() {
         component.inject(this)
     }
@@ -39,13 +46,32 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         setOnApplyWindowInsetsListener(binding.main)
         setAppearanceLightStatusBar(false)
         surahNo = intent.getIntExtra(SURAH_NO, -1)
-        featureMusicPlayer = FeatureMusicPlayer(this)
-        featureMusicPlayer.setCallback(this)
-        featureMusicPlayer.initialize()
+
+        featureMusicPlayerReceiverManager = FeatureMusicPlayerReceiverManager(this)
+        featureMusicPlayerReceiverManager.setCallBack(this)
+        featureMusicPlayerReceiverManager.registerReceiver(this)
         initAdapter()
         initObserver()
+        initAction()
 
+        viewModel.createChannel()
         viewModel.getDetailSurah(surahNo)
+    }
+
+    private fun initAction() {
+        binding.ivPlayPauseAudio.setOnClickListener {
+            when (featureMusicPlayerReceiverManager.state) {
+                MusicPlayerState.PLAYING -> {
+                    FeatureMusicPlayerManager.pause(this, AudioQuranService::class.java)
+                }
+
+                MusicPlayerState.PAUSED -> {
+                    FeatureMusicPlayerManager.resume(this, AudioQuranService::class.java)
+                }
+
+                else -> {}
+            }
+        }
     }
 
     private lateinit var audioQariAdapter: AudioSurahQariAdapter
@@ -62,6 +88,16 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         viewModel.nowPlayingLive.observe(this) { state ->
             when (state) {
                 is NowPlayingAudioState.SUCCESS -> {
+                    FeatureMusicPlayerManager.playRemoteAudio(
+                        this,
+                        notificationId = 1,
+                        title = state.nowPlayingArTitle,
+                        artist = state.qariName,
+                        urls = listOf(
+                            state.url
+                        ),
+                        clazz = AudioQuranService::class.java,
+                    )
                     binding.tvNowPlayingAr.text = state.nowPlayingArTitle
                     binding.tvNowPlayingLatin.text = state.nowPlayingLatinTitle
                     binding.tvNowPlayingIndonesia.text = state.nowPlayingIndonesaTitle
@@ -137,13 +173,51 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
 
     @UnstableApi
     override fun onDestroy() {
-        featureMusicPlayer.destroy()
         super.onDestroy()
     }
 
     override fun onClicked(audio: AudioQariModel) {
         audioQariAdapter.setWhichQariIsPlaying(audio.qariId)
         viewModel.selectAudio(audio)
+    }
+
+    override fun onSendInfo(position: Long, duration: Long, state: MusicPlayerState) {
+        binding.seekbar.max = duration.toInt()
+        binding.seekbar.progress = position.toInt()
+
+        binding.tvPosition.text = MusicPlayerUtilities.formatToReadableTime(position)
+        binding.tvDuration.text = MusicPlayerUtilities.formatToReadableTime(duration)
+
+        when (state) {
+            MusicPlayerState.PLAYING, MusicPlayerState.RESUME -> {
+                binding.ivPlayPauseAudio.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.round_pause_circle_24
+                    )
+                )
+            }
+
+            MusicPlayerState.PAUSED -> {
+                binding.ivPlayPauseAudio.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.round_play_circle_24
+                    )
+                )
+            }
+
+            MusicPlayerState.ENDED -> {
+                binding.ivPlayPauseAudio.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        co.id.fadlurahmanfdev.kotlin_feature_media_player.R.drawable.round_play_arrow_24
+                    )
+                )
+            }
+
+            else -> {}
+        }
     }
 
 }
