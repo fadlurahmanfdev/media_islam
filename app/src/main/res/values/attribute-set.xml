@@ -2,9 +2,11 @@
 <resources>
 
     <attr name="text" format="string" />
+    <attr name="buttonBackground" format="reference" />
 
     <declare-styleable name="ButtonCustomFilled">
         <attr name="text" />
+        <attr name="buttonBackground" />
         <attr name="active" format="boolean" />
     </declare-styleable>
 </resources>

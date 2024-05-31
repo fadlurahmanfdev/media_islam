@@ -7,13 +7,15 @@
     </style>
 
     <style name="Font.TitleBottomsheet">
-        <item name="android:fontFamily">@font/notosans_semibold</item>
+        <item name="android:fontFamily">@font/notosans_bold</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Font.MessageBottomsheet">
         <item name="android:fontFamily">@font/notosans_regular</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Font.Thin">

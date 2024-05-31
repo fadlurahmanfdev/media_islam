@@ -9,15 +9,18 @@ class InfoBottomsheet : BaseBottomsheet<BottomsheetInfoBinding>(
 
     private var callback: Callback? = null
     private var failedImageDrawble: Drawable? = null
+    private var infoId: String? = null
 
     companion object {
         const val IS_DIALOG_CANCELABLE = "IS_DIALOG_CANCELABLE"
         const val TITLE_TEXT = "TITLE_TEXT"
         const val MESSAGE_TEXT = "MESSAGE_TEXT"
         const val BUTTON_TEXT = "BUTTON_TEXT"
+        const val INFO_ID = "INFO_ID"
     }
 
     override fun setup() {
+        infoId = arguments?.getString(INFO_ID)
         isCancelable = arguments?.getBoolean(IS_DIALOG_CANCELABLE, true) ?: true
 
         if (failedImageDrawble != null) {
@@ -32,7 +35,7 @@ class InfoBottomsheet : BaseBottomsheet<BottomsheetInfoBinding>(
 
         binding.btnBottomsheet.setOnClickListener {
             if (callback != null) {
-                callback?.onButtonClicked()
+                callback?.onButtonClicked(infoId = infoId)
             } else if (isCancelable) {
                 dismiss()
             }
@@ -50,6 +53,6 @@ class InfoBottomsheet : BaseBottomsheet<BottomsheetInfoBinding>(
     }
 
     interface Callback {
-        fun onButtonClicked()
+        fun onButtonClicked(infoId: String?)
     }
 }

@@ -10,8 +10,10 @@
     <color name="light_grey">#FFA1A1A1</color>
     <color name="yellow">#FFD550</color>
     <color name="yellow_v2">#FFA31D</color>
+    <color name="red">#BD0000</color>
 
     <color name="primary">#FF019267</color>
+    <color name="darker_primary">#00835C</color>
     <color name="primary_opacity_20">#1A019267</color>
     <color name="secondary">#FFFFA500</color>
     <color name="disabledButton">#FFA1A1A1</color>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticEvent
 import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticParam
+import co.id.fadlurahmanf.mediaislam.core.network.exception.toSimpleCopyWriting
 import co.id.fadlurahmanf.mediaislam.core.state.AladhanNetworkState
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.core.ui.bottomsheet.InfoBottomsheet
@@ -138,21 +139,26 @@ class MainActivity :
                 is EQuranNetworkState.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.layoutShimmerSurah.root.visibility = View.VISIBLE
-                    binding.tvError.visibility = View.GONE
+                    binding.layoutError.root.visibility = View.GONE
                     binding.rv.visibility = View.GONE
                 }
 
                 is EQuranNetworkState.ERROR -> {
+
                     binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
-//                    binding.tvError.text = it.exception.toProperMessage(this)
-                    binding.tvError.visibility = View.VISIBLE
+                    binding.layoutShimmerSurah.root.visibility = View.GONE
                     binding.rv.visibility = View.GONE
+
+                    val model = it.exception.toSimpleCopyWriting()
+                    binding.layoutError.tvTitle.text = model.title
+                    binding.layoutError.tvDesc.text = model.message
+                    binding.layoutError.root.visibility = View.VISIBLE
                     showFailedBebasBottomsheet(
                         exception = it.exception,
                         isCancelable = false,
                         callback = object : InfoBottomsheet.Callback {
-                            override fun onButtonClicked() {
+                            override fun onButtonClicked(infoId: String?) {
                                 dismissFailedBottomsheet()
                                 viewModel.getListSurah()
                             }
@@ -167,14 +173,12 @@ class MainActivity :
 
                     binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
-                    binding.tvError.visibility = View.GONE
+                    binding.layoutError.root.visibility = View.GONE
                     binding.rv.visibility = View.VISIBLE
                     binding.layoutShimmerSurah.root.visibility = View.GONE
                 }
 
-                else -> {
-
-                }
+                else -> {}
             }
         }
     }
