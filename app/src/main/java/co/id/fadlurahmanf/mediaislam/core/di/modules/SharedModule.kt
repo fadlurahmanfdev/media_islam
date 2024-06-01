@@ -2,6 +2,8 @@ package co.id.fadlurahmanf.mediaislam.core.di.modules
 
 import android.content.Context
 import co.id.fadlurahmanf.mediaislam.BaseApp
+import co.id.fadlurahmanf.mediaislam.core.domain.usecase.PermissionUseCase
+import co.id.fadlurahmanf.mediaislam.core.domain.usecase.PermissionUseCaseImpl
 import co.id.fadlurahmanf.mediaislam.core.network.api.AladhanAPI
 import co.id.fadlurahmanf.mediaislam.core.network.api.EQuranAPI
 import co.id.fadlurahmanf.mediaislam.main.data.datasources.AladhanDatasourceRepository
@@ -25,6 +27,11 @@ class SharedModule {
     @Provides
     fun provideCorePlatformRepository(): CorePlatformRepository {
         return CorePlatformRepositoryImpl()
+    }
+
+    @Provides
+    fun providePermissionUseCase(corePlatformRepository: CorePlatformRepository): PermissionUseCase {
+        return PermissionUseCaseImpl(corePlatformRepository)
     }
 
     @Provides

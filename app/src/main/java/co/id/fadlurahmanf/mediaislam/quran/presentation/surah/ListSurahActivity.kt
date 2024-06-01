@@ -85,7 +85,7 @@ class ListSurahActivity :
                         exception = it.exception,
                         isCancelable = false,
                         callback = object : InfoBottomsheet.Callback {
-                            override fun onButtonClicked() {
+                            override fun onButtonClicked(infoId: String?) {
                                 dismissFailedBottomsheet()
                                 viewModel.getListSurah()
                             }

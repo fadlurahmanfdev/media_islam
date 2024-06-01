@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.R
-import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticEvent
 import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticParam
 import co.id.fadlurahmanf.mediaislam.core.network.exception.toSimpleCopyWriting
 import co.id.fadlurahmanf.mediaislam.core.state.AladhanNetworkState
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
-import co.id.fadlurahmanf.mediaislam.core.ui.bottomsheet.InfoBottomsheet
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityMainBinding
 import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.ItemMainMenuModel
@@ -19,10 +17,9 @@ import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.DetailSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.ListSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.adapter.ListSurahAdapter
-import com.google.firebase.analytics.FirebaseAnalytics
-import javax.inject.Inject
 import com.google.firebase.analytics.FirebaseAnalytics.Event
 import com.google.firebase.analytics.FirebaseAnalytics.Param
+import javax.inject.Inject
 
 class MainActivity :
     BaseMainActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -154,16 +151,9 @@ class MainActivity :
                     binding.layoutError.tvTitle.text = model.title
                     binding.layoutError.tvDesc.text = model.message
                     binding.layoutError.root.visibility = View.VISIBLE
-                    showFailedBebasBottomsheet(
-                        exception = it.exception,
-                        isCancelable = false,
-                        callback = object : InfoBottomsheet.Callback {
-                            override fun onButtonClicked(infoId: String?) {
-                                dismissFailedBottomsheet()
-                                viewModel.getListSurah()
-                            }
-                        }
-                    )
+                    binding.layoutError.btnRetry.setOnClickListener {
+                        viewModel.getListSurah()
+                    }
                 }
 
                 is EQuranNetworkState.SUCCESS -> {

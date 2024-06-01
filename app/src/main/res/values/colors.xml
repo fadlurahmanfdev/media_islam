@@ -11,6 +11,7 @@
     <color name="yellow">#FFD550</color>
     <color name="yellow_v2">#FFA31D</color>
     <color name="red">#BD0000</color>
+    <color name="darker_red">#A50000</color>
 
     <color name="primary">#FF019267</color>
     <color name="darker_primary">#00835C</color>
