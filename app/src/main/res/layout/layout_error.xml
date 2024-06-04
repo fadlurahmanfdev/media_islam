@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/solid_light_orange_stroke_orange_corner_5"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="20dp">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/il_sad" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/Font.Bold.14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:gravity="center"
+            android:text="Title"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_desc"
+            style="@style/Font.Regular.14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Desc"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <co.id.fadlurahmanf.mediaislam.core.ui.button.ButtonCustomFilled
+        android:id="@+id/btn_retry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:buttonBackground="@drawable/rounded_red_button_background"
+        app:text="Ulangi" />
+
+
+</LinearLayout>

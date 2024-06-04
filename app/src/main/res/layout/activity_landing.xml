@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="20dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    tools:context=".main.presentation.landing.LandingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/il_map" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/Font.Bold.20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Yuk, Aktifin Lokasi" />
+
+    <TextView
+        style="@style/Font.Regular.20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Kami perlu izin lokasi buat kasih waktu salat yang pas. Aktifkan lokasi kamu, yuk!" />
+
+    <co.id.fadlurahmanf.mediaislam.core.ui.button.ButtonCustomFilled
+        android:layout_width="match_parent"
+        android:id="@+id/btn_activate_location"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="18dp"
+        app:text="Aktifkan" />
+
+
+</LinearLayout>

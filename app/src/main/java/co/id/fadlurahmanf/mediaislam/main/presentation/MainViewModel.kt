@@ -3,7 +3,6 @@ package co.id.fadlurahmanf.mediaislam.main.presentation
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import co.id.fadlurahmanf.mediaislam.core.network.exception.fromAladhanException
 import co.id.fadlurahmanf.mediaislam.core.network.exception.fromEQuranException
 import co.id.fadlurahmanf.mediaislam.core.ui.BaseViewModel
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
@@ -49,29 +48,6 @@ class MainViewModel @Inject constructor(
         if (_prayersTimeLive.value == AladhanNetworkState.IDLE) {
             _prayersTimeLive.value = AladhanNetworkState.LOADING
         }
-        prayerTimeUseCase.getAddress(
-            context,
-            onSuccessGetAddress = { address ->
-                baseDisposable.add(prayerTimeUseCase.getCurrentPrayerTime(
-                    context,
-                    address = address
-                )
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        { model ->
-                            _prayersTimeLive.value = AladhanNetworkState.SUCCESS(model)
-                        },
-                        { throwable ->
-                            _prayersTimeLive.value =
-                                AladhanNetworkState.ERROR(throwable.fromAladhanException())
-                        },
-                        {}
-                    ))
-            },
-            onError = { exception ->
-
-            },
-        )
+        prayerTimeUseCase.getAddress()
     }
 }

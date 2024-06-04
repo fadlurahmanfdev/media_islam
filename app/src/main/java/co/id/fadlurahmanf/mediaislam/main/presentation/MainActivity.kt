@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.R
-import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticEvent
 import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticParam
+import co.id.fadlurahmanf.mediaislam.core.network.exception.toSimpleCopyWriting
 import co.id.fadlurahmanf.mediaislam.core.state.AladhanNetworkState
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
-import co.id.fadlurahmanf.mediaislam.core.ui.bottomsheet.InfoBottomsheet
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityMainBinding
 import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.ItemMainMenuModel
@@ -18,10 +17,9 @@ import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.DetailSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.ListSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.adapter.ListSurahAdapter
-import com.google.firebase.analytics.FirebaseAnalytics
-import javax.inject.Inject
 import com.google.firebase.analytics.FirebaseAnalytics.Event
 import com.google.firebase.analytics.FirebaseAnalytics.Param
+import javax.inject.Inject
 
 class MainActivity :
     BaseMainActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -29,11 +27,11 @@ class MainActivity :
     @Inject
     lateinit var viewModel: MainViewModel
 
-    override fun onBaseQuranInjectActivity() {
+    override fun onBaseMainInjectActivity() {
         component.inject(this)
     }
 
-    override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
+    override fun onBaseMainCreate(savedInstanceState: Bundle?) {
         firebaseAnalytics.logEvent(Event.SCREEN_VIEW, Bundle().apply {
             putString(Param.VALUE, MainActivity::class.java.simpleName)
         })
@@ -138,26 +136,24 @@ class MainActivity :
                 is EQuranNetworkState.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.layoutShimmerSurah.root.visibility = View.VISIBLE
-                    binding.tvError.visibility = View.GONE
+                    binding.layoutError.root.visibility = View.GONE
                     binding.rv.visibility = View.GONE
                 }
 
                 is EQuranNetworkState.ERROR -> {
+
                     binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
-//                    binding.tvError.text = it.exception.toProperMessage(this)
-                    binding.tvError.visibility = View.VISIBLE
+                    binding.layoutShimmerSurah.root.visibility = View.GONE
                     binding.rv.visibility = View.GONE
-                    showFailedBebasBottomsheet(
-                        exception = it.exception,
-                        isCancelable = false,
-                        callback = object : InfoBottomsheet.Callback {
-                            override fun onButtonClicked() {
-                                dismissFailedBottomsheet()
-                                viewModel.getListSurah()
-                            }
-                        }
-                    )
+
+                    val model = it.exception.toSimpleCopyWriting()
+                    binding.layoutError.tvTitle.text = model.title
+                    binding.layoutError.tvDesc.text = model.message
+                    binding.layoutError.root.visibility = View.VISIBLE
+                    binding.layoutError.btnRetry.setOnClickListener {
+                        viewModel.getListSurah()
+                    }
                 }
 
                 is EQuranNetworkState.SUCCESS -> {
@@ -167,14 +163,12 @@ class MainActivity :
 
                     binding.swipeRefresh.isRefreshing = false
                     binding.progressBar.visibility = View.GONE
-                    binding.tvError.visibility = View.GONE
+                    binding.layoutError.root.visibility = View.GONE
                     binding.rv.visibility = View.VISIBLE
                     binding.layoutShimmerSurah.root.visibility = View.GONE
                 }
 
-                else -> {
-
-                }
+                else -> {}
             }
         }
     }

@@ -131,7 +131,7 @@ dependencies {
     implementation("com.google.dagger:dagger:2.51.1")
     kapt("com.google.dagger:dagger-compiler:2.51.1")
 
-    // asynchronus
+    // reactive rxjava3
     implementation("io.reactivex.rxjava3:rxjava:3.1.8")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
@@ -149,13 +149,19 @@ dependencies {
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-config")
 
     // ui related
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     // shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
-
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     // our library
-    implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.4")
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.3")
+    implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.6")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.8")
+
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-rxjava3:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 }

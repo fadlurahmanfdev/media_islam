@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_v2"
-    tools:context=".quran.presentation.surah.AudioActivity">
+    tools:context=".quran.presentation.audio.AudioActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -22,7 +22,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="200dp">
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmerNowPlayingVideo"
@@ -58,12 +59,10 @@
                     android:elevation="20dp"
                     android:orientation="vertical"
                     android:paddingHorizontal="20dp"
-                    android:paddingVertical="18dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar">
+                    android:paddingVertical="18dp">
 
                     <TextView
+                        android:id="@+id/tv_now_playing_ar"
                         style="@style/Font.SemiBold.16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -71,6 +70,7 @@
                         android:textColor="@color/white" />
 
                     <TextView
+                        android:id="@+id/tv_now_playing_latin"
                         style="@style/Font.SemiBold.16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -78,29 +78,51 @@
                         android:textColor="@color/white" />
 
                     <TextView
+                        android:id="@+id/tv_now_playing_indonesia"
                         style="@style/Font.Regular.16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pertolongan"
                         android:textColor="@color/white" />
+                </LinearLayout>
 
-                    <TextView
-                        style="@style/Font.Bold.16"
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/solid_white_corner_15"
+                    android:elevation="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="18dp"
+                    android:visibility="visible"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Abdullah-Al-Juhany"
-                        android:textColor="@color/white" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_now_playing_qari_name"
+                            style="@style/Font.Regular.14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Misyari Rasyid Al-'Afasi" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_now_playing_qari_image"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/rounded_primary_background"
+                        android:clipToOutline="true" />
                 </LinearLayout>
             </LinearLayout>
-
-            <TextView
-                style="@style/Font.Bold.20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
-                android:text="Pilihan Qari"
-                android:textColor="@color/white" />
 
             <LinearLayout
                 android:id="@+id/ll_audio_controller"
@@ -113,10 +135,10 @@
                     android:id="@+id/seekbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="30dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
-                    android:progress="50"
+                    android:progress="0"
                     android:progressBackgroundTint="@color/white"
                     android:progressTint="@color/white" />
 
@@ -167,6 +189,7 @@
                         app:tint="@color/white" />
 
                     <ImageView
+                        android:id="@+id/iv_play_pause_audio"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/round_play_circle_24"
@@ -185,6 +208,29 @@
                         android:src="@drawable/round_fast_forward_24"
                         app:tint="@color/white" />
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_list_audio_qari"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Font.Bold.20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Pilihan Qari"
+                    android:textColor="@color/white" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_list_qari"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_audio_qari_model" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

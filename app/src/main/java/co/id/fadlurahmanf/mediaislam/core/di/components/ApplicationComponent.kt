@@ -6,6 +6,7 @@ import co.id.fadlurahmanf.mediaislam.main.MainModule
 import co.id.fadlurahmanf.mediaislam.main.MainSubComponent
 import co.id.fadlurahmanf.mediaislam.quran.QuranModule
 import co.id.fadlurahmanf.mediaislam.quran.QuranSubComponent
+import co.id.fadlurahmanf.mediaislam.storage.StorageModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
+        StorageModule::class,
         NetworkModule::class,
         QuranModule::class,
         MainModule::class,
