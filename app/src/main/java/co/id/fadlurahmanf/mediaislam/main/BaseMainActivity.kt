@@ -18,16 +18,16 @@ abstract class BaseMainActivity<VB : ViewBinding>(inflater: InflateActivity<VB>)
         component =
             (applicationContext as BaseApp).applicationComponent.mainSubComponentFactory()
                 .create()
-        onBaseQuranInjectActivity()
+        onBaseMainInjectActivity()
     }
 
-    abstract fun onBaseQuranInjectActivity()
+    abstract fun onBaseMainInjectActivity()
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
-        onBaseQuranCreate(savedInstanceState)
+        onBaseMainCreate(savedInstanceState)
     }
 
-    abstract fun onBaseQuranCreate(savedInstanceState: Bundle?)
+    abstract fun onBaseMainCreate(savedInstanceState: Bundle?)
 
     private var isBottomsheetOpen: Boolean = false
     private var infoBottomsheet: InfoBottomsheet? = null

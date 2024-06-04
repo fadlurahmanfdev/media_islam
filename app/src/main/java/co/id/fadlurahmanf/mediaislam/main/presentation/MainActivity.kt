@@ -27,11 +27,11 @@ class MainActivity :
     @Inject
     lateinit var viewModel: MainViewModel
 
-    override fun onBaseQuranInjectActivity() {
+    override fun onBaseMainInjectActivity() {
         component.inject(this)
     }
 
-    override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
+    override fun onBaseMainCreate(savedInstanceState: Bundle?) {
         firebaseAnalytics.logEvent(Event.SCREEN_VIEW, Bundle().apply {
             putString(Param.VALUE, MainActivity::class.java.simpleName)
         })

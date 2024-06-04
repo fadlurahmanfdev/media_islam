@@ -4,51 +4,21 @@ import android.content.Context
 import co.id.fadlurahmanf.mediaislam.core.network.exception.AladhanException
 import co.id.fadlurahmanf.mediaislam.main.data.datasources.AladhanDatasourceRepository
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.PrayersTimeModel
-import co.id.fadlurahmanfdev.kotlin_core_platform.data.exception.CorePlatformException
 import co.id.fadlurahmanfdev.kotlin_core_platform.data.model.AddressModel
-import co.id.fadlurahmanfdev.kotlin_core_platform.data.repository.CorePlatformRepository
+import co.id.fadlurahmanfdev.kotlin_core_platform.data.repository.CorePlatformLocationRepository
 import io.reactivex.rxjava3.core.Observable
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 class PrayerTimeUseCaseImpl(
-    val aladhanDatasourceRepository: AladhanDatasourceRepository,
-    val corePlatformRepository: CorePlatformRepository
+    private val aladhanDatasourceRepository: AladhanDatasourceRepository,
+    private val corePlatformLocationRepository: CorePlatformLocationRepository
 ) :
     PrayerTimeUseCase {
 
-    override fun getAddress(
-        context: Context,
-        onSuccessGetAddress: (AddressModel) -> Unit,
-        onError: (CorePlatformException) -> Unit
-    ) {
-        val isEnabled =
-            corePlatformRepository.isLocationPermissionEnabled(context) && corePlatformRepository.isLocationEnabled(
-                context
-            )
-        if (!isEnabled) {
-            onError(
-                CorePlatformException(
-                    code = "PERMISSION_NOT_GRANTED",
-                    message = "Permission & Service is not granted"
-                )
-            )
-            return
-        }
-        corePlatformRepository.requestAndForgetLocation(
-            context,
-            onSuccess = { coordinate ->
-                corePlatformRepository.getAddress(
-                    context,
-                    latitude = coordinate.latitude,
-                    longitude = coordinate.longitude,
-                    onSuccess = onSuccessGetAddress,
-                    onError = onError,
-                )
-            },
-            onError = onError,
-        )
+    override fun getAddress(): Observable<AddressModel> {
+        return corePlatformLocationRepository.getCurrentAddress()
     }
 
     override fun getCurrentPrayerTime(

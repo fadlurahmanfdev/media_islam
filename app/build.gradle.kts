@@ -157,7 +157,7 @@ dependencies {
     implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     // our library
-    implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.4")
+    implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.6")
     implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.8")
 
     val room_version = "2.6.1"

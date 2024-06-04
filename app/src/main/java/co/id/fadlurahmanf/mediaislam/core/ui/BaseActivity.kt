@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
 import androidx.viewbinding.ViewBinding
 import co.id.fadlurahmanf.mediaislam.BaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -44,7 +46,7 @@ abstract class BaseActivity<VB : ViewBinding>(
     open fun setOnApplyWindowInsetsListener(view: View) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(0, 0, 0, systemBars.bottom)
+            v.setPadding(view.paddingLeft, 0, view.paddingRight, systemBars.bottom)
             insets
         }
     }
