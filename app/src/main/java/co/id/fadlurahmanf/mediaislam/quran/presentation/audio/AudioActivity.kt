@@ -20,7 +20,6 @@ import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.manager.FeatureM
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.manager.FeatureMusicPlayerReceiverManager
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.others.utilities.MusicPlayerUtilities
 import com.bumptech.glide.Glide
-import java.util.Calendar
 import javax.inject.Inject
 
 class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBinding::inflate),
@@ -63,12 +62,10 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         binding.ivPlayPauseAudio.setOnClickListener {
             when (featureMusicPlayerReceiverManager.state) {
                 MusicPlayerState.PLAYING -> {
-                    println("MASUK_ CLICK PAUSE 1: ${Calendar.getInstance().time}")
                     FeatureMusicPlayerManager.pause(this, AudioQuranService::class.java)
                 }
 
                 MusicPlayerState.PAUSED -> {
-                    println("MASUK_ CLICK PLAY 1: ${Calendar.getInstance().time}")
                     FeatureMusicPlayerManager.resume(this, AudioQuranService::class.java)
                 }
 
@@ -185,6 +182,12 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
     }
 
     override fun onSendInfo(position: Long, duration: Long, state: MusicPlayerState) {
+        binding.seekbar.max = duration.toInt()
+        binding.seekbar.progress = position.toInt()
+
+        binding.tvPosition.text = MusicPlayerUtilities.formatToReadableTime(position)
+        binding.tvDuration.text = MusicPlayerUtilities.formatToReadableTime(duration)
+
         when (state) {
             MusicPlayerState.PLAYING, MusicPlayerState.RESUME -> {
                 binding.ivPlayPauseAudio.setImageDrawable(
@@ -215,12 +218,6 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
 
             else -> {}
         }
-
-        binding.seekbar.max = duration.toInt()
-        binding.seekbar.progress = position.toInt()
-
-        binding.tvPosition.text = MusicPlayerUtilities.formatToReadableTime(position)
-        binding.tvDuration.text = MusicPlayerUtilities.formatToReadableTime(duration)
     }
 
 }

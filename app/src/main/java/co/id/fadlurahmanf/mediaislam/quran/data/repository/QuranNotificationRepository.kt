@@ -6,7 +6,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.data.state.AudioNotificationState
 
 interface QuranNotificationRepository {
-    fun createAudioQuranChannel()
+    fun createMediaNotificationChannel()
     fun getMediaNotification(
         context: Context,
         notificationId: Int,

@@ -13,7 +13,7 @@ class QuranUseCaseImpl(
     private val quranNotificationRepository: QuranNotificationRepository
 ) : QuranUseCase {
     override fun createAudioMediaChannel() {
-        return quranNotificationRepository.createAudioQuranChannel()
+        return quranNotificationRepository.createMediaNotificationChannel()
     }
 
     override fun getListSurah(): Observable<List<SurahModel>> {

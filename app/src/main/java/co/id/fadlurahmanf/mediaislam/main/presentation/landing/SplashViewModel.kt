@@ -32,20 +32,4 @@ class SplashViewModel @Inject constructor(
             ))
     }
 
-    fun setNotFirstTimeInstaller() {
-        _canGoToMainPageLive.value = AppState.LOADING
-        baseDisposable.add(landingUseCase.saveIsNotFirstInstall()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                {
-                    _canGoToMainPageLive.value = AppState.SUCCESS(data = true)
-                },
-                {
-                    _canGoToMainPageLive.value = AppState.ERROR
-                },
-                {}
-            ))
-    }
-
 }
