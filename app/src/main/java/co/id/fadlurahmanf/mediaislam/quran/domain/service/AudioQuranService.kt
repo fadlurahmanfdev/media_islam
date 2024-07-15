@@ -11,10 +11,11 @@ import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.service.FeatureM
 class AudioQuranService : FeatureMusicPlayerService() {
     private lateinit var quranNotificationRepository: QuranNotificationRepository
     override fun onCreate() {
-        super.onCreate()
         quranNotificationRepository = QuranNotificationRepositoryImpl(
             this
         )
+        quranNotificationRepository.createAudioQuranChannel()
+        super.onCreate()
     }
 
     override fun onIdleAudioNotification(

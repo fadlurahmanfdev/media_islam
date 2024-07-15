@@ -12,9 +12,14 @@ import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.manager.FeatureM
 
 class QuranNotificationRepositoryImpl(context: Context) : BaseMediaNotificationService(context),
     QuranNotificationRepository {
-    override fun createMediaNotificationChannel() {
+
+    companion object {
+        const val QURAN_AUDIO_CHANNEL_ID = "QURAN_AUDIO"
+    }
+
+    override fun createAudioQuranChannel() {
         createMediaChannel(
-            channelId = "QURAN_AUDIO",
+            channelId = QURAN_AUDIO_CHANNEL_ID,
             channelName = "Audio Quran",
             channelDescription = "Audio Quran",
         )
@@ -99,7 +104,7 @@ class QuranNotificationRepositoryImpl(context: Context) : BaseMediaNotificationS
         }
         return getMediaNotification(
             smallIcon = R.drawable.il_headphone,
-            channelId = "MEDIA",
+            channelId = QURAN_AUDIO_CHANNEL_ID,
             currentAudioState = currentAudioState,
             artist = artist,
             title = title,

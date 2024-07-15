@@ -54,9 +54,10 @@
                     android:elevation="5dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:paddingVertical="20dp"
                     android:paddingStart="20dp"
                     android:paddingEnd="10dp"
-                    android:paddingVertical="20dp">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -75,8 +76,8 @@
                             style="@style/Font.Regular.14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:text="Dengarkan bacaan Al-Quran dari tokoh agama terkenal." />
+                            android:text="Dengarkan bacaan Al-Quran dari tokoh agama terkenal."
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                     <ImageView
@@ -97,9 +98,10 @@
                     android:elevation="5dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:paddingVertical="20dp"
                     android:paddingStart="20dp"
                     android:paddingEnd="10dp"
-                    android:paddingVertical="20dp">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -118,8 +120,8 @@
                             style="@style/Font.Regular.14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:text="Baca tafsir yang menjelaskan ayat demi ayat dengan jelas dan mendalam." />
+                            android:text="Baca tafsir yang menjelaskan ayat demi ayat dengan jelas dan mendalam."
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                     <ImageView
@@ -137,6 +139,7 @@
 
                     <TextView
                         style="@style/Font.Bold.20"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ayat-ayat" />
