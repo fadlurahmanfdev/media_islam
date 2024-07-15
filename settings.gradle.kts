@@ -7,14 +7,6 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/fadlurahmanfdev/kotlin_core_platform")
-            credentials {
-                username = "fadlurahmanfdev"
-                password = "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"
-            }
-        }
         mavenCentral()
         gradlePluginPortal()
     }
