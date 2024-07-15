@@ -13,4 +13,8 @@ class LandingUseCaseImpl(
             !firstInstall
         }
     }
+
+    override fun saveIsNotFirstInstall(): Observable<Unit> {
+        return appLocalDatasource.saveIsNotFirstInstall()
+    }
 }
