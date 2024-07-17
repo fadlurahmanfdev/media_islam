@@ -4,4 +4,6 @@ import io.reactivex.rxjava3.core.Observable
 
 interface AppLocalDatasource {
     fun getIsFirstInstall(): Observable<Boolean>
+
+    fun saveIsNotFirstInstall(): Observable<Unit>
 }

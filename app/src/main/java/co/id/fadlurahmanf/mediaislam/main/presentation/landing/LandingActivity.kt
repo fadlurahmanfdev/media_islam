@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.registerForActivityResult
+import co.id.fadlurahmanf.mediaislam.core.state.AppState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityLandingBinding
 import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
 import co.id.fadlurahmanf.mediaislam.main.presentation.MainActivity
@@ -23,7 +24,7 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
 
     private val launcherLocationService =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-            goToMainPage()
+            viewModel.setNotFirstTimeInstaller()
         }
 
     private fun goToMainPage() {
@@ -42,8 +43,19 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
 
     override fun onBaseMainCreate(savedInstanceState: Bundle?) {
         setOnApplyWindowInsetsListener(binding.main)
-
         corePlatformLocationManager = CorePlatformLocationManager(this)
+
+        viewModel.canGoToMainPageLive.observe(this){ state ->
+            when(state){
+                is AppState.SUCCESS -> {
+                    goToMainPage()
+                }
+
+                else -> {
+
+                }
+            }
+        }
 
         binding.btnActivateLocation.setOnClickListener {
             launcherPermission.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -55,7 +67,7 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
     }
 
     override fun onLocationServiceEnabled(enabled: Boolean) {
-        goToMainPage()
+        viewModel.setNotFirstTimeInstaller()
     }
 
     override fun onShouldShowPromptServiceDialog(intentSenderRequest: IntentSenderRequest) {
