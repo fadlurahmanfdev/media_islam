@@ -49,14 +49,14 @@ class MainActivity :
         initAction()
 
         viewModel.getPrayerTime(this)
-        viewModel.getListSurah()
+        viewModel.getFirst10Surah()
         viewModel.getTop3Article()
     }
 
     private fun initAction() {
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.getPrayerTime(this)
-            viewModel.getListSurah()
+            viewModel.getFirst10Surah()
         }
     }
 
@@ -167,7 +167,7 @@ class MainActivity :
             }
         }
 
-        viewModel.listSurah.observe(this) {
+        viewModel.listSurahLive.observe(this) {
             when (it) {
                 is EQuranNetworkState.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -188,7 +188,7 @@ class MainActivity :
                     binding.layoutError.tvDesc.text = model.message
                     binding.layoutError.root.visibility = View.VISIBLE
                     binding.layoutError.btnRetry.setOnClickListener {
-                        viewModel.getListSurah()
+                        viewModel.getFirst10Surah()
                     }
                 }
 

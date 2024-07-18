@@ -12,6 +12,6 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="20dp"
         android:paddingVertical="20dp"
-        tools:listitem="@layout/item_article_layout" />
+        tools:listitem="@layout/item_article_horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

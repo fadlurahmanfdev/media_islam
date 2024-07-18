@@ -24,9 +24,9 @@ class MainViewModel @Inject constructor(
     private val articleUseCase: ArticleUseCase,
 ) : BaseViewModel() {
     private val _listSurahLive = MutableLiveData<EQuranNetworkState<List<SurahModel>>>()
-    val listSurah: LiveData<EQuranNetworkState<List<SurahModel>>> = _listSurahLive
+    val listSurahLive: LiveData<EQuranNetworkState<List<SurahModel>>> = _listSurahLive
 
-    fun getListSurah() {
+    fun getFirst10Surah() {
         _listSurahLive.value = EQuranNetworkState.LOADING
         baseDisposable.add(quranUseCase.getListSurah()
             .subscribeOn(Schedulers.io())
@@ -34,7 +34,7 @@ class MainViewModel @Inject constructor(
             .subscribe(
                 {
                     _listSurahLive.value = EQuranNetworkState.SUCCESS(
-                        data = it
+                        data = it.take(10)
                     )
                 },
                 {
