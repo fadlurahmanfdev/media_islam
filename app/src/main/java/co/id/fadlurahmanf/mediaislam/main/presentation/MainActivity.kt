@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.R
+import co.id.fadlurahmanf.mediaislam.article.presentation.ArticleListActivity
+import co.id.fadlurahmanf.mediaislam.article.presentation.adapter.ArticleAdapter
 import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticParam
+import co.id.fadlurahmanf.mediaislam.core.network.dto.response.article.ArticleItemResponse
 import co.id.fadlurahmanf.mediaislam.core.network.exception.toSimpleCopyWriting
 import co.id.fadlurahmanf.mediaislam.core.state.AladhanNetworkState
+import co.id.fadlurahmanf.mediaislam.core.state.ArticleNetworkState
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityMainBinding
 import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
@@ -40,11 +44,13 @@ class MainActivity :
         initAppBar()
         initMenuAdapter()
         initSurahAdapter()
+        initArticleAdapter()
         initObserver()
         initAction()
 
         viewModel.getPrayerTime(this)
         viewModel.getListSurah()
+        viewModel.getTop3Article()
     }
 
     private fun initAction() {
@@ -84,6 +90,11 @@ class MainActivity :
                         val intent = Intent(this@MainActivity, ListSurahActivity::class.java)
                         startActivity(intent)
                     }
+
+                    "ARTICLE" -> {
+                        val intent = Intent(this@MainActivity, ArticleListActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             }
         })
@@ -111,6 +122,26 @@ class MainActivity :
         })
         surahAdapter.setList(listSurah)
         binding.rv.adapter = surahAdapter
+    }
+
+    private lateinit var articleAdapter: ArticleAdapter
+    private var articles: ArrayList<ArticleItemResponse> = arrayListOf()
+    private fun initArticleAdapter() {
+        articleAdapter = ArticleAdapter()
+        articleAdapter.setCallBack(object : ArticleAdapter.CallBack {
+            override fun onClicked(article: ArticleItemResponse) {
+//                firebaseAnalytics.logEvent(Event.SELECT_ITEM, Bundle().apply {
+//                    putInt(AnalyticParam.SURAH_NO, surah.surahNo)
+//                    putString(AnalyticParam.SURAH_TITLE, surah.latin)
+//                })
+//                val intent = Intent(this@MainActivity, DetailSurahActivity::class.java)
+//                intent.putExtra(DetailSurahActivity.SURAH_NAME, surah.latin)
+//                intent.putExtra(DetailSurahActivity.SURAH_NO, surah.surahNo)
+//                startActivity(intent)
+            }
+        })
+        articleAdapter.setList(articles)
+        binding.rvTop3Articl.adapter = articleAdapter
     }
 
     private fun initObserver() {
@@ -171,6 +202,34 @@ class MainActivity :
                     binding.layoutError.root.visibility = View.GONE
                     binding.rv.visibility = View.VISIBLE
                     binding.layoutShimmerSurah.root.visibility = View.GONE
+                }
+
+                else -> {}
+            }
+        }
+
+        viewModel.articleNetworkLive.observe(this) {
+            when (it) {
+                is ArticleNetworkState.LOADING -> {
+                    binding.layoutShimmerArticle.root.visibility = View.VISIBLE
+//                    binding.layoutError.root.visibility = View.GONE
+                    binding.rv.visibility = View.GONE
+                }
+
+                is ArticleNetworkState.ERROR -> {
+
+                }
+
+                is ArticleNetworkState.SUCCESS -> {
+                    articles.clear()
+                    articles.addAll(it.data)
+                    articleAdapter.setList(articles)
+
+//                    binding.swipeRefresh.isRefreshing = false
+//                    binding.progressBar.visibility = View.GONE
+//                    binding.layoutError.root.visibility = View.GONE
+                    binding.rvTop3Articl.visibility = View.VISIBLE
+                    binding.layoutShimmerArticle.root.visibility = View.GONE
                 }
 
                 else -> {}

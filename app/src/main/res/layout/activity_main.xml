@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".quran.presentation.surah.ListSurahActivity">
 
     <include
@@ -46,8 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
                     android:background="@drawable/il_background_mosque"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="18dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_hijri_date"
@@ -144,6 +144,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="invisible" />
+
+                    <TextView
+                        style="@style/Font.Bold.16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Artikel"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+                    <include
+                        android:id="@+id/layoutShimmerArticle"
+                        layout="@layout/layout_shimmer_rectangle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_top3_articl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        tools:itemCount="3"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_article_layout" />
+
+
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

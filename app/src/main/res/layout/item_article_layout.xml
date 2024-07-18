@@ -10,12 +10,12 @@
         android:layout_height="100dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/iv_article"
+        app:layout_constraintEnd_toStartOf="@id/iv_thumbnail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_article_category"
+            android:id="@+id/tv_category"
             style="@style/Font.SemiBold.14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:textColor="@color/primary" />
 
         <TextView
-            android:id="@+id/tv_article_title"
+            android:id="@+id/tv_title"
             style="@style/Font.Bold.20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/tv_article_date"
+            android:id="@+id/tv_date"
             style="@style/Font.Regular.12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,10 +43,11 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_article"
+        android:id="@+id/iv_thumbnail"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@color/black"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
         android:contentDescription="Image View Content Article"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
