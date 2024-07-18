@@ -67,6 +67,11 @@ class MainActivity :
             id = "SURAH",
             title = "Surat",
             icon = R.drawable.il_iqra,
+        ),
+        ItemMainMenuModel(
+            id = "ARTICLE",
+            title = "Artikel",
+            icon = R.drawable.il_article_news,
         )
     )
 
