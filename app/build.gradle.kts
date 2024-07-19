@@ -35,6 +35,7 @@ android {
 
         buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/api/\"")
         buildConfigField("String", "ALADHAN_BASE_URL", "\"http://api.aladhan.com/\"")
+        buildConfigField("String", "ARTIKEL_ISLAM_BASE_URL", "\"https://artikel-islam.netlify.app//\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

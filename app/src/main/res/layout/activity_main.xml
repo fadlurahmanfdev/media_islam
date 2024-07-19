@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".quran.presentation.surah.ListSurahActivity">
 
     <include
@@ -46,8 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
                     android:background="@drawable/il_background_mosque"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="18dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_hijri_date"
@@ -110,6 +110,7 @@
                         android:layout_marginTop="5dp"
                         android:nestedScrollingEnabled="false"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        tools:itemCount="1"
                         tools:listitem="@layout/item_main_menu" />
 
                     <TextView
@@ -129,21 +130,54 @@
                         android:layout_marginTop="5dp"
                         android:nestedScrollingEnabled="false"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
                         tools:listitem="@layout/item_surah" />
 
                     <include
                         android:id="@+id/layout_error"
                         layout="@layout/layout_error"
-                        android:layout_marginTop="20dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp" />
 
                     <include
                         android:id="@+id/layoutShimmerSurah"
-                        layout="@layout/layout_shimmer_list_surah"
+                        layout="@layout/layout_shimmer_rectangle_vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:visibility="invisible" />
+
+                    <TextView
+                        style="@style/Font.Bold.16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Artikel"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+                    <include
+                        android:id="@+id/layoutShimmerArticle"
+                        layout="@layout/layout_shimmer_rectangle_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:visibility="visible" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_top3_articl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_article_horizontal" />
+
+
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

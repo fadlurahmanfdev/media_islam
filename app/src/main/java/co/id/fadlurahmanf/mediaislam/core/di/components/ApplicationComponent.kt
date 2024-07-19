@@ -1,6 +1,8 @@
 package co.id.fadlurahmanf.mediaislam.core.di.components
 
 import android.content.Context
+import co.id.fadlurahmanf.mediaislam.article.ArticleModule
+import co.id.fadlurahmanf.mediaislam.article.ArticleSubComponent
 import co.id.fadlurahmanf.mediaislam.core.di.modules.NetworkModule
 import co.id.fadlurahmanf.mediaislam.main.MainModule
 import co.id.fadlurahmanf.mediaislam.main.MainSubComponent
@@ -18,6 +20,7 @@ import javax.inject.Singleton
         NetworkModule::class,
         QuranModule::class,
         MainModule::class,
+        ArticleModule::class,
     ]
 )
 interface ApplicationComponent {
@@ -28,4 +31,5 @@ interface ApplicationComponent {
 
     fun quranSubComponentFactory(): QuranSubComponent.Factory
     fun mainSubComponentFactory(): MainSubComponent.Factory
+    fun articleSubComponentFactory(): ArticleSubComponent.Factory
 }

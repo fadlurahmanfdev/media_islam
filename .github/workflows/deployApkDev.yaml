@@ -32,7 +32,8 @@ jobs:
         run: |
           ls
           export FIREBASE_TOKEN=$FIREBASE_CI_TOKEN
-          ./gradlew assembleDevRelease appDistributionUploadDevRelease
+#          ./gradlew assembleDevRelease appDistributionUploadDevRelease
+          ./gradlew bundleDevRelease appDistributionUploadDevRelease
 #      - name: Upload App to Firebase App Distribution
 #        env:
 #          GOOGLE_CREDENTIAL_FILE_CONTENT: ${{ secrets.GOOGLE_CREDENTIAL_FILE_CONTENT }}

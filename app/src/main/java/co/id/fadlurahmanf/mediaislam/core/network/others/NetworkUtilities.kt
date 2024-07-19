@@ -3,6 +3,7 @@ package co.id.fadlurahmanf.mediaislam.core.network.others
 import android.content.Context
 import co.id.fadlurahmanf.mediaislam.BuildConfig
 import co.id.fadlurahmanf.mediaislam.core.network.api.AladhanAPI
+import co.id.fadlurahmanf.mediaislam.core.network.api.ArtikeIslamAPI
 import co.id.fadlurahmanf.mediaislam.core.network.api.EQuranAPI
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -48,5 +49,14 @@ class NetworkUtilities {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AladhanAPI::class.java)
+    }
+
+    fun createArtikelIslamNetwork(okHttpClient: OkHttpClient): ArtikeIslamAPI {
+        return Retrofit.Builder().baseUrl(BuildConfig.ARTIKEL_ISLAM_BASE_URL)
+            .client(okHttpClient)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ArtikeIslamAPI::class.java)
     }
 }
