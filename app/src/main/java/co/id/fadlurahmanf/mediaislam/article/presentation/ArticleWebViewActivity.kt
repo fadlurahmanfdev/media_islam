@@ -27,7 +27,7 @@ class ArticleWebViewActivity :
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
-        setAppearanceLightStatusBar(false)
+        setAppearanceLightStatusBar(true)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
