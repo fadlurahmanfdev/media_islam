@@ -58,6 +58,11 @@ class MainActivity :
             viewModel.getPrayerTime(this)
             viewModel.getFirst10Surah()
         }
+
+        binding.llViewAll.setOnClickListener {
+            val intent = Intent(this@MainActivity, ListSurahActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initAppBar() {
@@ -145,6 +150,10 @@ class MainActivity :
     }
 
     private fun initObserver() {
+        viewModel.progressBarVisible.observe(this) { isVisble ->
+            binding.progressBar.visibility = if (isVisble) View.VISIBLE else View.GONE
+        }
+
         viewModel.prayersTimeLive.observe(this) { state ->
             when (state) {
                 is AladhanNetworkState.SUCCESS -> {
@@ -170,16 +179,13 @@ class MainActivity :
         viewModel.listSurahLive.observe(this) {
             when (it) {
                 is EQuranNetworkState.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
                     binding.layoutShimmerSurah.root.visibility = View.VISIBLE
                     binding.layoutError.root.visibility = View.GONE
                     binding.rv.visibility = View.GONE
                 }
 
                 is EQuranNetworkState.ERROR -> {
-
                     binding.swipeRefresh.isRefreshing = false
-                    binding.progressBar.visibility = View.GONE
                     binding.layoutShimmerSurah.root.visibility = View.GONE
                     binding.rv.visibility = View.GONE
 
@@ -198,7 +204,6 @@ class MainActivity :
                     surahAdapter.setList(listSurah)
 
                     binding.swipeRefresh.isRefreshing = false
-                    binding.progressBar.visibility = View.GONE
                     binding.layoutError.root.visibility = View.GONE
                     binding.rv.visibility = View.VISIBLE
                     binding.layoutShimmerSurah.root.visibility = View.GONE
@@ -225,9 +230,6 @@ class MainActivity :
                     articles.addAll(it.data)
                     articleAdapter.setList(articles)
 
-//                    binding.swipeRefresh.isRefreshing = false
-//                    binding.progressBar.visibility = View.GONE
-//                    binding.layoutError.root.visibility = View.GONE
                     binding.rvTop3Articl.visibility = View.VISIBLE
                     binding.layoutShimmerArticle.root.visibility = View.GONE
                 }
