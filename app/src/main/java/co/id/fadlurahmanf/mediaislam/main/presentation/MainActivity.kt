@@ -6,7 +6,9 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.article.presentation.ArticleListActivity
+import co.id.fadlurahmanf.mediaislam.article.presentation.ArticleWebViewActivity
 import co.id.fadlurahmanf.mediaislam.article.presentation.adapter.ArticleAdapter
+import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticEvent
 import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticParam
 import co.id.fadlurahmanf.mediaislam.core.network.dto.response.article.ArticleItemResponse
 import co.id.fadlurahmanf.mediaislam.core.network.exception.toSimpleCopyWriting
@@ -59,7 +61,18 @@ class MainActivity :
             viewModel.getFirst10Surah()
         }
 
-        binding.llViewAll.setOnClickListener {
+        binding.llViewAllSurah.setOnClickListener {
+            firebaseAnalytics.logEvent(AnalyticEvent.VIEW_ALL, Bundle().apply {
+                putString(AnalyticParam.MENU, "surah")
+            })
+            val intent = Intent(this@MainActivity, ListSurahActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.llViewAllArticle.setOnClickListener {
+            firebaseAnalytics.logEvent(AnalyticEvent.VIEW_ALL, Bundle().apply {
+                putString(AnalyticParam.MENU, "article")
+            })
             val intent = Intent(this@MainActivity, ListSurahActivity::class.java)
             startActivity(intent)
         }
@@ -92,11 +105,19 @@ class MainActivity :
             override fun onClicked(menu: ItemMainMenuModel) {
                 when (menu.id) {
                     "SURAH" -> {
+                        firebaseAnalytics.logEvent(AnalyticEvent.SELECT_MENU, Bundle().apply {
+                            putString(AnalyticParam.MENU, "surah")
+                            putString(AnalyticParam.FROM, "main_menu")
+                        })
                         val intent = Intent(this@MainActivity, ListSurahActivity::class.java)
                         startActivity(intent)
                     }
 
                     "ARTICLE" -> {
+                        firebaseAnalytics.logEvent(AnalyticEvent.SELECT_MENU, Bundle().apply {
+                            putString(AnalyticParam.MENU, "article")
+                            putString(AnalyticParam.FROM, "main_menu")
+                        })
                         val intent = Intent(this@MainActivity, ArticleListActivity::class.java)
                         startActivity(intent)
                     }
@@ -139,10 +160,9 @@ class MainActivity :
 //                    putInt(AnalyticParam.SURAH_NO, surah.surahNo)
 //                    putString(AnalyticParam.SURAH_TITLE, surah.latin)
 //                })
-//                val intent = Intent(this@MainActivity, DetailSurahActivity::class.java)
-//                intent.putExtra(DetailSurahActivity.SURAH_NAME, surah.latin)
-//                intent.putExtra(DetailSurahActivity.SURAH_NO, surah.surahNo)
-//                startActivity(intent)
+                val intent = Intent(this@MainActivity, ArticleWebViewActivity::class.java)
+                intent.putExtra(ArticleWebViewActivity.URL, article.url)
+                startActivity(intent)
             }
         })
         articleAdapter.setList(articles)
