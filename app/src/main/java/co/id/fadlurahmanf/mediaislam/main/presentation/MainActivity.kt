@@ -59,6 +59,7 @@ class MainActivity :
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.getPrayerTime(this)
             viewModel.getFirst10Surah()
+            viewModel.getTop3Article()
         }
 
         binding.llViewAllSurah.setOnClickListener {
