@@ -34,7 +34,6 @@ class ArticleFragment :
         binding.rv.adapter = pagingAdapter
 
         pagingAdapter.addLoadStateListener {
-            println("MASUK_ ${it}")
             if(it.refresh is LoadState.Loading){
                 binding.rv.visibility = View.GONE
                 binding.layoutLoading.root.visibility = View.VISIBLE

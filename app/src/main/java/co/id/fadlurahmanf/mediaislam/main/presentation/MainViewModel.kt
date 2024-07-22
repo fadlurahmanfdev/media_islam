@@ -1,6 +1,5 @@
 package co.id.fadlurahmanf.mediaislam.main.presentation
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import co.id.fadlurahmanf.mediaislam.article.domain.usecase.ArticleUseCase
@@ -60,11 +59,24 @@ class MainViewModel @Inject constructor(
         MutableLiveData<AladhanNetworkState<PrayersTimeModel>>(AladhanNetworkState.IDLE)
     val prayersTimeLive: LiveData<AladhanNetworkState<PrayersTimeModel>> = _prayersTimeLive
 
-    fun getPrayerTime(context: Context) {
+    fun getPrayerTime() {
         if (_prayersTimeLive.value == AladhanNetworkState.IDLE) {
             _prayersTimeLive.value = AladhanNetworkState.LOADING
         }
-        prayerTimeUseCase.getAddress()
+        baseDisposable.add(prayerTimeUseCase.getCurrentPrayerTimeByAddress()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _prayersTimeLive.value = AladhanNetworkState.SUCCESS(data = it)
+                },
+                {
+                    _prayersTimeLive.value = AladhanNetworkState.IDLE
+                },
+                {
+                    setProgressBar()
+                }
+            ))
     }
 
     private val _articleNetworkLive =
@@ -86,7 +98,9 @@ class MainViewModel @Inject constructor(
                 {
 //                    _articleNetworkLive.value = EQuranNetworkState.ERROR(it.fromEQuranException())
                 },
-                {}
+                {
+                    setProgressBar()
+                }
             ))
     }
 }

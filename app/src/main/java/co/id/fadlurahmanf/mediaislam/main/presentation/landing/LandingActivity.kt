@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
 import co.id.fadlurahmanf.mediaislam.core.state.AppState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityLandingBinding
 import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLandingBinding::inflate),
     CorePlatformLocationManager.RequestLocationServiceCallback {
-    lateinit var corePlatformLocationManager: CorePlatformLocationManager
+    private lateinit var corePlatformLocationManager: CorePlatformLocationManager
 
     @Inject
     lateinit var viewModel: SplashViewModel
