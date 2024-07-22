@@ -21,13 +21,16 @@ class ArticleWebViewActivity :
         const val URL = "URL"
     }
 
-    override fun onBaseQuranInjectActivity() {
-
-    }
+    override fun onBaseQuranInjectActivity() {}
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
         setAppearanceLightStatusBar(true)
+        setOnApplyWindowInsetsListener(binding.main)
+
+        binding.toolbar.ivLeading.setOnClickListener {
+            finish()
+        }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

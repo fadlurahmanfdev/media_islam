@@ -31,6 +31,7 @@ class ArticleAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.tv_title)
         val category: TextView = view.findViewById(R.id.tv_category)
+        val date: TextView = view.findViewById(R.id.tv_date)
         val thumbnail: ImageView = view.findViewById(R.id.iv_thumbnail)
 
         init {
@@ -56,6 +57,7 @@ class ArticleAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             mHolder.category.visibility = View.VISIBLE
         }
         mHolder.title.text = article.title
+        holder.date.text = article.date
         Glide.with(mHolder.thumbnail).load(article.thumbnail ?: "-").into(mHolder.thumbnail)
     }
 

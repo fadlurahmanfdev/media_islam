@@ -6,16 +6,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import co.id.fadlurahmanf.mediaislam.R
+import co.id.fadlurahmanf.mediaislam.article.BaseArticleActivity
+import co.id.fadlurahmanf.mediaislam.databinding.ActivityArticleListBinding
 
-class ArticleListActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_article_list)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+class ArticleListActivity : BaseArticleActivity<ActivityArticleListBinding>(ActivityArticleListBinding::inflate) {
+    override fun onBaseQuranInjectActivity() {
+        component.inject(this)
     }
+
+    private val articleFragment = ArticleFragment()
+    override fun onBaseQuranCreate(savedInstanceState: Bundle?) {
+        setAppearanceLightStatusBar(false)
+        setOnApplyWindowInsetsListener(binding.main)
+
+        binding.toolbar.ivLeading.setOnClickListener {
+            finish()
+        }
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.fl, articleFragment).commit()
+    }
+
 }
