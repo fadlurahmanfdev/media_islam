@@ -8,10 +8,11 @@ import javax.inject.Inject
 
 class ArticleDatasourceRepositoryImpl @Inject constructor(
     val artikeIslamAPI: ArtikeIslamAPI
-):ArticleDatasourceRepository {
-    override fun getKsArticle(): Observable<BaseArtikelIslamResponse.Data<List<ArticleItemResponse>>> {
+) : ArticleDatasourceRepository {
+    override fun getIslamArticle(source: String, page: Int): Observable<BaseArtikelIslamResponse.Data<List<ArticleItemResponse>>> {
         return artikeIslamAPI.getArticle(
-            source = "ks"
+            source = source,
+            page = page
         ).doOnNext { element ->
 //            if (!element.isSuccessful) {
 //                throw EQuranException(

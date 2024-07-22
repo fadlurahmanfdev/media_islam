@@ -9,7 +9,7 @@ class ArticleUseCaseImpl @Inject constructor(
     private val articleDatasourceRepository: ArticleDatasourceRepository
 ) : ArticleUseCase {
     override fun getTop3Article(): Observable<List<ArticleItemResponse>> {
-        return articleDatasourceRepository.getKsArticle().map {
+        return articleDatasourceRepository.getIslamArticle(source = "ks", page = 1).map {
             if (it.content.size > 3) {
                 it.content.take(3)
             } else {
