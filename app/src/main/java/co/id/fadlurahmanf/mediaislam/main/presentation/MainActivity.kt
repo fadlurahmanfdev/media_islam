@@ -74,7 +74,7 @@ class MainActivity :
             firebaseAnalytics.logEvent(AnalyticEvent.VIEW_ALL, Bundle().apply {
                 putString(AnalyticParam.MENU, "article")
             })
-            val intent = Intent(this@MainActivity, ListSurahActivity::class.java)
+            val intent = Intent(this@MainActivity, ArticleListActivity::class.java)
             startActivity(intent)
         }
     }
@@ -96,7 +96,7 @@ class MainActivity :
         ItemMainMenuModel(
             id = "ARTICLE",
             title = "Artikel",
-            icon = R.drawable.il_article_news,
+            icon = R.drawable.il_books,
         )
     )
 

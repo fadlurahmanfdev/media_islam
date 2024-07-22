@@ -1,6 +1,7 @@
 package co.id.fadlurahmanf.mediaislam.article.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,6 +20,8 @@ class ArticleListActivity : BaseArticleActivity<ActivityArticleListBinding>(Acti
         setAppearanceLightStatusBar(false)
         setOnApplyWindowInsetsListener(binding.main)
 
+        binding.toolbar.tvTitle.text = "Artikel"
+        binding.toolbar.tvTitle.visibility = View.VISIBLE
         binding.toolbar.ivLeading.setOnClickListener {
             finish()
         }
