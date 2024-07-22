@@ -21,8 +21,7 @@ class PrayerTimeUseCaseImpl(
         return corePlatformLocationRepository.getCurrentAddress()
     }
 
-    override fun getCurrentPrayerTime(
-        context: Context,
+    override fun getCurrentPrayerTimeByAddress(
         address: AddressModel
     ): Observable<PrayersTimeModel> {
         val calendar = Calendar.getInstance()
@@ -59,6 +58,12 @@ class PrayerTimeUseCaseImpl(
                     isha = todayPrayerTime.timings?.isha ?: "-"
                 )
             )
+        }
+    }
+
+    override fun getCurrentPrayerTimeByAddress(): Observable<PrayersTimeModel> {
+        return getAddress().flatMap { address ->
+            getCurrentPrayerTimeByAddress(address)
         }
     }
 }

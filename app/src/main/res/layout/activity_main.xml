@@ -54,6 +54,7 @@
                         style="@style/Font.SemiBold.14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
                         android:text="Hijriah Date"
                         android:textColor="@color/white" />
 
@@ -62,11 +63,13 @@
                         style="@style/Font.Regular.14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
                         android:text="Gregorian Date"
                         android:textColor="@color/white" />
 
                     <include
                         android:id="@+id/prayerTiming"
+                        android:layout_marginHorizontal="20dp"
                         layout="@layout/layout_prayer_timing"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -153,6 +156,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -175,7 +179,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -227,6 +231,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:visibility="gone"
                         android:nestedScrollingEnabled="false"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

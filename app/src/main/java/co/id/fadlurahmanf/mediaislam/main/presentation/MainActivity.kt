@@ -50,14 +50,14 @@ class MainActivity :
         initObserver()
         initAction()
 
-        viewModel.getPrayerTime(this)
+        viewModel.getPrayerTime()
         viewModel.getFirst10Surah()
         viewModel.getTop3Article()
     }
 
     private fun initAction() {
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.getPrayerTime(this)
+            viewModel.getPrayerTime()
             viewModel.getFirst10Surah()
             viewModel.getTop3Article()
         }
