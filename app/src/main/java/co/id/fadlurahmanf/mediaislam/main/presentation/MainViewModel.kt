@@ -23,10 +23,20 @@ class MainViewModel @Inject constructor(
     private val prayerTimeUseCase: PrayerTimeUseCase,
     private val articleUseCase: ArticleUseCase,
 ) : BaseViewModel() {
+
+    private val _progressBarVisible = MutableLiveData<Boolean>(false)
+    val progressBarVisible: LiveData<Boolean> = _progressBarVisible
+
+    private fun setProgressBar() {
+        _progressBarVisible.value =
+            listSurahLive.value is EQuranNetworkState.LOADING || prayersTimeLive.value is AladhanNetworkState.LOADING || articleNetworkLive.value is ArticleNetworkState.LOADING
+    }
+
     private val _listSurahLive = MutableLiveData<EQuranNetworkState<List<SurahModel>>>()
     val listSurahLive: LiveData<EQuranNetworkState<List<SurahModel>>> = _listSurahLive
 
     fun getFirst10Surah() {
+        _progressBarVisible.value = true
         _listSurahLive.value = EQuranNetworkState.LOADING
         baseDisposable.add(quranUseCase.getListSurah()
             .subscribeOn(Schedulers.io())
@@ -40,7 +50,9 @@ class MainViewModel @Inject constructor(
                 {
                     _listSurahLive.value = EQuranNetworkState.ERROR(it.fromEQuranException())
                 },
-                {}
+                {
+                    setProgressBar()
+                }
             ))
     }
 
