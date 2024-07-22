@@ -2,6 +2,8 @@ package co.id.fadlurahmanf.mediaislam.article.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.id.fadlurahmanf.mediaislam.article.BaseArticleFragment
@@ -31,6 +33,20 @@ class ArticleFragment :
         binding.rv.layoutManager = layoutManager
         binding.rv.adapter = pagingAdapter
 
+        pagingAdapter.addLoadStateListener {
+            println("MASUK_ ${it}")
+            if(it.refresh is LoadState.Loading){
+                binding.rv.visibility = View.GONE
+                binding.layoutLoading.root.visibility = View.VISIBLE
+            }
+
+            if(it.prepend.endOfPaginationReached){
+                binding.rv.visibility = View.VISIBLE
+                binding.layoutLoading.root.visibility = View.GONE
+            }
+
+
+        }
     }
 
     private fun initObserver() {

@@ -19,6 +19,10 @@ class ArticleListActivity : BaseArticleActivity<ActivityArticleListBinding>(Acti
         setAppearanceLightStatusBar(false)
         setOnApplyWindowInsetsListener(binding.main)
 
+        binding.toolbar.ivLeading.setOnClickListener {
+            finish()
+        }
+
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fl, articleFragment).commit()
     }
