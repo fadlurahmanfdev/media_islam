@@ -13,6 +13,7 @@ import co.id.fadlurahmanf.mediaislam.core.analytics.AnalyticParam
 import co.id.fadlurahmanf.mediaislam.core.network.dto.response.article.ArticleItemResponse
 import co.id.fadlurahmanf.mediaislam.core.network.exception.toSimpleCopyWriting
 import co.id.fadlurahmanf.mediaislam.core.state.AladhanNetworkState
+import co.id.fadlurahmanf.mediaislam.core.state.AppState
 import co.id.fadlurahmanf.mediaislam.core.state.ArticleNetworkState
 import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityMainBinding
@@ -50,6 +51,7 @@ class MainActivity :
         initObserver()
         initAction()
 
+        viewModel.getMainMenu()
         viewModel.getPrayerTime()
         viewModel.getFirst10Surah()
         viewModel.getTop3Article()
@@ -87,18 +89,7 @@ class MainActivity :
     }
 
     private lateinit var menuAdapter: MenuAdapter
-    val menus = arrayListOf(
-        ItemMainMenuModel(
-            id = "SURAH",
-            title = "Surat",
-            icon = R.drawable.il_iqra,
-        ),
-        ItemMainMenuModel(
-            id = "ARTICLE",
-            title = "Artikel",
-            icon = R.drawable.il_books,
-        )
-    )
+    private val menus: ArrayList<ItemMainMenuModel> = arrayListOf<ItemMainMenuModel>()
 
     private fun initMenuAdapter() {
         menuAdapter = MenuAdapter()
@@ -173,6 +164,18 @@ class MainActivity :
     private fun initObserver() {
         viewModel.progressBarVisible.observe(this) { isVisble ->
             binding.progressBar.visibility = if (isVisble) View.VISIBLE else View.GONE
+        }
+
+        viewModel.mainMenusLive.observe(this) { state ->
+            when (state) {
+                is AppState.SUCCESS -> {
+                    menus.addAll(state.data)
+                    menuAdapter.setList(menus)
+                }
+                else -> {
+
+                }
+            }
         }
 
         viewModel.prayersTimeLive.observe(this) { state ->

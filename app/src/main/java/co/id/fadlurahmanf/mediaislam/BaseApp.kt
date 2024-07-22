@@ -1,6 +1,7 @@
 package co.id.fadlurahmanf.mediaislam
 
 import android.app.Application
+import android.util.Log
 import co.id.fadlurahmanf.mediaislam.core.di.components.ApplicationComponent
 import co.id.fadlurahmanf.mediaislam.core.di.components.DaggerApplicationComponent
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -17,6 +18,10 @@ class BaseApp : Application() {
         applicationComponent = DaggerApplicationComponent.factory().create(applicationContext)
         firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        firebaseRemoteConfig.fetch(1000L)
+        firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
+            Log.d(BaseApp::class.java.simpleName, "firebase remote config activate -> $it")
+        }
 //        firebaseCrashlytics = FirebaseCrashlytics.getInstance()
     }
 }
