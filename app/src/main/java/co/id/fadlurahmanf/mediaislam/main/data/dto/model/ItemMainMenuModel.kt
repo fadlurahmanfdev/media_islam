@@ -6,4 +6,5 @@ data class ItemMainMenuModel(
     val id: String,
     val title: String,
     @DrawableRes val icon: Int,
+    val active: Boolean = true,
 )

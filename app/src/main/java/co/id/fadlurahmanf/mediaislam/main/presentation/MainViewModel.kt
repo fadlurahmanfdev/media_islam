@@ -10,18 +10,44 @@ import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
 import co.id.fadlurahmanf.mediaislam.main.domain.usecase.PrayerTimeUseCase
 import co.id.fadlurahmanf.mediaislam.core.state.AladhanNetworkState
+import co.id.fadlurahmanf.mediaislam.core.state.AppState
 import co.id.fadlurahmanf.mediaislam.core.state.ArticleNetworkState
+import co.id.fadlurahmanf.mediaislam.main.data.dto.model.ItemMainMenuModel
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.PrayersTimeModel
+import co.id.fadlurahmanf.mediaislam.main.domain.usecase.MenuUseCase
 import co.id.fadlurahmanf.mediaislam.quran.domain.usecase.QuranUseCase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val quranUseCase: QuranUseCase,
-    private val prayerTimeUseCase: PrayerTimeUseCase,
     private val articleUseCase: ArticleUseCase,
+    private val menuUseCase: MenuUseCase,
+    private val prayerTimeUseCase: PrayerTimeUseCase,
+    private val quranUseCase: QuranUseCase,
 ) : BaseViewModel() {
+
+    private val _mainMenusLive = MutableLiveData<AppState<List<ItemMainMenuModel>>>()
+    val mainMenusLive: LiveData<AppState<List<ItemMainMenuModel>>> = _mainMenusLive
+
+    fun getMainMenu() {
+        if (mainMenusLive.value !is AppState.SUCCESS) {
+            _mainMenusLive.value = AppState.LOADING
+        }
+        baseDisposable.add(
+            menuUseCase.getMainMenus().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        _mainMenusLive.value = AppState.SUCCESS(it)
+                    },
+                    {
+                        _mainMenusLive.value = AppState.ERROR
+                    },
+                    {},
+                ),
+        )
+    }
 
     private val _progressBarVisible = MutableLiveData<Boolean>(false)
     val progressBarVisible: LiveData<Boolean> = _progressBarVisible
