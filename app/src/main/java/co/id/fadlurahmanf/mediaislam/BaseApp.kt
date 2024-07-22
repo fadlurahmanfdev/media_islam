@@ -18,8 +18,8 @@ class BaseApp : Application() {
         applicationComponent = DaggerApplicationComponent.factory().create(applicationContext)
         firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        firebaseRemoteConfig.fetch(1000L)
-        firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
+        firebaseRemoteConfig.fetch(10000L)
+        firebaseRemoteConfig.activate().addOnSuccessListener {
             Log.d(BaseApp::class.java.simpleName, "firebase remote config activate -> $it")
         }
 //        firebaseCrashlytics = FirebaseCrashlytics.getInstance()
