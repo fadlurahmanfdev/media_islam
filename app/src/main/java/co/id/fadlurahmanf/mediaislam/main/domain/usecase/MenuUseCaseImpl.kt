@@ -15,9 +15,10 @@ class MenuUseCaseImpl @Inject constructor(
 
     @DrawableRes
     private fun getIconBasedOnId(menuId: String): Int {
-        return when (menuId) {
+        return when (menuId.uppercase()) {
             "SURAH" -> R.drawable.il_iqra
             "ARTICLE" -> R.drawable.il_books
+            "AUDIO" -> R.drawable.il_headphone
             else -> R.drawable.il_media_islam
         }
     }
