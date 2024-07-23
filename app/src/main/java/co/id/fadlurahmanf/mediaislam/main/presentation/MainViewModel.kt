@@ -2,7 +2,7 @@ package co.id.fadlurahmanf.mediaislam.main.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import co.id.fadlurahmanf.mediaislam.article.domain.usecase.ArticleUseCase
+import co.id.fadlurahmanf.mediaislam.core.domain.usecase.ArticleUseCase
 import co.id.fadlurahmanf.mediaislam.core.network.dto.response.article.ArticleItemResponse
 import co.id.fadlurahmanf.mediaislam.core.network.exception.fromEQuranException
 import co.id.fadlurahmanf.mediaislam.core.ui.BaseViewModel

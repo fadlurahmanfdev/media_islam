@@ -11,23 +11,33 @@ import co.id.fadlurahmanf.mediaislam.main.data.datasources.AladhanDatasourceRepo
 import co.id.fadlurahmanf.mediaislam.main.data.datasources.AladhanDatasourceRepositoryImpl
 import co.id.fadlurahmanf.mediaislam.quran.data.datasources.EQuranDatasourceRepository
 import co.id.fadlurahmanf.mediaislam.quran.data.datasources.EQuranDatasourceRepositoryImpl
-import co.id.fadlurahmanf.mediaislam.quran.data.repository.QuranNotificationRepository
-import co.id.fadlurahmanf.mediaislam.quran.data.repository.QuranNotificationRepositoryImpl
-import co.id.fadlurahmanfdev.kotlin_core_platform.data.repository.CorePlatformLocationRepository
-import co.id.fadlurahmanfdev.kotlin_core_platform.data.repository.CorePlatformLocationRepositoryImpl
 import dagger.Module
 import dagger.Provides
 
 @Module
-class SharedModule {
+class SharedDatasourceModule {
+    @Provides
+    fun provideEQuranDatasourceRepository(
+        context: Context,
+        eQuranAPI: EQuranAPI
+    ): EQuranDatasourceRepository {
+        val app = context.applicationContext as BaseApp
+        return EQuranDatasourceRepositoryImpl(eQuranAPI, app.firebaseRemoteConfig)
+    }
+
+
 
     @Provides
-    fun provideCorePlatformLocationRepository(context: Context): CorePlatformLocationRepository {
-        return CorePlatformLocationRepositoryImpl(context)
+    fun provideAladhanDatasourceRepository(aladhanAPI: AladhanAPI): AladhanDatasourceRepository {
+        return AladhanDatasourceRepositoryImpl(aladhanAPI)
     }
 
     @Provides
-    fun provideQuranNotificationRepositoryImpl(context: Context): QuranNotificationRepository {
-        return QuranNotificationRepositoryImpl(context)
+    fun provideArticleDatasourceRepository(
+        artikeIslamAPI: ArtikeIslamAPI
+    ): ArticleDatasourceRepository {
+        return ArticleDatasourceRepositoryImpl(
+            artikeIslamAPI = artikeIslamAPI
+        )
     }
 }
