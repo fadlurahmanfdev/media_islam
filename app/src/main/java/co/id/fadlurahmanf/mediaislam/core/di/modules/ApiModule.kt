@@ -1,44 +1,85 @@
 package co.id.fadlurahmanf.mediaislam.core.di.modules
 
 import android.content.Context
+import co.id.fadlurahmanf.mediaislam.BuildConfig
 import co.id.fadlurahmanf.mediaislam.core.network.api.AladhanAPI
 import co.id.fadlurahmanf.mediaislam.core.network.api.ArtikeIslamAPI
 import co.id.fadlurahmanf.mediaislam.core.network.api.EQuranAPI
-import co.id.fadlurahmanf.mediaislam.core.network.interceptor.EQuranErrorInterceptor
-import co.id.fadlurahmanf.mediaislam.core.network.others.NetworkUtilities
+import co.id.fadlurahmanfdev.kotlin_feature_network.data.repository.FeatureNetworkRepository
+import co.id.fadlurahmanfdev.kotlin_feature_network.data.repository.FeatureNetworkRepositoryImpl
 import dagger.Module
 import dagger.Provides
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 
 @Module
 class ApiModule {
 
-    private val networkUtilities = NetworkUtilities()
+    @Provides
+    fun provideFeatureNetworkRepository(): FeatureNetworkRepository {
+        return FeatureNetworkRepositoryImpl()
+    }
 
     @Provides
-    fun provideEQuranNetwork(context: Context): EQuranAPI {
-        return networkUtilities.createEQuranNetwork(
-            networkUtilities.okHttpClientBuilder()
-                .addInterceptor(EQuranErrorInterceptor())
-                .addInterceptor(networkUtilities.getChuckerInterceptor(context).build())
-                .build()
+    fun provideEQuranNetwork(
+        context: Context,
+        featureNetworkRepository: FeatureNetworkRepository
+    ): EQuranAPI {
+        return featureNetworkRepository.createAPI(
+            baseUrl = BuildConfig.EQURAN_BASE_URL,
+            callAdapterFactory = RxJava3CallAdapterFactory.create(),
+            okHttpClient = featureNetworkRepository.getOkHttpClientBuilder(
+                useLoggingInterceptor = BuildConfig.FLAVOR == "dev"
+            ).apply {
+                if (BuildConfig.FLAVOR == "dev") {
+                    addInterceptor(
+                        featureNetworkRepository.getChuckerInterceptorBuilder(context).build()
+                    )
+                }
+            }.build(),
+            clazz = EQuranAPI::class.java,
+
+            )
+    }
+
+    @Provides
+    fun provideAladhanNetwork(
+        context: Context,
+        featureNetworkRepository: FeatureNetworkRepository,
+    ): AladhanAPI {
+        return featureNetworkRepository.createAPI(
+            baseUrl = BuildConfig.ALADHAN_BASE_URL,
+            callAdapterFactory = RxJava3CallAdapterFactory.create(),
+            okHttpClient = featureNetworkRepository.getOkHttpClientBuilder(
+                useLoggingInterceptor = BuildConfig.FLAVOR == "dev"
+            ).apply {
+                if (BuildConfig.FLAVOR == "dev") {
+                    addInterceptor(
+                        featureNetworkRepository.getChuckerInterceptorBuilder(context).build()
+                    )
+                }
+            }.build(),
+            clazz = AladhanAPI::class.java,
         )
     }
 
     @Provides
-    fun provideAladhanNetwork(context: Context): AladhanAPI {
-        return networkUtilities.createAladhanNetwork(
-            networkUtilities.okHttpClientBuilder()
-                .addInterceptor(networkUtilities.getChuckerInterceptor(context).build())
-                .build()
-        )
-    }
-
-    @Provides
-    fun provideArtikelIslamNetwork(context: Context): ArtikeIslamAPI {
-        return networkUtilities.createArtikelIslamNetwork(
-            networkUtilities.okHttpClientBuilder()
-                .addInterceptor(networkUtilities.getChuckerInterceptor(context).build())
-                .build()
+    fun provideArtikelIslamNetwork(
+        context: Context,
+        featureNetworkRepository: FeatureNetworkRepository,
+    ): ArtikeIslamAPI {
+        return featureNetworkRepository.createAPI(
+            baseUrl = BuildConfig.ARTIKEL_ISLAM_BASE_URL,
+            callAdapterFactory = RxJava3CallAdapterFactory.create(),
+            okHttpClient = featureNetworkRepository.getOkHttpClientBuilder(
+                useLoggingInterceptor = BuildConfig.FLAVOR == "dev"
+            ).apply {
+                if (BuildConfig.FLAVOR == "dev") {
+                    addInterceptor(
+                        featureNetworkRepository.getChuckerInterceptorBuilder(context).build()
+                    )
+                }
+            }.build(),
+            clazz = ArtikeIslamAPI::class.java,
         )
     }
 }
