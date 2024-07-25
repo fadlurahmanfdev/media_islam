@@ -7,6 +7,7 @@ import co.id.fadlurahmanf.mediaislam.core.state.EQuranNetworkState
 import co.id.fadlurahmanf.mediaislam.core.ui.BaseViewModel
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.AudioQariModel
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.DetailSurahModel
+import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.AudioPerSurahModel
 import co.id.fadlurahmanf.mediaislam.quran.data.state.NowPlayingAudioState
 import co.id.fadlurahmanf.mediaislam.quran.domain.usecase.QuranUseCase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -16,6 +17,27 @@ import javax.inject.Inject
 class AudioQuranViewModel @Inject constructor(
     private val quranUseCase: QuranUseCase
 ) : BaseViewModel() {
+
+    private val _listAudioLive = MutableLiveData<EQuranNetworkState<List<AudioPerSurahModel>>>()
+    val listAudioLive: LiveData<EQuranNetworkState<List<AudioPerSurahModel>>> = _listAudioLive
+
+    fun getListAudio() {
+        _listAudioLive.value = EQuranNetworkState.LOADING
+        baseDisposable.add(
+            quranUseCase.getListAudio().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        _listAudioLive.value = EQuranNetworkState.SUCCESS(it)
+                    },
+                    {
+                        _listAudioLive.value = EQuranNetworkState.ERROR(it.fromEQuranException())
+                    },
+                    {},
+                )
+        )
+    }
+
     fun createChannel() {
         quranUseCase.createAudioMediaChannel()
     }
