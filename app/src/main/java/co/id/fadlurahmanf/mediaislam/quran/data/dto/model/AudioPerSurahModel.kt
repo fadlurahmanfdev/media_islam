@@ -5,6 +5,7 @@ data class AudioPerSurahModel(
     val url: String,
     val qari: Qari,
     val surah: Surah,
+    var isExpanded:Boolean = false
 ) {
     data class Qari(
         val name: String,
