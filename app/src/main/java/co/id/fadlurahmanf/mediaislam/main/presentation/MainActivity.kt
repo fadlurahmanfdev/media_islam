@@ -241,8 +241,7 @@ class MainActivity :
             when (it) {
                 is ArticleNetworkState.LOADING -> {
                     binding.layoutShimmerArticle.root.visibility = View.VISIBLE
-//                    binding.layoutError.root.visibility = View.GONE
-                    binding.rv.visibility = View.GONE
+                    binding.rvTop3Articl.visibility = View.GONE
                 }
 
                 is ArticleNetworkState.ERROR -> {

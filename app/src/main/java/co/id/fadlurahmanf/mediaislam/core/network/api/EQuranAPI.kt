@@ -9,6 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface EQuranAPI {
+
     @GET("v2/surat")
     fun getSurahList(): Observable<BaseEQuranResponse<List<SurahResponse>>>
 

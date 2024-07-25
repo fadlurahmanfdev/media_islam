@@ -1,4 +1,4 @@
-package co.id.fadlurahmanf.mediaislam.article.domain.usecase
+package co.id.fadlurahmanf.mediaislam.core.domain.usecase
 
 import co.id.fadlurahmanf.mediaislam.article.data.datasources.ArticleDatasourceRepository
 import co.id.fadlurahmanf.mediaislam.core.network.dto.response.article.ArticleItemResponse
