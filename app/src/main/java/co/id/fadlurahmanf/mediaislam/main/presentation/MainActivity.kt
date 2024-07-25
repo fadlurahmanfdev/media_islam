@@ -21,6 +21,7 @@ import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.ItemMainMenuModel
 import co.id.fadlurahmanf.mediaislam.main.presentation.adapter.MenuAdapter
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
+import co.id.fadlurahmanf.mediaislam.quran.presentation.audio.ListAudioActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.DetailSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.ListSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.adapter.ListSurahAdapter
@@ -111,6 +112,15 @@ class MainActivity :
                             putString(AnalyticParam.FROM, "main_menu")
                         })
                         val intent = Intent(this@MainActivity, ArticleListActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                    "AUDIO" -> {
+                        firebaseAnalytics.logEvent(AnalyticEvent.SELECT_MENU, Bundle().apply {
+                            putString(AnalyticParam.MENU, "audio")
+                            putString(AnalyticParam.FROM, "main_menu")
+                        })
+                        val intent = Intent(this@MainActivity, ListAudioActivity::class.java)
                         startActivity(intent)
                     }
                 }
