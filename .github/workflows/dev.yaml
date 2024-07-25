@@ -20,6 +20,6 @@ jobs:
   deployApkDev:
     name: "Deploy"
     needs: [ devBuild ]
-    uses: fadlurahmanfdev/media_islam/.github/workflows/deployApkDev.yaml
+    uses: ./.github/workflows/deployApkDev.yaml
     secrets:
       FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
