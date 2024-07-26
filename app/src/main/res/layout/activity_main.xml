@@ -85,7 +85,8 @@
                         android:layout_marginVertical="18dp"
                         android:drawableStart="@drawable/baseline_location_pin_24"
                         android:drawableTint="@color/white"
-                        android:gravity="center"
+                        android:gravity="start"
+                        android:drawablePadding="12dp"
                         android:text="Location"
                         android:textColor="@color/white" />
                 </LinearLayout>
