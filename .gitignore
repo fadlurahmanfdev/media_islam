@@ -19,3 +19,4 @@ app/release.jks
 signingRelease.properties
 firebaseAppDistributionDev.properties
 google-credential-content-firebase.json
+service-account-upload-playstore.json

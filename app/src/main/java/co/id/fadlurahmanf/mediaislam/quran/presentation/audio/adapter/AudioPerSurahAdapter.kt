@@ -1,12 +1,10 @@
 package co.id.fadlurahmanf.mediaislam.quran.presentation.audio.adapter
 
-import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -73,13 +71,13 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val latin: TextView = view.findViewById(R.id.tv_latin_title)
         val arabic: TextView = view.findViewById(R.id.tv_arabic_title)
         val indonesian: TextView = view.findViewById(R.id.tv_indonesian_title)
-        val expandIcon: ImageView = view.findViewById(R.id.iv_expand_icon)
+        val isPlayingIcon: ImageView = view.findViewById(R.id.iv_expand_icon)
 
         init {
-            view.setOnClickListener {
-                val audio = audios[absoluteAdapterPosition]
-                setExpandedItem(audio.surah.no)
-            }
+//            view.setOnClickListener {
+//                val audio = audios[absoluteAdapterPosition]
+//                setExpandedItem(audio.surah.no)
+//            }
         }
     }
 
@@ -88,11 +86,11 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val name: TextView = view.findViewById(R.id.tv_qari_name)
         val main: ConstraintLayout = view.findViewById(R.id.main)
 
-//        init {
-//            view.setOnClickListener {
-//                callBack?.onClicked(audios[absoluteAdapterPosition])
-//            }
-//        }
+        init {
+            view.setOnClickListener {
+                callBack?.onClicked(audios[absoluteAdapterPosition])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -115,37 +113,29 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             mHolder.no.text = audio.surah.no.toString()
             mHolder.arabic.text = audio.surah.arabic
-            mHolder.arabic.visibility = View.GONE
             mHolder.indonesian.text = audio.surah.meaning
             mHolder.latin.text = audio.surah.latinName
 
             @DrawableRes
-            val expandIcondrawable: Int = when (audio.isExpanded) {
+            val iconIsPlayingDrawable: Int = when (audio.isExpanded) {
                 true -> {
-                    R.drawable.baseline_expand_less_24
+                    co.id.fadlurahmanfdev.kotlin_feature_media_player.R.drawable.round_pause_24
                 }
 
                 false -> {
-                    R.drawable.baseline_expand_more_24
+                    co.id.fadlurahmanfdev.kotlin_feature_media_player.R.drawable.round_play_arrow_24
                 }
             }
-            mHolder.expandIcon.setImageDrawable(
+            mHolder.isPlayingIcon.setImageDrawable(
                 ContextCompat.getDrawable(
                     context,
-                    expandIcondrawable
+                    iconIsPlayingDrawable
                 )
             )
         } else {
             val mHolder = holder as QariViewHolder
-            mHolder.main.layoutParams.height = LayoutParams.WRAP_CONTENT
-            mHolder.main.layoutParams.width = LayoutParams.MATCH_PARENT
-            if (audio.isExpanded) {
-                mHolder.main.layoutParams.height = LayoutParams.WRAP_CONTENT
-                mHolder.main.layoutParams.width = LayoutParams.MATCH_PARENT
-            } else {
-                mHolder.main.layoutParams.height = 0
-                mHolder.main.layoutParams.width = 0
-            }
+            mHolder.main.layoutParams.height = 0
+            mHolder.main.layoutParams.width = 0
             mHolder.name.text = audio.qari.name
             Glide.with(mHolder.picture)
                 .load(GlideUrlCachedKey(audio.qari.image ?: "", customKey = audio.qari.imageKey))
