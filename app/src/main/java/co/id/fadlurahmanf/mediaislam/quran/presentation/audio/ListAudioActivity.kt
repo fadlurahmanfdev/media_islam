@@ -22,6 +22,12 @@ class ListAudioActivity :
         setAppearanceLightStatusBar(false)
         setOnApplyWindowInsetsListener(binding.main)
 
+        binding.toolbar.tvTitle.text = "Pilih Surat"
+        binding.toolbar.tvTitle.visibility = View.VISIBLE
+        binding.toolbar.ivLeading.setOnClickListener {
+            finish()
+        }
+
         initAdapter()
         initObserver()
 

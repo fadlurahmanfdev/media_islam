@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="-"
-                android:textColor="@color/primary" />
+                android:textColor="@color/black_v2" />
         </LinearLayout>
 
         <TextView
@@ -63,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/baseline_expand_more_24"/>
+            android:src="@drawable/round_play_arrow_24"
+            app:tint="@color/primary"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
