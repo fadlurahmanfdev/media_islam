@@ -19,6 +19,7 @@ class MenuUseCaseImpl @Inject constructor(
             "SURAH" -> R.drawable.il_iqra
             "ARTICLE" -> R.drawable.il_books
             "AUDIO" -> R.drawable.il_headphone
+            "ADHAN" -> R.drawable.adzan
             else -> R.drawable.il_media_islam
         }
     }

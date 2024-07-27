@@ -1,6 +1,5 @@
 package co.id.fadlurahmanf.mediaislam.main.domain.usecase
 
-import android.content.Context
 import co.id.fadlurahmanf.mediaislam.core.network.exception.AladhanException
 import co.id.fadlurahmanf.mediaislam.main.data.datasources.AladhanDatasourceRepository
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.PrayersTimeModel
@@ -14,14 +13,13 @@ import java.util.Locale
 class PrayerTimeUseCaseImpl(
     private val aladhanDatasourceRepository: AladhanDatasourceRepository,
     private val corePlatformLocationRepository: CorePlatformLocationRepository
-) :
-    PrayerTimeUseCase {
+) : PrayerTimeUseCase {
 
     override fun getAddress(): Observable<AddressModel> {
         return corePlatformLocationRepository.getCurrentAddress()
     }
 
-    override fun getCurrentPrayerTimeByAddress(
+    override fun getTodayPrayerTimeByAddress(
         address: AddressModel
     ): Observable<PrayersTimeModel> {
         val calendar = Calendar.getInstance()
@@ -61,9 +59,9 @@ class PrayerTimeUseCaseImpl(
         }
     }
 
-    override fun getCurrentPrayerTimeByAddress(): Observable<PrayersTimeModel> {
+    override fun getTodayPrayerTimeByAddress(): Observable<PrayersTimeModel> {
         return getAddress().flatMap { address ->
-            getCurrentPrayerTimeByAddress(address)
+            getTodayPrayerTimeByAddress(address)
         }
     }
 }

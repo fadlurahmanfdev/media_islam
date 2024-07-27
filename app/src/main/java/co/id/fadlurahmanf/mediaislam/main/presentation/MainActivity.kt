@@ -20,6 +20,7 @@ import co.id.fadlurahmanf.mediaislam.databinding.ActivityMainBinding
 import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.ItemMainMenuModel
 import co.id.fadlurahmanf.mediaislam.main.presentation.adapter.MenuAdapter
+import co.id.fadlurahmanf.mediaislam.main.presentation.alarm.AlarmActivity
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
 import co.id.fadlurahmanf.mediaislam.quran.presentation.audio.ListAudioActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.DetailSurahActivity
@@ -63,6 +64,11 @@ class MainActivity :
             viewModel.getPrayerTime()
             viewModel.getFirst10Surah()
             viewModel.getTop3Article()
+        }
+
+        binding.ivAlarm.setOnClickListener {
+            val intent = Intent(this, AlarmActivity::class.java)
+            startActivity(intent)
         }
 
         binding.llViewAllSurah.setOnClickListener {
@@ -121,6 +127,15 @@ class MainActivity :
                             putString(AnalyticParam.FROM, "main_menu")
                         })
                         val intent = Intent(this@MainActivity, ListAudioActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                    "ADHAN" -> {
+                        firebaseAnalytics.logEvent(AnalyticEvent.SELECT_MENU, Bundle().apply {
+                            putString(AnalyticParam.MENU, "adhan")
+                            putString(AnalyticParam.FROM, "main_menu")
+                        })
+                        val intent = Intent(this@MainActivity, AlarmActivity::class.java)
                         startActivity(intent)
                     }
                 }
@@ -182,6 +197,7 @@ class MainActivity :
                     menus.addAll(state.data)
                     menuAdapter.setList(menus)
                 }
+
                 else -> {
 
                 }
