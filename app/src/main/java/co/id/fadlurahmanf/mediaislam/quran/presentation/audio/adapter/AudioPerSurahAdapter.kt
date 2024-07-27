@@ -37,13 +37,14 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var currentPlayingSurahNo: Int? = null
     private fun onClickedPlayIcon(surahNo: Int, audio: AudioPerSurahModel) {
+        resetIconItemIsPlayingIcon()
+
         if (currentPlayingSurahNo == surahNo) {
-            resetIconItemIsPlayingIcon()
             callBack?.onPauseClicked(audio)
             return
         }
 
-        setItemPlaying(surahNo)
+        setIconItemPlaying(surahNo)
         callBack?.onPlayClicked(audio)
     }
 
@@ -64,7 +65,7 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun setItemPlaying(surahNo: Int) {
+    fun setIconItemPlaying(surahNo: Int) {
         if (currentPlayingSurahNo != surahNo) {
             currentPlayingSurahNo = surahNo
             audios.forEachIndexed { index, audioPerSurahModel ->
@@ -125,11 +126,11 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             @DrawableRes
             val iconIsPlayingDrawable: Int = when (audio.isExpanded) {
                 true -> {
-                    co.id.fadlurahmanfdev.kotlin_feature_media_player.R.drawable.round_pause_24
+                    R.drawable.round_pause_24
                 }
 
                 false -> {
-                    co.id.fadlurahmanfdev.kotlin_feature_media_player.R.drawable.round_play_arrow_24
+                    R.drawable.round_play_arrow_24
                 }
             }
             mHolder.isPlayingIcon.setImageDrawable(

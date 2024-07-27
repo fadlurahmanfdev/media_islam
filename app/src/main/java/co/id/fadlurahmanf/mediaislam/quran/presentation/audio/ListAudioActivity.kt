@@ -33,7 +33,6 @@ class ListAudioActivity :
 
         featureMusicPlayerReceiverManager = FeatureMusicPlayerReceiverManager(this)
         featureMusicPlayerReceiverManager.setCallBack(this)
-        featureMusicPlayerReceiverManager.registerReceiver(this)
 
         binding.toolbar.tvTitle.text = "Pilih Surat"
         binding.toolbar.tvTitle.visibility = View.VISIBLE
@@ -107,14 +106,12 @@ class ListAudioActivity :
     }
 
     override fun onSendInfo(position: Long, duration: Long, state: MusicPlayerState) {
-        println("MASUK_ SINI STATE: $state")
         if (currentPlayingSurahNo == null || currentPlayingSurah == null) {
             return
         }
-        println("MASUK_ SINI 2 STATE: $state")
         when (state) {
             PLAYING, RESUME -> {
-                adapter.setItemPlaying(currentPlayingSurahNo!!)
+                adapter.setIconItemPlaying(currentPlayingSurahNo!!)
             }
 
             PAUSED, STOPPED, ENDED -> {
@@ -125,4 +122,13 @@ class ListAudioActivity :
         }
     }
 
+    override fun onResume() {
+        featureMusicPlayerReceiverManager.registerReceiver(this)
+        super.onResume()
+    }
+
+    override fun onStop() {
+        featureMusicPlayerReceiverManager.unregisterReceiver(this)
+        super.onStop()
+    }
 }
