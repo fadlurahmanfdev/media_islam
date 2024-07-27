@@ -1,10 +1,11 @@
 package co.id.fadlurahmanf.mediaislam.main.presentation
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.article.presentation.ArticleListActivity
 import co.id.fadlurahmanf.mediaislam.article.presentation.ArticleWebViewActivity
 import co.id.fadlurahmanf.mediaislam.article.presentation.adapter.ArticleAdapter
@@ -54,7 +55,13 @@ class MainActivity :
         initAction()
 
         viewModel.getMainMenu()
-        viewModel.getPrayerTime()
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission_group.LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            viewModel.getPrayerTime()
+        }
         viewModel.getFirst10Surah()
         viewModel.getTop3Article()
     }

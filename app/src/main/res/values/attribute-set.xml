@@ -3,10 +3,17 @@
 
     <attr name="text" format="string" />
     <attr name="buttonBackground" format="reference" />
+    <attr name="active" format="boolean" />
 
     <declare-styleable name="ButtonCustomFilled">
         <attr name="text" />
         <attr name="buttonBackground" />
-        <attr name="active" format="boolean" />
+        <attr name="active" />
+    </declare-styleable>
+
+    <declare-styleable name="ButtonCustomOutlined">
+        <attr name="text" />
+        <attr name="buttonBackground" />
+        <attr name="active" />
     </declare-styleable>
 </resources>

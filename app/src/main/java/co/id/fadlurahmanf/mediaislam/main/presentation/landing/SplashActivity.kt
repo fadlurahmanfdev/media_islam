@@ -25,8 +25,6 @@ class SplashActivity : BaseMainActivity<ActivitySplashBinding>(ActivitySplashBin
 
         initObserver()
 
-//        locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION)
-
         viewModel.init()
 
     }
