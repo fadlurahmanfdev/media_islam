@@ -57,7 +57,7 @@ class MainActivity :
         viewModel.getMainMenu()
         if (ContextCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission_group.LOCATION
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             viewModel.getPrayerTime()
