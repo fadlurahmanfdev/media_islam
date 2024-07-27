@@ -38,8 +38,6 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 corePlatformLocationManager.requestLocationService(this, this)
-            } else {
-                goToMainPage()
             }
         }
 
