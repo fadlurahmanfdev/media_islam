@@ -167,7 +167,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
 
     //paging
-    val paging_version = "3.3.0"
+    val paging_version = "3.3.1"
     implementation("androidx.paging:paging-runtime-ktx:$paging_version")
     implementation("androidx.paging:paging-rxjava3:$paging_version")
 }
