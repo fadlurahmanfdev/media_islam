@@ -1,10 +1,8 @@
 name: "Feature Branch Workflow"
 on:
-  push:
+  pull_request:
     branches:
-      - "feature/*"
-      - "bugfix/*"
-      - "hotfix/*"
+      - "dev"
 
 jobs:
   featureBuild:
