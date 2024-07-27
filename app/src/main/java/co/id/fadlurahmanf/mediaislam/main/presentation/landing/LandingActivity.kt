@@ -19,6 +19,7 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
     lateinit var viewModel: SplashViewModel
     override fun onBaseMainInjectActivity() {
         component.inject(this)
+
     }
 
     private val launcherLocationService =
@@ -44,8 +45,8 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
         setOnApplyWindowInsetsListener(binding.main)
         corePlatformLocationManager = CorePlatformLocationManager(this)
 
-        viewModel.canGoToMainPageLive.observe(this){ state ->
-            when(state){
+        viewModel.canGoToMainPageLive.observe(this) { state ->
+            when (state) {
                 is AppState.SUCCESS -> {
                     goToMainPage()
                 }
@@ -58,6 +59,10 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
 
         binding.btnActivateLocation.setOnClickListener {
             launcherPermission.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
+
+        binding.btnLater.setOnClickListener {
+            goToMainPage()
         }
     }
 

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="20dp"
     android:orientation="vertical"
+    android:background="@color/white"
     android:paddingHorizontal="20dp"
     tools:context=".main.presentation.landing.LandingActivity">
 
@@ -40,8 +41,16 @@
         android:layout_width="match_parent"
         android:id="@+id/btn_activate_location"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="18dp"
+        android:layout_marginTop="18dp"
         app:text="Aktifkan" />
+
+    <co.id.fadlurahmanf.mediaislam.core.ui.button.ButtonCustomOutlined
+        android:layout_width="match_parent"
+        android:id="@+id/btn_later"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="18dp"
+        app:text="Nanti aja" />
 
 
 </LinearLayout>
