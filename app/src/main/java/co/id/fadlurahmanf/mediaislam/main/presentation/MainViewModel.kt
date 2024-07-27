@@ -89,7 +89,7 @@ class MainViewModel @Inject constructor(
         if (_prayersTimeLive.value == AladhanNetworkState.IDLE) {
             _prayersTimeLive.value = AladhanNetworkState.LOADING
         }
-        baseDisposable.add(prayerTimeUseCase.getCurrentPrayerTimeByAddress()
+        baseDisposable.add(prayerTimeUseCase.getTodayPrayerTimeByAddress()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

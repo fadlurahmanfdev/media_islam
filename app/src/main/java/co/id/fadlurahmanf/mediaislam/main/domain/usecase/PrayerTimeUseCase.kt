@@ -6,6 +6,6 @@ import io.reactivex.rxjava3.core.Observable
 
 interface PrayerTimeUseCase {
     fun getAddress():Observable<AddressModel>
-    fun getCurrentPrayerTimeByAddress(address: AddressModel): Observable<PrayersTimeModel>
-    fun getCurrentPrayerTimeByAddress(): Observable<PrayersTimeModel>
+    fun getTodayPrayerTimeByAddress(address: AddressModel): Observable<PrayersTimeModel>
+    fun getTodayPrayerTimeByAddress(): Observable<PrayersTimeModel>
 }
