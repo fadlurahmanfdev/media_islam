@@ -63,12 +63,10 @@ class AudioActivity : BaseQuranActivity<ActivityAudioBinding>(ActivityAudioBindi
         binding.ivPlayPauseAudio.setOnClickListener {
             when (featureMusicPlayerReceiverManager.state) {
                 MusicPlayerState.PLAYING -> {
-                    println("MASUK_ CLICK PAUSE 1: ${Calendar.getInstance().time}")
                     FeatureMusicPlayerManager.pause(this, AudioQuranService::class.java)
                 }
 
                 MusicPlayerState.PAUSED -> {
-                    println("MASUK_ CLICK PLAY 1: ${Calendar.getInstance().time}")
                     FeatureMusicPlayerManager.resume(this, AudioQuranService::class.java)
                 }
 

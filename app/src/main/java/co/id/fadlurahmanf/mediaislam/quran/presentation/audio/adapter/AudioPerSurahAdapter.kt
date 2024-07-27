@@ -35,35 +35,48 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyItemRangeInserted(0, list.size)
     }
 
-    private var expandedItemBySurahNo: Int? = null
-    private fun setExpandedItem(surahNo: Int) {
-        if (expandedItemBySurahNo != null) {
+    private var currentPlayingSurahNo: Int? = null
+    private fun onClickedPlayIcon(surahNo: Int, audio: AudioPerSurahModel) {
+        resetIconItemIsPlayingIcon()
+
+        if (currentPlayingSurahNo == surahNo) {
+            callBack?.onPauseClicked(audio)
+            return
+        }
+
+        setIconItemPlaying(surahNo)
+        callBack?.onPlayClicked(audio)
+    }
+
+    fun resetIconItemIsPlayingIcon() {
+        if (currentPlayingSurahNo != null) {
             audios.forEachIndexed { index, audioPerSurahModel ->
-                if (audioPerSurahModel.surah.no == expandedItemBySurahNo) {
+                if (audioPerSurahModel.surah.no == currentPlayingSurahNo) {
                     audios[index] = audioPerSurahModel.copy(isExpanded = false)
                 }
             }
             val firstIndex =
-                audios.indexOfFirst { element -> element.surah.no == expandedItemBySurahNo }
+                audios.indexOfFirst { element -> element.surah.no == currentPlayingSurahNo }
             val lastIndex =
-                audios.indexOfLast { element -> element.surah.no == expandedItemBySurahNo }
+                audios.indexOfLast { element -> element.surah.no == currentPlayingSurahNo }
+            notifyItemRangeChanged(firstIndex, lastIndex)
+
+            currentPlayingSurahNo = null
+        }
+    }
+
+    fun setIconItemPlaying(surahNo: Int) {
+        if (currentPlayingSurahNo != surahNo) {
+            currentPlayingSurahNo = surahNo
+            audios.forEachIndexed { index, audioPerSurahModel ->
+                if (audioPerSurahModel.surah.no == surahNo) {
+                    audios[index] = audioPerSurahModel.copy(isExpanded = true)
+                }
+            }
+            val firstIndex = audios.indexOfFirst { element -> element.surah.no == surahNo }
+            val lastIndex = audios.indexOfLast { element -> element.surah.no == surahNo }
             notifyItemRangeChanged(firstIndex, lastIndex)
         }
-
-        if (expandedItemBySurahNo == surahNo) {
-            expandedItemBySurahNo = null
-            return
-        }
-
-        expandedItemBySurahNo = surahNo
-        audios.forEachIndexed { index, audioPerSurahModel ->
-            if (audioPerSurahModel.surah.no == surahNo) {
-                audios[index] = audioPerSurahModel.copy(isExpanded = true)
-            }
-        }
-        val firstIndex = audios.indexOfFirst { element -> element.surah.no == surahNo }
-        val lastIndex = audios.indexOfLast { element -> element.surah.no == surahNo }
-        notifyItemRangeChanged(firstIndex, lastIndex)
     }
 
     inner class SurahViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -74,10 +87,10 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val isPlayingIcon: ImageView = view.findViewById(R.id.iv_expand_icon)
 
         init {
-//            view.setOnClickListener {
-//                val audio = audios[absoluteAdapterPosition]
-//                setExpandedItem(audio.surah.no)
-//            }
+            view.setOnClickListener {
+                val audio = audios[absoluteAdapterPosition]
+                onClickedPlayIcon(audio.surah.no, audio)
+            }
         }
     }
 
@@ -85,12 +98,6 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val picture: ImageView = view.findViewById(R.id.iv_qari)
         val name: TextView = view.findViewById(R.id.tv_qari_name)
         val main: ConstraintLayout = view.findViewById(R.id.main)
-
-        init {
-            view.setOnClickListener {
-                callBack?.onClicked(audios[absoluteAdapterPosition])
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -119,11 +126,11 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             @DrawableRes
             val iconIsPlayingDrawable: Int = when (audio.isExpanded) {
                 true -> {
-                    co.id.fadlurahmanfdev.kotlin_feature_media_player.R.drawable.round_pause_24
+                    R.drawable.round_pause_24
                 }
 
                 false -> {
-                    co.id.fadlurahmanfdev.kotlin_feature_media_player.R.drawable.round_play_arrow_24
+                    R.drawable.round_play_arrow_24
                 }
             }
             mHolder.isPlayingIcon.setImageDrawable(
@@ -148,6 +155,7 @@ class AudioPerSurahAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemViewType(position: Int): Int = audios[position].type
 
     interface CallBack {
-        fun onClicked(audio: AudioPerSurahModel)
+        fun onPlayClicked(audio: AudioPerSurahModel)
+        fun onPauseClicked(audio: AudioPerSurahModel)
     }
 }

@@ -28,6 +28,7 @@ class ListSurahActivity :
             putString(Param.VALUE, ListSurahActivity::class.java.simpleName)
         })
         setAppearanceLightStatusBar(false)
+        setOnApplyWindowInsetsListener(binding.main)
         initAppBar()
         initAdapter()
         initObserver()
