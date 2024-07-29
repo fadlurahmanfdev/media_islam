@@ -143,6 +143,9 @@ dependencies {
     // network
     implementation("com.github.fadlurahmanfdev:kotlin_feature_network:v0.0.5-beta")
 
+    // alarm
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_alarm:v0.0.11-beta")
+
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-analytics")
@@ -159,7 +162,7 @@ dependencies {
     implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.9-beta")
 
     // media player
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.8")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.10-beta")
 
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")

@@ -15,6 +15,7 @@ import co.id.fadlurahmanf.mediaislam.databinding.ActivityAlarmBinding
 import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.PrayersTimeModel
 import co.id.fadlurahmanf.mediaislam.main.domain.receiver.AlarmReceiver
+import co.id.fadlurahmanfdev.kotlin_feature_alarm.domain.receiver.FeatureAlarmReceiver
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -70,7 +71,6 @@ class AlarmActivity : BaseMainActivity<ActivityAlarmBinding>(ActivityAlarmBindin
     private fun initAction() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         binding.itemDhuhr.switchAlarm.setOnCheckedChangeListener { _, checked ->
-            println("MASUK_ CHECKED: $checked")
             if (checked) {
                 scheduleAlarm()
             }
@@ -82,22 +82,20 @@ class AlarmActivity : BaseMainActivity<ActivityAlarmBinding>(ActivityAlarmBindin
             add(Calendar.SECOND, 10)
         }
 
-        val pendingIntent = AlarmReceiver.getPendingIntent(this)
+        val pendingIntent =
+            FeatureAlarmReceiver.getPendingIntentSetAlarm(this, 0, AlarmReceiver::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                println("MASUK_ CAN SCHEDULE EXACT ALARM: ${alarmManager.canScheduleExactAlarms()}")
                 if (alarmManager.canScheduleExactAlarms()) {
-                    alarmManager.setExact(
-                        AlarmManager.RTC, calendar.timeInMillis, pendingIntent
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
                     )
                 }
             } else {
-                println("MASUK_ SCHEDULE EXACT ALARM BELOW API 31")
-                alarmManager.setExact(
-                    AlarmManager.RTC, calendar.timeInMillis, pendingIntent
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
                 )
             }
-
         }
     }
 

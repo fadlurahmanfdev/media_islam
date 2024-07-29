@@ -5,12 +5,12 @@ import android.content.Context
 import android.support.v4.media.session.MediaSessionCompat
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.quran.domain.receiver.AudioQuranReceiver
-import co.id.fadlurahmanfdev.kotlin_feature_media_player.data.MediaNotificationActionModel
+import co.id.fadlurahmanfdev.kotlin_feature_media_player.data.dto.model.MediaNotificationActionModel
+import co.id.fadlurahmanfdev.kotlin_feature_media_player.data.repository.BaseMediaNotificationRepository
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.data.state.AudioNotificationState
-import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.common.BaseMediaNotificationService
 import co.id.fadlurahmanfdev.kotlin_feature_media_player.domain.manager.FeatureMusicPlayerManager
 
-class QuranNotificationRepositoryImpl(context: Context) : BaseMediaNotificationService(context),
+class QuranNotificationRepositoryImpl(context: Context) : BaseMediaNotificationRepository(context),
     QuranNotificationRepository {
 
     companion object {
