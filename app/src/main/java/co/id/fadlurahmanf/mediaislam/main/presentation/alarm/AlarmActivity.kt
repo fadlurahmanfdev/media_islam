@@ -1,13 +1,10 @@
 package co.id.fadlurahmanf.mediaislam.main.presentation.alarm
 
 import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.core.state.AladhanNetworkState
@@ -82,18 +79,30 @@ class AlarmActivity : BaseMainActivity<ActivityAlarmBinding>(ActivityAlarmBindin
             add(Calendar.SECOND, 10)
         }
 
+        val calendar2 = Calendar.getInstance().apply {
+            add(Calendar.SECOND, 20)
+        }
+
         val pendingIntent =
             FeatureAlarmReceiver.getPendingIntentSetAlarm(this, 0, AlarmReceiver::class.java)
+        val pendingIntent2 =
+            FeatureAlarmReceiver.getPendingIntentSetAlarm(this, 1, AlarmReceiver::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 if (alarmManager.canScheduleExactAlarms()) {
                     alarmManager.setExactAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
                     )
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP, calendar2.timeInMillis, pendingIntent2
+                    )
                 }
             } else {
                 alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
+                )
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, calendar2.timeInMillis, pendingIntent2
                 )
             }
         }
