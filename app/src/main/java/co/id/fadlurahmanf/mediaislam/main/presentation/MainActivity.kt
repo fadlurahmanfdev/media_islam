@@ -21,7 +21,6 @@ import co.id.fadlurahmanf.mediaislam.databinding.ActivityMainBinding
 import co.id.fadlurahmanf.mediaislam.main.BaseMainActivity
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.ItemMainMenuModel
 import co.id.fadlurahmanf.mediaislam.main.presentation.adapter.MenuAdapter
-import co.id.fadlurahmanf.mediaislam.main.presentation.alarm.AlarmActivity
 import co.id.fadlurahmanf.mediaislam.quran.data.dto.model.SurahModel
 import co.id.fadlurahmanf.mediaislam.quran.presentation.audio.ListAudioActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.DetailSurahActivity
@@ -74,7 +73,7 @@ class MainActivity :
         }
 
         binding.ivAlarm.setOnClickListener {
-            val intent = Intent(this, AlarmActivity::class.java)
+            val intent = Intent(this, Class.forName("co.id.fadlurahmanf.mediaislam.alarm.presentation.AlarmActivity"))
             startActivity(intent)
         }
 
@@ -142,7 +141,7 @@ class MainActivity :
                             putString(AnalyticParam.MENU, "adhan")
                             putString(AnalyticParam.FROM, "main_menu")
                         })
-                        val intent = Intent(this@MainActivity, AlarmActivity::class.java)
+                        val intent = Intent(this@MainActivity, Class.forName("co.id.fadlurahmanf.mediaislam.alarm.presentation.AlarmActivity"))
                         startActivity(intent)
                     }
                 }

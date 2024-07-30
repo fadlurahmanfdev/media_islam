@@ -1,4 +1,4 @@
-package co.id.fadlurahmanf.mediaislam.main.domain.service
+package co.id.fadlurahmanf.mediaislam.alarm.domain.service
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -10,8 +10,8 @@ import co.id.fadlurahmanf.mediaislam.BuildConfig
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.main.data.repository.AlarmNotificationRepository
 import co.id.fadlurahmanf.mediaislam.main.data.repository.AlarmNotificationRepositoryImpl
-import co.id.fadlurahmanf.mediaislam.main.domain.receiver.AlarmReceiver
-import co.id.fadlurahmanf.mediaislam.main.presentation.alarm.AlarmNotificationActivity
+import co.id.fadlurahmanf.mediaislam.alarm.domain.receiver.AlarmReceiver
+import co.id.fadlurahmanf.mediaislam.alarm.presentation.AlarmNotificationActivity
 import co.id.fadlurahmanfdev.kotlin_feature_alarm.domain.receiver.FeatureAlarmReceiver
 import co.id.fadlurahmanfdev.kotlin_feature_alarm.domain.service.FeatureAlarmService
 import java.util.Calendar

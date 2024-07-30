@@ -1,8 +1,8 @@
-package co.id.fadlurahmanf.mediaislam.main.domain.receiver
+package co.id.fadlurahmanf.mediaislam.alarm.domain.receiver
 
 import android.content.Context
 import android.content.Intent
-import co.id.fadlurahmanf.mediaislam.main.domain.service.AlarmService
+import co.id.fadlurahmanf.mediaislam.alarm.domain.service.AlarmService
 import co.id.fadlurahmanfdev.kotlin_feature_alarm.domain.receiver.FeatureAlarmReceiver
 import co.id.fadlurahmanfdev.kotlin_feature_alarm.domain.service.FeatureAlarmService
 import java.util.Date

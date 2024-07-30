@@ -25,10 +25,10 @@
         android:theme="@style/Theme.MediaIslam"
         tools:targetApi="31">
         <activity
-            android:name=".main.presentation.alarm.AlarmNotificationActivity"
+            android:name=".alarm.presentation.AlarmNotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".main.presentation.alarm.AlarmActivity"
+            android:name=".alarm.presentation.AlarmActivity"
             android:exported="false" />
         <activity
             android:name=".quran.presentation.audio.ListAudioActivity"
@@ -65,7 +65,7 @@
         </activity>
 
         <receiver
-            android:name=".main.domain.receiver.AlarmReceiver"
+            android:name=".alarm.domain.receiver.AlarmReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="co.id.fadlurahmanfdev.kotlin_feature_alarm.ACTION_SET_ALARM" />
@@ -75,7 +75,7 @@
         </receiver>
 
         <service
-            android:name=".main.domain.service.AlarmService"
+            android:name=".alarm.domain.service.AlarmService"
             android:exported="false">
             <intent-filter>
                 <action android:name="co.id.fadlurahmanfdev.kotlin_feature_alarm.ACTION_PLAY_ALARM" />
