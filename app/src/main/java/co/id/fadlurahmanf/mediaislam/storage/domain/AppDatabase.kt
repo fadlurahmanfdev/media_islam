@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import co.id.fadlurahmanf.mediaislam.storage.data.dao.AppEntityDao
 import co.id.fadlurahmanf.mediaislam.storage.data.entity.AppEntity
 import co.id.fadlurahmanf.mediaislam.storage.other.AppDatabaseConstant
+import co.id.fadlurahmanf.mediaislam.storage.other.MIGRATION_1_2
 
 @Database(
     entities = [
@@ -14,11 +15,11 @@ import co.id.fadlurahmanf.mediaislam.storage.other.AppDatabaseConstant
     ], version = AppDatabase.VERSION,
     exportSchema = true
 )
-abstract class AppDatabase:RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun appEntityDao(): AppEntityDao
 
     companion object {
-        const val VERSION = 1
+        const val VERSION = 2
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -29,8 +30,8 @@ abstract class AppDatabase:RoomDatabase() {
                     AppDatabase::class.java,
                     AppDatabaseConstant.APP_DB_NAME
                 )
-                    .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
+                    .addMigrations(MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
                 instance

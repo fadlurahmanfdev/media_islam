@@ -9,4 +9,9 @@ data class AppEntity(
     @PrimaryKey
     val deviceId: String,
     val isFirstInstall: Boolean = true,
+    var isFajrAdhanAlarmActive: Boolean = false,
+    var isDhuhrAdhanAlarmActive: Boolean = false,
+    var isAsrAdhanAlarmActive: Boolean = false,
+    var isMaghribAdhanAlarmActive: Boolean = false,
+    var isIshaAdhanAlarmActive: Boolean = false,
 )
