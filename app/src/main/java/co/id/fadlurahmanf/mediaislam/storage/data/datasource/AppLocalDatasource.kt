@@ -7,6 +7,7 @@ interface AppLocalDatasource {
     fun getIsFirstInstall(): Observable<Boolean>
     fun saveIsNotFirstInstall(deviceId: String): Observable<Unit>
     fun getAlarmPrayerTime(): Observable<AlarmPrayerTimeEntityModel>
+    fun getAlarmPrayerTimeV2(): io.reactivex.Observable<AlarmPrayerTimeEntityModel>
     fun saveAlarmPrayerTime(
         isFajrAdhanActive: Boolean?,
         isDhuhrAdhanActive: Boolean?,

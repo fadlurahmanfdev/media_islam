@@ -6,14 +6,22 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.alarm.BaseAlarmActivity
 import co.id.fadlurahmanf.mediaislam.alarm.data.state.AlarmActivityState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityAlarmBinding
 import co.id.fadlurahmanf.mediaislam.alarm.domain.receiver.AlarmReceiver
+import co.id.fadlurahmanf.mediaislam.alarm.domain.worker.AlarmWorker
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.AlarmPrayerTimeModel
 import co.id.fadlurahmanfdev.kotlin_feature_alarm.domain.receiver.FeatureAlarmReceiver
 import java.util.Calendar
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBinding::inflate) {
@@ -68,13 +76,14 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
     private fun initAction() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         binding.itemFajr.switchAlarm.setOnCheckedChangeListener { _, checked ->
-            viewModel.saveAlarmPrayerTime(
-                isFajrAdhanActive = checked,
-                isDhuhrAdhanActive = null,
-                isAsrAdhanActive = null,
-                isMaghribAdhanActive = null,
-                isIshaAdhanActive = null
-            )
+            scheduleAlarm()
+//            viewModel.saveAlarmPrayerTime(
+//                isFajrAdhanActive = checked,
+//                isDhuhrAdhanActive = null,
+//                isAsrAdhanActive = null,
+//                isMaghribAdhanActive = null,
+//                isIshaAdhanActive = null
+//            )
         }
 
         binding.itemDhuhr.switchAlarm.setOnCheckedChangeListener { _, checked ->
@@ -118,7 +127,30 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
         }
     }
 
+    lateinit var workManager: WorkManager
+
     private fun scheduleAlarm() {
+        if (!::workManager.isInitialized) {
+            workManager = WorkManager.getInstance(this)
+        }
+        val constraint = Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .build()
+        val alarmWorkRequest = OneTimeWorkRequestBuilder<AlarmWorker>()
+            .addTag("example")
+            .setConstraints(constraint)
+            .build()
+        workManager.enqueueUniqueWork(
+            "exampleUnique",
+            ExistingWorkPolicy.REPLACE,
+            alarmWorkRequest
+        )
+
+        workManager.getWorkInfosForUniqueWorkLiveData("exampleUnique").observe(this) { workInfo ->
+            println("MASUK_ LISTEN -> ${workInfo.size}")
+            println("MASUK_ LISTEN -> ${workInfo.first().state}")
+        }
+
 //        val calendar = Calendar.getInstance().apply {
 //            add(Calendar.SECOND, 10)
 //        }

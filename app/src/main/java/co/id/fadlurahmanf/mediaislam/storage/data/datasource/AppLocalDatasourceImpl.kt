@@ -18,6 +18,16 @@ class AppLocalDatasourceImpl(
         }
     }
 
+    private fun getAppEntityV2(): io.reactivex.Observable<AppEntity> {
+        return appDao.getAllV2().toObservable().map { entities ->
+            if (entities.isEmpty()) {
+                throw Exception()
+            }
+            val entity = entities.first()
+            return@map entity
+        }
+    }
+
     override fun getIsFirstInstall(): Observable<Boolean> {
         return appDao.getAll().toObservable().map { entities ->
             if (entities.isEmpty()) {
@@ -67,6 +77,18 @@ class AppLocalDatasourceImpl(
                 isIshaAdhanAlarmActive = isIshaAdhanActive ?: entity.isIshaAdhanAlarmActive,
             )
             return@map appDao.update(newEntity)
+        }
+    }
+
+    override fun getAlarmPrayerTimeV2(): io.reactivex.Observable<AlarmPrayerTimeEntityModel> {
+        return getAppEntityV2().map { entity ->
+            return@map AlarmPrayerTimeEntityModel(
+                isFajrAdhanAlarmActive = entity.isFajrAdhanAlarmActive,
+                isDhuhrAdhanAlarmActive = entity.isDhuhrAdhanAlarmActive,
+                isAsrAdhanAlarmActive = entity.isAsrAdhanAlarmActive,
+                isMaghribAdhanAlarmActive = entity.isMaghribAdhanAlarmActive,
+                isIshaAdhanAlarmActive = entity.isIshaAdhanAlarmActive,
+            )
         }
     }
 }
