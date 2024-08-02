@@ -2,31 +2,28 @@ package co.id.fadlurahmanf.mediaislam.alarm.presentation
 
 import android.app.AlarmManager
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.alarm.BaseAlarmActivity
 import co.id.fadlurahmanf.mediaislam.alarm.data.state.AlarmActivityState
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityAlarmBinding
-import co.id.fadlurahmanf.mediaislam.alarm.domain.receiver.AlarmReceiver
-import co.id.fadlurahmanf.mediaislam.alarm.domain.worker.AlarmWorker
+import co.id.fadlurahmanf.mediaislam.alarm.domain.worker.ScheduleAlarmWorker
+import co.id.fadlurahmanf.mediaislam.core.enums.PrayerTimeType
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.AlarmPrayerTimeModel
-import co.id.fadlurahmanfdev.kotlin_feature_alarm.domain.receiver.FeatureAlarmReceiver
-import java.util.Calendar
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBinding::inflate) {
     @Inject
     lateinit var viewModel: AlarmViewModel
+
+    lateinit var alarmPrayerTimeModel: AlarmPrayerTimeModel
 
     override fun onBaseAlarmInjectActivity() {
         component.inject(this)
@@ -61,7 +58,20 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
                     binding.layoutLoading.root.visibility = View.GONE
                     binding.llSuccess.visibility = View.VISIBLE
 
+                    alarmPrayerTimeModel = state.data
                     setPrayerTime(state.data)
+                }
+
+                else -> {
+
+                }
+            }
+        }
+
+        viewModel.prayerTimeEntityModelLive.observe(this) { state ->
+            when (state) {
+                is AlarmActivityState.SUCCESS -> {
+//                    scheduleAlarm()
                 }
 
                 else -> {
@@ -76,14 +86,13 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
     private fun initAction() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         binding.itemFajr.switchAlarm.setOnCheckedChangeListener { _, checked ->
-            scheduleAlarm()
-//            viewModel.saveAlarmPrayerTime(
-//                isFajrAdhanActive = checked,
-//                isDhuhrAdhanActive = null,
-//                isAsrAdhanActive = null,
-//                isMaghribAdhanActive = null,
-//                isIshaAdhanActive = null
-//            )
+            viewModel.saveAlarmPrayerTime(
+                isFajrAdhanActive = checked,
+                isDhuhrAdhanActive = null,
+                isAsrAdhanActive = null,
+                isMaghribAdhanActive = null,
+                isIshaAdhanActive = null
+            )
         }
 
         binding.itemDhuhr.switchAlarm.setOnCheckedChangeListener { _, checked ->
@@ -114,6 +123,17 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
                 isMaghribAdhanActive = checked,
                 isIshaAdhanActive = null
             )
+
+            if (checked) {
+                scheduleAlarmByType(
+                    PrayerTimeType.MAGHRIB,
+                    prayerDate = alarmPrayerTimeModel.maghrib.date,
+                    prayerTime = alarmPrayerTimeModel.maghrib.time,
+                    prayerDateTime = alarmPrayerTimeModel.maghrib.dateTime,
+                )
+            } else {
+                cancelWorkByPrayerTime(PrayerTimeType.MAGHRIB)
+            }
         }
 
         binding.itemIsha.switchAlarm.setOnCheckedChangeListener { _, checked ->
@@ -127,29 +147,48 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
         }
     }
 
-    lateinit var workManager: WorkManager
-
-    private fun scheduleAlarm() {
+    private lateinit var workManager: WorkManager
+    private fun scheduleAlarmByType(
+        type: PrayerTimeType,
+        prayerDate: String,
+        prayerTime: String,
+        prayerDateTime: String
+    ) {
         if (!::workManager.isInitialized) {
             workManager = WorkManager.getInstance(this)
         }
+        val uniqueWorkName = getUniqueWorkByPrayerTime(type)
         val constraint = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
             .build()
-        val alarmWorkRequest = OneTimeWorkRequestBuilder<AlarmWorker>()
-            .addTag("example")
+        val alarmWorkRequest = OneTimeWorkRequestBuilder<ScheduleAlarmWorker>()
+            .addTag("adhan")
+            .setInputData(
+                workDataOf(
+                    ScheduleAlarmWorker.PARAM_PRAYER_TIME_TYPE to type.name,
+                    ScheduleAlarmWorker.PARAM_CURRENT_PRAYER_DATE to prayerDate,
+                    ScheduleAlarmWorker.PARAM_CURRENT_PRAYER_TIME to prayerTime,
+                    ScheduleAlarmWorker.PARAM_CURRENT_PRAYER_DATE_TIME to prayerDateTime,
+                    ScheduleAlarmWorker.PARAM_LATITUDE to alarmPrayerTimeModel.latitude,
+                    ScheduleAlarmWorker.PARAM_LONGITUDE to alarmPrayerTimeModel.longitude,
+                )
+            )
             .setConstraints(constraint)
             .build()
         workManager.enqueueUniqueWork(
-            "exampleUnique",
+            uniqueWorkName,
             ExistingWorkPolicy.REPLACE,
             alarmWorkRequest
         )
 
-        workManager.getWorkInfosForUniqueWorkLiveData("exampleUnique").observe(this) { workInfo ->
-            println("MASUK_ LISTEN -> ${workInfo.size}")
-            println("MASUK_ LISTEN -> ${workInfo.first().state}")
-        }
+        workManager.getWorkInfosForUniqueWorkLiveData(uniqueWorkName)
+            .observe(this) { workInfo ->
+                println("MASUK_ LISTEN SIZE -> ${workInfo.size}")
+                if (workInfo.isNotEmpty()) {
+                    println("MASUK_ LISTEN STATE -> ${workInfo.first().state}")
+                    println("MASUK_ LISTEN OUTPUT -> ${workInfo.first().outputData}")
+                }
+            }
 
 //        val calendar = Calendar.getInstance().apply {
 //            add(Calendar.SECOND, 10)
@@ -184,6 +223,25 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
 //        }
     }
 
+
+    private fun cancelWorkByPrayerTime(type: PrayerTimeType) {
+        if (!::workManager.isInitialized) {
+            workManager = WorkManager.getInstance(this)
+        }
+        workManager.cancelUniqueWork(getUniqueWorkByPrayerTime(type))
+    }
+
+    private fun getUniqueWorkByPrayerTime(type: PrayerTimeType): String {
+        return when (type) {
+            PrayerTimeType.FAJR -> "fajrAlarm"
+            PrayerTimeType.DHUHR -> "dhuhrAlarm"
+            PrayerTimeType.ASR -> "asrAlarm"
+            PrayerTimeType.MAGHRIB -> "maghribAlarm"
+            PrayerTimeType.ISHA -> "ishaAlarm"
+        }
+    }
+
+
     private fun setPrayerTime(data: AlarmPrayerTimeModel) {
         binding.itemFajr.ivIconPrayer.setImageDrawable(
             ContextCompat.getDrawable(
@@ -192,7 +250,7 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             )
         )
         binding.itemFajr.tvPrayerTimeType.text = "Subuh"
-        binding.itemFajr.tvPrayerTime.text = data.fajr.time
+        binding.itemFajr.tvPrayerTime.text = data.fajr.readableTime
         binding.itemFajr.switchAlarm.isChecked = data.fajr.isAlarmActive
 
         binding.itemDhuhr.ivIconPrayer.setImageDrawable(
@@ -202,7 +260,7 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             )
         )
         binding.itemDhuhr.tvPrayerTimeType.text = "Zuhur"
-        binding.itemDhuhr.tvPrayerTime.text = data.dhuhr.time
+        binding.itemDhuhr.tvPrayerTime.text = data.dhuhr.readableTime
         binding.itemDhuhr.switchAlarm.isChecked = data.dhuhr.isAlarmActive
 
         binding.itemAsr.ivIconPrayer.setImageDrawable(
@@ -212,7 +270,7 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             )
         )
         binding.itemAsr.tvPrayerTimeType.text = "Ashar"
-        binding.itemAsr.tvPrayerTime.text = data.asr.time
+        binding.itemAsr.tvPrayerTime.text = data.asr.readableTime
         binding.itemAsr.switchAlarm.isChecked = data.asr.isAlarmActive
 
         binding.itemMaghrib.ivIconPrayer.setImageDrawable(
@@ -222,7 +280,7 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             )
         )
         binding.itemMaghrib.tvPrayerTimeType.text = "Maghrib"
-        binding.itemMaghrib.tvPrayerTime.text = data.maghrib.time
+        binding.itemMaghrib.tvPrayerTime.text = data.maghrib.readableTime
         binding.itemMaghrib.switchAlarm.isChecked = data.maghrib.isAlarmActive
 
         binding.itemIsha.ivIconPrayer.setImageDrawable(
@@ -232,7 +290,7 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             )
         )
         binding.itemIsha.tvPrayerTimeType.text = "Isya"
-        binding.itemIsha.tvPrayerTime.text = data.isha.time
+        binding.itemIsha.tvPrayerTime.text = data.isha.readableTime
         binding.itemIsha.switchAlarm.isChecked = data.isha.isAlarmActive
     }
 

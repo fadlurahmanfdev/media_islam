@@ -16,4 +16,12 @@ interface AladhanAPI {
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
     ): Observable<Response<BaseAladhanResponse<List<PrayersTimeResponse>>>>
+
+    @GET("calendar/{year}/{month}")
+    fun getPrayersTimeV2(
+        @Path("year") year: Int,
+        @Path("month") month: Int,
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+    ): io.reactivex.Observable<Response<BaseAladhanResponse<List<PrayersTimeResponse>>>>
 }

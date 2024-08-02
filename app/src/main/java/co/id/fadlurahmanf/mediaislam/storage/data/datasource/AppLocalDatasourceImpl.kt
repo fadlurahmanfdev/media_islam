@@ -79,16 +79,4 @@ class AppLocalDatasourceImpl(
             return@map appDao.update(newEntity)
         }
     }
-
-    override fun getAlarmPrayerTimeV2(): io.reactivex.Observable<AlarmPrayerTimeEntityModel> {
-        return getAppEntityV2().map { entity ->
-            return@map AlarmPrayerTimeEntityModel(
-                isFajrAdhanAlarmActive = entity.isFajrAdhanAlarmActive,
-                isDhuhrAdhanAlarmActive = entity.isDhuhrAdhanAlarmActive,
-                isAsrAdhanAlarmActive = entity.isAsrAdhanAlarmActive,
-                isMaghribAdhanAlarmActive = entity.isMaghribAdhanAlarmActive,
-                isIshaAdhanAlarmActive = entity.isIshaAdhanAlarmActive,
-            )
-        }
-    }
 }

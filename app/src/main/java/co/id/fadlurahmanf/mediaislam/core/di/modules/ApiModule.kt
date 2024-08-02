@@ -6,6 +6,7 @@ import co.id.fadlurahmanf.mediaislam.core.network.api.AladhanAPI
 import co.id.fadlurahmanf.mediaislam.core.network.api.ArtikeIslamAPI
 import co.id.fadlurahmanf.mediaislam.core.network.api.EQuranAPI
 import co.id.fadlurahmanf.mediaislam.core.network.interceptor.OfflineCacheInterceptor
+import co.id.fadlurahmanf.mediaislam.core.network.other.NetworkUtility
 import co.id.fadlurahmanfdev.kotlin_feature_network.data.repository.FeatureNetworkRepository
 import co.id.fadlurahmanfdev.kotlin_feature_network.data.repository.FeatureNetworkRepositoryImpl
 import dagger.Module
@@ -49,21 +50,10 @@ class ApiModule {
     @Provides
     fun provideAladhanNetwork(
         context: Context,
-        featureNetworkRepository: FeatureNetworkRepository,
     ): AladhanAPI {
-        return featureNetworkRepository.createAPI(
-            baseUrl = BuildConfig.ALADHAN_BASE_URL,
-            callAdapterFactory = RxJava3CallAdapterFactory.create(),
-            okHttpClient = featureNetworkRepository.getOkHttpClientBuilder(
-                useLoggingInterceptor = BuildConfig.FLAVOR == "dev"
-            ).apply {
-                if (BuildConfig.FLAVOR == "dev") {
-                    addInterceptor(
-                        featureNetworkRepository.getChuckerInterceptorBuilder(context).build()
-                    )
-                }
-            }.build(),
-            clazz = AladhanAPI::class.java,
+        return NetworkUtility.provideAladhanNetwork(
+            context,
+            callAdapterFactory = RxJava3CallAdapterFactory.create()
         )
     }
 

@@ -10,4 +10,11 @@ interface AladhanDatasourceRepository {
         latitude: Double,
         longitude: Double,
     ): Observable<List<PrayersTimeResponse>>
+
+    fun getPrayersTimeV2(
+        year: Int,
+        month: Int,
+        latitude: Double,
+        longitude: Double,
+    ): io.reactivex.Observable<List<PrayersTimeResponse>>
 }

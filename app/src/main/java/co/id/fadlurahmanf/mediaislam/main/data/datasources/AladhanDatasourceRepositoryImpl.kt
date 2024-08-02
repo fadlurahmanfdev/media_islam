@@ -29,4 +29,28 @@ class AladhanDatasourceRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getPrayersTimeV2(
+        year: Int,
+        month: Int,
+        latitude: Double,
+        longitude: Double
+    ): io.reactivex.Observable<List<PrayersTimeResponse>> {
+        return aladhanAPI.getPrayersTimeV2(
+            year = year,
+            month = month,
+            latitude = latitude,
+            longitude = longitude
+        ).doOnNext { element ->
+            if (!element.isSuccessful) {
+                throw EQuranException(
+                    message = element.errorBody()?.string() ?: "",
+                    httpCode = element.code(),
+                    enumCode = "GET_DETAIL_00"
+                )
+            }
+        }.map { element ->
+            element.body()?.data!!
+        }
+    }
+
 }

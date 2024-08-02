@@ -146,6 +146,7 @@ dependencies {
 
     // network
     implementation("com.github.fadlurahmanfdev:kotlin_feature_network:v0.0.5-beta")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.11.0")
 
     // alarm
     implementation("com.github.fadlurahmanfdev:kotlin_feature_alarm:v0.0.11-beta")
