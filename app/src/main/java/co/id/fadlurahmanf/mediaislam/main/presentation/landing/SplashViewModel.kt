@@ -1,5 +1,6 @@
 package co.id.fadlurahmanf.mediaislam.main.presentation.landing
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import co.id.fadlurahmanf.mediaislam.core.domain.usecase.LandingUseCase
@@ -32,9 +33,9 @@ class SplashViewModel @Inject constructor(
             ))
     }
 
-    fun setNotFirstTimeInstaller() {
+    fun setNotFirstTimeInstaller(context: Context) {
         _canGoToMainPageLive.value = AppState.LOADING
-        baseDisposable.add(landingUseCase.saveIsNotFirstInstall()
+        baseDisposable.add(landingUseCase.saveIsNotFirstInstall(context)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(

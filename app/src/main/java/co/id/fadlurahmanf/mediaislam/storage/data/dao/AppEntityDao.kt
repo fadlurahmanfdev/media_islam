@@ -20,6 +20,9 @@ interface AppEntityDao {
     @Query("SELECT * FROM ${AppDatabaseConstant.APP_ENTITY_TABLE_NAME}")
     fun getAll(): Single<List<AppEntity>>
 
+    @Query("SELECT * FROM ${AppDatabaseConstant.APP_ENTITY_TABLE_NAME}")
+    fun getAllV2(): io.reactivex.Single<List<AppEntity>>
+
     @Query("SELECT isFirstInstall FROM ${AppDatabaseConstant.APP_ENTITY_TABLE_NAME}")
     fun getIsFirstInstall(): Single<List<Boolean>>
 

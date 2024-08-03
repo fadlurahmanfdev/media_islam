@@ -8,6 +8,7 @@ import co.id.fadlurahmanf.mediaislam.main.domain.usecase.MenuUseCase
 import co.id.fadlurahmanf.mediaislam.main.domain.usecase.MenuUseCaseImpl
 import co.id.fadlurahmanf.mediaislam.storage.data.datasource.AppLocalDatasource
 import co.id.fadlurahmanfdev.kotlin_core_platform.data.repository.CorePlatformLocationRepository
+import co.id.fadlurahmanfdev.kotlin_core_platform.data.repository.CorePlatformRepository
 import dagger.Module
 import dagger.Provides
 
@@ -16,10 +17,12 @@ class MainModule {
     @Provides
     fun provideLandingUseCase(
         appLocalDatasource: AppLocalDatasource,
-        corePlatformLocationRepository: CorePlatformLocationRepository
+        corePlatformRepository: CorePlatformRepository,
+        corePlatformLocationRepository: CorePlatformLocationRepository,
     ): LandingUseCase {
         return LandingUseCaseImpl(
             appLocalDatasource = appLocalDatasource,
+            corePlatformRepository = corePlatformRepository,
             corePlatformLocationRepository = corePlatformLocationRepository
         )
     }

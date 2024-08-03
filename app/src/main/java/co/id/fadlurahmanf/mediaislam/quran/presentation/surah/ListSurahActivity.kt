@@ -44,7 +44,9 @@ class ListSurahActivity :
     }
 
     private fun initAppBar() {
-        binding.toolbar.ivLeading.visibility = View.INVISIBLE
+        binding.toolbar.ivLeading.setOnClickListener {
+            finish()
+        }
         binding.toolbar.tvTitle.text = "Daftar Surat"
         binding.toolbar.tvTitle.visibility = View.VISIBLE
         binding.toolbar.ivAction.visibility = View.INVISIBLE

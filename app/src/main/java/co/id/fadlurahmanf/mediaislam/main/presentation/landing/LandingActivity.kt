@@ -24,7 +24,7 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
 
     private val launcherLocationService =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-            viewModel.setNotFirstTimeInstaller()
+            viewModel.setNotFirstTimeInstaller(this)
         }
 
     private fun goToMainPage() {
@@ -71,7 +71,7 @@ class LandingActivity : BaseMainActivity<ActivityLandingBinding>(ActivityLanding
     }
 
     override fun onLocationServiceEnabled(enabled: Boolean) {
-        viewModel.setNotFirstTimeInstaller()
+        viewModel.setNotFirstTimeInstaller(this)
     }
 
     override fun onShouldShowPromptServiceDialog(intentSenderRequest: IntentSenderRequest) {

@@ -1,6 +1,7 @@
 package co.id.fadlurahmanf.mediaislam.storage
 
 import android.content.Context
+import co.id.fadlurahmanf.mediaislam.storage.data.dao.AdhanAlarmEntityDao
 import co.id.fadlurahmanf.mediaislam.storage.data.dao.AppEntityDao
 import co.id.fadlurahmanf.mediaislam.storage.data.datasource.AppLocalDatasource
 import co.id.fadlurahmanf.mediaislam.storage.data.datasource.AppLocalDatasourceImpl
@@ -16,7 +17,14 @@ class StorageModule {
     }
 
     @Provides
-    fun provideAppLocalDatasource(appEntityDao: AppEntityDao): AppLocalDatasource {
+    fun provideAdhanAlarmEntityDao(context: Context): AdhanAlarmEntityDao {
+        return AppDatabase.getDatabase(context).adhanAlarmEntityDao()
+    }
+
+    @Provides
+    fun provideAppLocalDatasource(
+        appEntityDao: AppEntityDao
+    ): AppLocalDatasource {
         return AppLocalDatasourceImpl(appEntityDao)
     }
 }

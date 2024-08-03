@@ -30,12 +30,16 @@ android {
         applicationId = "co.id.fadlurahmanf.mediaislam"
         minSdk = 21
         targetSdk = 34
-        versionCode = 2
-        versionName = "0.0.1 ($versionCode)"
+        versionCode = 4
+        versionName = "0.0.1"
 
         buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/api/\"")
         buildConfigField("String", "ALADHAN_BASE_URL", "\"http://api.aladhan.com/\"")
-        buildConfigField("String", "ARTIKEL_ISLAM_BASE_URL", "\"https://artikel-islam.netlify.app//\"")
+        buildConfigField(
+            "String",
+            "ARTIKEL_ISLAM_BASE_URL",
+            "\"https://artikel-islam.netlify.app//\""
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -141,7 +145,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
     // network
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_network:v0.0.5-beta")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_network:v0.0.7-beta")
+
+    // alarm
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_alarm:v0.0.16-beta")
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
@@ -159,15 +166,21 @@ dependencies {
     implementation("com.github.fadlurahmanfdev:kotlin_core_platform:v0.0.9-beta")
 
     // media player
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.8")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_media_player:v0.0.10-beta")
 
-    val room_version = "2.6.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-rxjava3:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-rxjava2:$roomVersion")
+    implementation("androidx.room:room-rxjava3:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     //paging
-    val paging_version = "3.3.1"
-    implementation("androidx.paging:paging-runtime-ktx:$paging_version")
-    implementation("androidx.paging:paging-rxjava3:$paging_version")
+    val pagingVersion = "3.3.1"
+    implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
+    implementation("androidx.paging:paging-rxjava3:$pagingVersion")
+
+    val workVersion = "2.9.0"
+    implementation("androidx.work:work-rxjava2:$workVersion")
+
+    implementation("com.ncorti:slidetoact:0.11.0")
 }

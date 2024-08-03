@@ -1,6 +1,8 @@
 package co.id.fadlurahmanf.mediaislam.core.di.components
 
 import android.content.Context
+import co.id.fadlurahmanf.mediaislam.alarm.AlarmModule
+import co.id.fadlurahmanf.mediaislam.alarm.AlarmSubComponent
 import co.id.fadlurahmanf.mediaislam.article.ArticleModule
 import co.id.fadlurahmanf.mediaislam.article.ArticleSubComponent
 import co.id.fadlurahmanf.mediaislam.core.di.modules.NetworkModule
@@ -27,6 +29,7 @@ import javax.inject.Singleton
         QuranModule::class,
         MainModule::class,
         ArticleModule::class,
+        AlarmModule::class,
     ]
 )
 interface ApplicationComponent {
@@ -37,5 +40,6 @@ interface ApplicationComponent {
 
     fun quranSubComponentFactory(): QuranSubComponent.Factory
     fun mainSubComponentFactory(): MainSubComponent.Factory
+    fun alarmSubComponentFactory(): AlarmSubComponent.Factory
     fun articleSubComponentFactory(): ArticleSubComponent.Factory
 }
