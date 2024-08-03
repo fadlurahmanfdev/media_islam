@@ -322,12 +322,12 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 if (alarmManager.canScheduleExactAlarms()) {
-                    alarmManager.setExactAndAllowWhileIdle(
+                    alarmManager.setExact(
                         AlarmManager.RTC_WAKEUP, timemillis, pendingIntent
                     )
                 }
             } else {
-                alarmManager.setExactAndAllowWhileIdle(
+                alarmManager.setExact(
                     AlarmManager.RTC_WAKEUP, timemillis, pendingIntent
                 )
             }
