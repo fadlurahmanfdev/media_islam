@@ -26,30 +26,45 @@ class MenuUseCaseImpl @Inject constructor(
 
     override fun getMainMenus(): Observable<List<ItemMainMenuModel>> {
         return Observable.create<List<ItemMainMenuModel>> { emitter ->
-            firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
-                val mainMenuString = firebaseRemoteConfig.getString("MAIN_MENU")
-                val rawResponseMainMenus =
-                    Gson().fromJson(mainMenuString, mutableListOf<Map<String, Any>>().javaClass)
-                val mainMenus = arrayListOf<ItemMainMenuModel>()
-                rawResponseMainMenus.filter { element ->
-                    val itemMenuResponse = Gson().fromJson<ItemMenuResponse>(element.toString(), ItemMenuResponse::class.java)
-                    itemMenuResponse.visible
-                }.forEach { element ->
-                    val itemMenuResponse = Gson().fromJson<ItemMenuResponse>(element.toString(), ItemMenuResponse::class.java)
-                    mainMenus.add(
-                        ItemMainMenuModel(
-                            id = itemMenuResponse.id ?: "-",
-                            title = itemMenuResponse.title ?: "-",
-                            icon = getIconBasedOnId(itemMenuResponse.id ?: "-"),
-                            active = itemMenuResponse.active,
-                        ),
-                    )
+            firebaseRemoteConfig.reset().addOnSuccessListener {
+                println("INIT SUCCESS RESET")
+                firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
+                    val mainMenuString = firebaseRemoteConfig.getString("MAIN_MENU")
+                    println("MASUK mainMenuString: $mainMenuString")
+                    val rawResponseMainMenus =
+                        Gson().fromJson(mainMenuString, mutableListOf<Map<String, Any>>().javaClass)
+                    val mainMenus = arrayListOf<ItemMainMenuModel>()
+                    println("MASUK rawResponseMainMenus: $rawResponseMainMenus")
+                    rawResponseMainMenus.filter { element ->
+                        println("MASUK ELEMENT: $element")
+                        val itemMenuResponse = Gson().fromJson<ItemMenuResponse>(Gson().toJsonTree(element), ItemMenuResponse::class.java)
+                        itemMenuResponse.visible
+                    }.forEach { element ->
+                        val itemMenuResponse = Gson().fromJson<ItemMenuResponse>(Gson().toJsonTree(element), ItemMenuResponse::class.java)
+                        mainMenus.add(
+                            ItemMainMenuModel(
+                                id = itemMenuResponse.id ?: "-",
+                                title = itemMenuResponse.title ?: "-",
+                                icon = getIconBasedOnId(itemMenuResponse.id ?: "-"),
+                                active = itemMenuResponse.active,
+                            ),
+                        )
+                    }
+                    emitter.onNext(mainMenus.toList())
+                    println("SUCCESS ON NEXT FETCH ACTIVATE")
+                }.addOnFailureListener {
+                    println("ERROR FETCH ACTIVATE")
+//                    emitter.onError(it)
+                }.addOnCompleteListener {
+                    println("COMPLETE FETCH ACTIVATE")
+//                    emitter.onComplete()
                 }
-                emitter.onNext(mainMenus.toList())
             }.addOnFailureListener {
-                emitter.onError(it)
+                println("ERROR RESET")
+//                emitter.onError(it)
             }.addOnCompleteListener {
-                emitter.onComplete()
+                println("COMPLETE RESET")
+//                emitter.onComplete()
             }
         }
     }

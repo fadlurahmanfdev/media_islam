@@ -108,12 +108,6 @@ android {
             }
         }
 
-        create("staging") {
-            dimension = "environment"
-            applicationIdSuffix = ".staging"
-            resValue("string", "app_name", "Media Islam Staging")
-        }
-
         create("prod") {
             dimension = "environment"
             resValue("string", "app_name", "Media Islam")
