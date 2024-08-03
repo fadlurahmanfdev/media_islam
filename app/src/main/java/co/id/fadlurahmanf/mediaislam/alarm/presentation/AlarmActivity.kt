@@ -3,20 +3,25 @@ package co.id.fadlurahmanf.mediaislam.alarm.presentation
 import android.app.AlarmManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.alarm.BaseAlarmActivity
 import co.id.fadlurahmanf.mediaislam.alarm.data.state.AlarmActivityState
+import co.id.fadlurahmanf.mediaislam.alarm.domain.worker.CancelAlarmWorker
 import co.id.fadlurahmanf.mediaislam.databinding.ActivityAlarmBinding
 import co.id.fadlurahmanf.mediaislam.alarm.domain.worker.ScheduleAlarmWorker
 import co.id.fadlurahmanf.mediaislam.core.enums.PrayerTimeType
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.AlarmPrayerTimeModel
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBinding::inflate) {
@@ -85,6 +90,7 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
 
     private fun initAction() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
         binding.itemFajr.switchAlarm.setOnCheckedChangeListener { _, checked ->
             viewModel.saveAlarmPrayerTime(
                 isFajrAdhanActive = checked,
@@ -105,34 +111,38 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             )
         }
 
-        binding.itemAsr.switchAlarm.setOnCheckedChangeListener { _, checked ->
-            viewModel.saveAlarmPrayerTime(
-                isFajrAdhanActive = null,
-                isDhuhrAdhanActive = null,
-                isAsrAdhanActive = checked,
-                isMaghribAdhanActive = null,
-                isIshaAdhanActive = null
-            )
+        binding.itemAsr.switchAlarm.setOnCheckedChangeListener { button, checked ->
+            if (button.isPressed) {
+                viewModel.saveAlarmPrayerTime(
+                    isFajrAdhanActive = null,
+                    isDhuhrAdhanActive = null,
+                    isAsrAdhanActive = checked,
+                    isMaghribAdhanActive = null,
+                    isIshaAdhanActive = null
+                )
+            }
         }
 
-        binding.itemMaghrib.switchAlarm.setOnCheckedChangeListener { _, checked ->
-            viewModel.saveAlarmPrayerTime(
-                isFajrAdhanActive = null,
-                isDhuhrAdhanActive = null,
-                isAsrAdhanActive = null,
-                isMaghribAdhanActive = checked,
-                isIshaAdhanActive = null
-            )
-
-            if (checked) {
-                scheduleAlarmByType(
-                    PrayerTimeType.MAGHRIB,
-                    prayerDate = alarmPrayerTimeModel.maghrib.date,
-                    prayerTime = alarmPrayerTimeModel.maghrib.time,
-                    prayerDateTime = alarmPrayerTimeModel.maghrib.dateTime,
+        binding.itemMaghrib.switchAlarm.setOnCheckedChangeListener { button, checked ->
+            if (button.isPressed) {
+                viewModel.saveAlarmPrayerTime(
+                    isFajrAdhanActive = null,
+                    isDhuhrAdhanActive = null,
+                    isAsrAdhanActive = null,
+                    isMaghribAdhanActive = checked,
+                    isIshaAdhanActive = null
                 )
-            } else {
-                cancelWorkByPrayerTime(PrayerTimeType.MAGHRIB)
+
+                if (checked) {
+                    scheduleAlarmByPrayerTimeType(
+                        PrayerTimeType.MAGHRIB,
+                        prayerDate = alarmPrayerTimeModel.maghrib.date,
+                        prayerTime = alarmPrayerTimeModel.maghrib.time,
+                        prayerDateTime = alarmPrayerTimeModel.maghrib.dateTime,
+                    )
+                } else {
+                    cancelAlarmByPrayerTimeType(PrayerTimeType.MAGHRIB)
+                }
             }
         }
 
@@ -148,7 +158,7 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
     }
 
     private lateinit var workManager: WorkManager
-    private fun scheduleAlarmByType(
+    private fun scheduleAlarmByPrayerTimeType(
         type: PrayerTimeType,
         prayerDate: String,
         prayerTime: String,
@@ -157,12 +167,12 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
         if (!::workManager.isInitialized) {
             workManager = WorkManager.getInstance(this)
         }
-        val uniqueWorkName = getUniqueWorkByPrayerTime(type)
+        val uniqueWorkName = getUniqueWorkByPrayerTimeType(type)
         val constraint = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
             .build()
-        val alarmWorkRequest = OneTimeWorkRequestBuilder<ScheduleAlarmWorker>()
-            .addTag("adhan")
+        val alarmWorkRequest = PeriodicWorkRequestBuilder<ScheduleAlarmWorker>(1, TimeUnit.HOURS)
+            .addTag("scheduleAlarm")
             .setInputData(
                 workDataOf(
                     ScheduleAlarmWorker.PARAM_PRAYER_TIME_TYPE to type.name,
@@ -175,9 +185,9 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             )
             .setConstraints(constraint)
             .build()
-        workManager.enqueueUniqueWork(
+        workManager.enqueueUniquePeriodicWork(
             uniqueWorkName,
-            ExistingWorkPolicy.REPLACE,
+            ExistingPeriodicWorkPolicy.UPDATE,
             alarmWorkRequest
         )
 
@@ -189,49 +199,50 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
                     println("MASUK_ LISTEN OUTPUT -> ${workInfo.first().outputData}")
                 }
             }
-
-//        val calendar = Calendar.getInstance().apply {
-//            add(Calendar.SECOND, 10)
-//        }
-//
-//        val calendar2 = Calendar.getInstance().apply {
-//            add(Calendar.SECOND, 20)
-//        }
-//
-//        val pendingIntent =
-//            FeatureAlarmReceiver.getPendingIntentSetAlarm(this, 0, AlarmReceiver::class.java)
-//        val pendingIntent2 =
-//            FeatureAlarmReceiver.getPendingIntentSetAlarm(this, 1, AlarmReceiver::class.java)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                if (alarmManager.canScheduleExactAlarms()) {
-//                    alarmManager.setExactAndAllowWhileIdle(
-//                        AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
-//                    )
-//                    alarmManager.setExactAndAllowWhileIdle(
-//                        AlarmManager.RTC_WAKEUP, calendar2.timeInMillis, pendingIntent2
-//                    )
-//                }
-//            } else {
-//                alarmManager.setExactAndAllowWhileIdle(
-//                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent
-//                )
-//                alarmManager.setExactAndAllowWhileIdle(
-//                    AlarmManager.RTC_WAKEUP, calendar2.timeInMillis, pendingIntent2
-//                )
-//            }
-//        }
     }
 
 
-    private fun cancelWorkByPrayerTime(type: PrayerTimeType) {
+    private fun cancelAlarmByPrayerTimeType(type: PrayerTimeType) {
         if (!::workManager.isInitialized) {
             workManager = WorkManager.getInstance(this)
         }
-        workManager.cancelUniqueWork(getUniqueWorkByPrayerTime(type))
+
+        try {
+            val cancelWork = OneTimeWorkRequestBuilder<CancelAlarmWorker>()
+                .addTag("cancelScheduleAlarm")
+                .setInputData(
+                    workDataOf(
+                        ScheduleAlarmWorker.PARAM_PRAYER_TIME_TYPE to type.name,
+                    )
+                )
+                .build()
+            workManager.enqueueUniqueWork(
+                getUniqueWorkCancelPrayerTimeByPrayerTimeType(type),
+                ExistingWorkPolicy.REPLACE,
+                cancelWork
+            )
+        } catch (e: Throwable) {
+            Log.e(AlarmActivity::class.java.simpleName, "cannot cancel alarm by prayer time type")
+        }
+
+        try {
+            workManager.cancelUniqueWork(getUniqueWorkByPrayerTimeType(type))
+        } catch (e: Throwable) {
+            Log.e(AlarmActivity::class.java.simpleName, "cannot cancel work $type by prayerTime")
+        }
     }
 
-    private fun getUniqueWorkByPrayerTime(type: PrayerTimeType): String {
+    private fun getUniqueWorkCancelPrayerTimeByPrayerTimeType(type: PrayerTimeType): String {
+        return when (type) {
+            PrayerTimeType.FAJR -> "cancelFajrAlarm"
+            PrayerTimeType.DHUHR -> "cancelDhuhrAlarm"
+            PrayerTimeType.ASR -> "cancelAsrAlarm"
+            PrayerTimeType.MAGHRIB -> "cancelMaghribAlarm"
+            PrayerTimeType.ISHA -> "cancelIshaAlarm"
+        }
+    }
+
+    private fun getUniqueWorkByPrayerTimeType(type: PrayerTimeType): String {
         return when (type) {
             PrayerTimeType.FAJR -> "fajrAlarm"
             PrayerTimeType.DHUHR -> "dhuhrAlarm"
@@ -240,7 +251,6 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             PrayerTimeType.ISHA -> "ishaAlarm"
         }
     }
-
 
     private fun setPrayerTime(data: AlarmPrayerTimeModel) {
         binding.itemFajr.ivIconPrayer.setImageDrawable(

@@ -14,9 +14,9 @@ data class AdhanAlarmEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     @TypeConverters(PrayerTimeEnumTypeConverter::class)
-    val type: PrayerTimeType? = null,
-    val triggerDate: String? = null,
-    val triggerTime: String? = null,
+    val type: PrayerTimeType,
+    val triggerDate: String,
+    val triggerTime: String,
     @TypeConverters(FullDateTypeConverter::class)
-    val triggerDateTime: Date? = null,
+    val triggerDateTime: Date,
 )

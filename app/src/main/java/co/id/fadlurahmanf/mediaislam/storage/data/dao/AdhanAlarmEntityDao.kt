@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Update
 import co.id.fadlurahmanf.mediaislam.storage.data.entity.AdhanAlarmEntity
 import co.id.fadlurahmanf.mediaislam.storage.other.AppDatabaseConstant
-import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface AdhanAlarmEntityDao {
@@ -27,5 +26,5 @@ interface AdhanAlarmEntityDao {
     fun getAllByTypeAndDate(type: String, date: String): io.reactivex.Single<List<AdhanAlarmEntity>>
 
     @Query("DELETE FROM ${AppDatabaseConstant.ADHAN_ALARM_ENTITY} WHERE type = :type")
-    fun deleteByPrayerType(type: String)
+    fun deleteByPrayerType(type: String): io.reactivex.Single<Int>
 }

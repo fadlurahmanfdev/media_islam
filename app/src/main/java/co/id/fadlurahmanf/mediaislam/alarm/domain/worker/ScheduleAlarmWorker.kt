@@ -2,6 +2,8 @@ package co.id.fadlurahmanf.mediaislam.alarm.domain.worker
 
 import android.app.AlarmManager
 import android.content.Context
+import android.os.Build
+import android.util.Log
 import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -167,6 +169,7 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                     triggerTime = timeSdf.format(triggerDateTime)
                 }
             }
+
             ASR -> {
                 triggerDateTime = sdf.parse(nextPrayer.asr.dateTime)
                 if (triggerDateTime != null) {
@@ -174,6 +177,7 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                     triggerTime = timeSdf.format(triggerDateTime)
                 }
             }
+
             MAGHRIB -> {
                 triggerDateTime = sdf.parse(nextPrayer.maghrib.dateTime)
                 if (triggerDateTime != null) {
@@ -192,8 +196,8 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
         }
         return AdhanAlarmEntity(
             type = prayerTimeType,
-            triggerDate = triggerDate,
-            triggerTime = triggerTime,
+            triggerDate = triggerDate ?: "",
+            triggerTime = triggerTime ?: "",
             triggerDateTime = triggerDateTime
         )
     }
@@ -202,12 +206,21 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
         try {
             initDependencyClass()
             initInputData()
+            Log.d(ScheduleAlarmWorker::class.java.simpleName, "success init data")
 
             if (isNowBeforePrayerTime(currentPrayerDateTime)) {
+                Log.d(
+                    ScheduleAlarmWorker::class.java.simpleName,
+                    "now is before the current prayer time"
+                )
                 return prayerTimeLocalDatasource.isAlarmExistByPrayerTimeTypeAndDate(
-                    prayerTimeType.name,
+                    prayerTimeType,
                     currentPrayerDate
                 ).flatMap { isAlarmExist ->
+                    Log.d(
+                        ScheduleAlarmWorker::class.java.simpleName,
+                        "alarm for $prayerTimeType at $currentPrayerDate is exist -> $isAlarmExist"
+                    )
                     if (!isAlarmExist) {
                         val alarmEntity = AdhanAlarmEntity(
                             type = prayerTimeType,
@@ -216,6 +229,10 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                             triggerDateTime = currentPrayerDateTime
                         )
                         return@flatMap prayerTimeLocalDatasource.insert(alarmEntity).map { result ->
+                            Log.d(
+                                ScheduleAlarmWorker::class.java.simpleName,
+                                "successfully insert entity of $result"
+                            )
                             alarmManager.setExact(
                                 AlarmManager.RTC_WAKEUP,
                                 currentPrayerDateTime.time,
@@ -225,23 +242,32 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                                     AlarmReceiver::class.java,
                                 )
                             )
-                            Result.success()
+                            Result.success(workDataOf("message" to "success set alarm to $currentPrayerDateTime"))
                         }
                     }
                     Single.just(Result.failure(workDataOf("reason" to "alarm for $prayerTimeType at $currentPrayerDate already exist")))
                 }
             }
 
+            Log.d(ScheduleAlarmWorker::class.java.simpleName, "init next date")
             val nextDate = Calendar.getInstance().apply {
                 add(Calendar.DAY_OF_YEAR, 1)
             }.time
             val formattedNextDate =
                 SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(nextDate)
+            Log.d(
+                ScheduleAlarmWorker::class.java.simpleName,
+                "successfully set formatted next date: $formattedNextDate"
+            )
 
             return prayerTimeLocalDatasource.isAlarmExistByPrayerTimeTypeAndDate(
-                prayerTimeType.name,
+                prayerTimeType,
                 formattedNextDate
             ).flatMap { isExist ->
+                Log.d(
+                    ScheduleAlarmWorker::class.java.simpleName,
+                    "alarm for $prayerTimeType at $formattedNextDate is exist -> $isExist"
+                )
                 if (!isExist) {
                     return@flatMap Single.fromObservable(
                         alarmUseCase.getNextPrayerTimeByLatitudeLongitude(
@@ -249,23 +275,30 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                             longitude = longitude
                         )
                     ).flatMap { nextPrayerTime ->
+                        Log.d(
+                            ScheduleAlarmWorker::class.java.simpleName,
+                            "success fetched nextPrayerTime: $nextPrayerTime"
+                        )
                         val alarmEntity = getAdhanAlarmEntityFromNextPrayerTime(
                             type = prayerTimeType,
                             nextPrayerTime
                         )
+                        Log.d(
+                            ScheduleAlarmWorker::class.java.simpleName,
+                            "converted into entity: $alarmEntity"
+                        )
                         prayerTimeLocalDatasource.insert(alarmEntity).map { result ->
-                            result.triggerDateTime?.let { date ->
-                                alarmManager.setExact(
-                                    AlarmManager.RTC_WAKEUP,
-                                    date.time,
-                                    FeatureAlarmReceiver.getPendingIntentSetAlarm(
-                                        context,
-                                        result.id ?: 0,
-                                        AlarmReceiver::class.java,
-                                    )
-                                )
+                            Log.d(
+                                ScheduleAlarmWorker::class.java.simpleName,
+                                "success insert entity of $alarmEntity"
+                            )
+                            var message: String = ""
+                            result.triggerDateTime.let { date ->
+                                message = "success set alarm at $date"
+
+                                setAlarm(date.time, result.id ?: 0)
                             }
-                            Result.success()
+                            Result.success(workDataOf("message" to "set alarm at $message"))
                         }
                     }
                 }
@@ -278,7 +311,24 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
         }
     }
 
-    private fun getAdhanAlarmByPrayerTimeType(type: PrayerTimeType): Single<List<AdhanAlarmEntity>> {
-        return prayerTimeLocalDatasource.getAdhanAlarmEntityByType(type.name)
+    private fun setAlarm(timemillis:Long, requestCode:Int){
+        val pendingIntent = FeatureAlarmReceiver.getPendingIntentSetAlarm(
+            context,
+            requestCode = requestCode,
+            clazz = AlarmReceiver::class.java
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP, timemillis, pendingIntent
+                    )
+                }
+            } else {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, timemillis, pendingIntent
+                )
+            }
+        }
     }
 }
