@@ -7,8 +7,9 @@ import android.content.Context
 interface AlarmNotificationRepository {
     fun getNotification(
         context: Context,
+        title:String,
+        text:String,
         fullScreenIntent: PendingIntent,
-        snoozeIntent: PendingIntent,
         dismissIntent: PendingIntent,
     ): Notification
 }

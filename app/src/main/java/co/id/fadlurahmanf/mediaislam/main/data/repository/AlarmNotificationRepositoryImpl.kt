@@ -1,7 +1,6 @@
 package co.id.fadlurahmanf.mediaislam.main.data.repository
 
 import android.app.Notification
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import androidx.annotation.DrawableRes
@@ -23,8 +22,9 @@ class AlarmNotificationRepositoryImpl : BaseAlarmNotificationRepository(),
 
     override fun getNotification(
         context: Context,
+        title: String,
+        text: String,
         fullScreenIntent: PendingIntent,
-        snoozeIntent: PendingIntent,
         dismissIntent: PendingIntent
     ): Notification {
         createNotificationChannel(
@@ -39,21 +39,17 @@ class AlarmNotificationRepositoryImpl : BaseAlarmNotificationRepository(),
             context,
             channelId = ALARM_NOTIFICATION_CHANNEL_ID,
             icon = ICON_NOTIFICATION,
-            text = "TEXT",
-            title = "TITLE",
+            text = text,
+            title = title,
             fullScreenIntent = fullScreenIntent,
-            dismissAction = FeatureAlarmNotificationAction(
-                icon = R.drawable.round_alarm_off_24,
-                packageName = BuildConfig.APPLICATION_ID,
-                textAction = "Matikan",
-                action = dismissIntent
+            actions = listOf(
+                FeatureAlarmNotificationAction(
+                    icon = R.drawable.round_alarm_off_24,
+                    packageName = BuildConfig.APPLICATION_ID,
+                    textAction = "Matikan",
+                    action = dismissIntent
+                )
             ),
-            snoozeAction = FeatureAlarmNotificationAction(
-                icon = R.drawable.round_snooze_24,
-                packageName = BuildConfig.APPLICATION_ID,
-                textAction = "Tunda",
-                action = snoozeIntent
-            )
         )
 
     }

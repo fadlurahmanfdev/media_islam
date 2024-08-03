@@ -145,11 +145,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
     // network
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_network:v0.0.5-beta")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:2.11.0")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_network:v0.0.7-beta")
 
     // alarm
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_alarm:v0.0.11-beta")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_alarm:v0.0.15-beta")
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))

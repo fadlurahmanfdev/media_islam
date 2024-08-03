@@ -3,6 +3,7 @@ package co.id.fadlurahmanf.mediaislam.alarm.domain.worker
 import android.app.AlarmManager
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import androidx.work.RxWorker
 import androidx.work.WorkerParameters
@@ -233,16 +234,12 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                                 ScheduleAlarmWorker::class.java.simpleName,
                                 "successfully insert entity of $result"
                             )
-                            alarmManager.setExact(
-                                AlarmManager.RTC_WAKEUP,
-                                currentPrayerDateTime.time,
-                                FeatureAlarmReceiver.getPendingIntentSetAlarm(
-                                    context,
-                                    result.id ?: 0,
-                                    AlarmReceiver::class.java,
-                                )
-                            )
-                            Result.success(workDataOf("message" to "success set alarm to $currentPrayerDateTime"))
+                            var message: String
+                            result.triggerDateTime.let { date ->
+                                message = "success set alarm at $date"
+                                setAlarm(date.time, result.id ?: 0)
+                            }
+                            Result.success(workDataOf("message" to message))
                         }
                     }
                     Single.just(Result.failure(workDataOf("reason" to "alarm for $prayerTimeType at $currentPrayerDate already exist")))
@@ -292,13 +289,12 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                                 ScheduleAlarmWorker::class.java.simpleName,
                                 "success insert entity of $alarmEntity"
                             )
-                            var message: String = ""
+                            var message: String
                             result.triggerDateTime.let { date ->
                                 message = "success set alarm at $date"
-
                                 setAlarm(date.time, result.id ?: 0)
                             }
-                            Result.success(workDataOf("message" to "set alarm at $message"))
+                            Result.success(workDataOf("message" to message))
                         }
                     }
                 }
@@ -311,10 +307,13 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
         }
     }
 
-    private fun setAlarm(timemillis:Long, requestCode:Int){
+    private fun setAlarm(timemillis: Long, requestCode: Int) {
         val pendingIntent = FeatureAlarmReceiver.getPendingIntentSetAlarm(
             context,
             requestCode = requestCode,
+            bundle = Bundle().apply {
+                putString(AlarmReceiver.PARAM_PRAYER_TIME_TYPE, prayerTimeType.name)
+            },
             clazz = AlarmReceiver::class.java
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -91,28 +91,54 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
     private fun initAction() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        binding.itemFajr.switchAlarm.setOnCheckedChangeListener { _, checked ->
-            viewModel.saveAlarmPrayerTime(
-                isFajrAdhanActive = checked,
-                isDhuhrAdhanActive = null,
-                isAsrAdhanActive = null,
-                isMaghribAdhanActive = null,
-                isIshaAdhanActive = null
-            )
+        binding.itemFajr.switchAlarm.setOnCheckedChangeListener { buttonCompound, checked ->
+            if (buttonCompound.isPressed) {
+                viewModel.saveAlarmPrayerTime(
+                    isFajrAdhanActive = checked,
+                    isDhuhrAdhanActive = null,
+                    isAsrAdhanActive = null,
+                    isMaghribAdhanActive = null,
+                    isIshaAdhanActive = null
+                )
+
+                if (checked) {
+                    scheduleAlarmByPrayerTimeType(
+                        PrayerTimeType.FAJR,
+                        prayerDate = alarmPrayerTimeModel.fajr.date,
+                        prayerTime = alarmPrayerTimeModel.fajr.time,
+                        prayerDateTime = alarmPrayerTimeModel.fajr.dateTime,
+                    )
+                } else {
+                    cancelAlarmByPrayerTimeType(PrayerTimeType.FAJR)
+                }
+            }
         }
 
-        binding.itemDhuhr.switchAlarm.setOnCheckedChangeListener { _, checked ->
-            viewModel.saveAlarmPrayerTime(
-                isFajrAdhanActive = null,
-                isDhuhrAdhanActive = checked,
-                isAsrAdhanActive = null,
-                isMaghribAdhanActive = null,
-                isIshaAdhanActive = null
-            )
+        binding.itemDhuhr.switchAlarm.setOnCheckedChangeListener { buttonCompound, checked ->
+            if (buttonCompound.isPressed) {
+                viewModel.saveAlarmPrayerTime(
+                    isFajrAdhanActive = null,
+                    isDhuhrAdhanActive = checked,
+                    isAsrAdhanActive = null,
+                    isMaghribAdhanActive = null,
+                    isIshaAdhanActive = null
+                )
+
+                if (checked) {
+                    scheduleAlarmByPrayerTimeType(
+                        PrayerTimeType.DHUHR,
+                        prayerDate = alarmPrayerTimeModel.dhuhr.date,
+                        prayerTime = alarmPrayerTimeModel.dhuhr.time,
+                        prayerDateTime = alarmPrayerTimeModel.dhuhr.dateTime,
+                    )
+                } else {
+                    cancelAlarmByPrayerTimeType(PrayerTimeType.DHUHR)
+                }
+            }
         }
 
-        binding.itemAsr.switchAlarm.setOnCheckedChangeListener { button, checked ->
-            if (button.isPressed) {
+        binding.itemAsr.switchAlarm.setOnCheckedChangeListener { buttonCompound, checked ->
+            if (buttonCompound.isPressed) {
                 viewModel.saveAlarmPrayerTime(
                     isFajrAdhanActive = null,
                     isDhuhrAdhanActive = null,
@@ -120,11 +146,22 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
                     isMaghribAdhanActive = null,
                     isIshaAdhanActive = null
                 )
+
+                if (checked) {
+                    scheduleAlarmByPrayerTimeType(
+                        PrayerTimeType.ASR,
+                        prayerDate = alarmPrayerTimeModel.asr.date,
+                        prayerTime = alarmPrayerTimeModel.asr.time,
+                        prayerDateTime = alarmPrayerTimeModel.asr.dateTime,
+                    )
+                } else {
+                    cancelAlarmByPrayerTimeType(PrayerTimeType.ASR)
+                }
             }
         }
 
-        binding.itemMaghrib.switchAlarm.setOnCheckedChangeListener { button, checked ->
-            if (button.isPressed) {
+        binding.itemMaghrib.switchAlarm.setOnCheckedChangeListener { buttonCompound, checked ->
+            if (buttonCompound.isPressed) {
                 viewModel.saveAlarmPrayerTime(
                     isFajrAdhanActive = null,
                     isDhuhrAdhanActive = null,
@@ -146,14 +183,27 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             }
         }
 
-        binding.itemIsha.switchAlarm.setOnCheckedChangeListener { _, checked ->
-            viewModel.saveAlarmPrayerTime(
-                isFajrAdhanActive = null,
-                isDhuhrAdhanActive = null,
-                isAsrAdhanActive = null,
-                isMaghribAdhanActive = null,
-                isIshaAdhanActive = checked
-            )
+        binding.itemIsha.switchAlarm.setOnCheckedChangeListener { buttonCompound, checked ->
+            if (buttonCompound.isPressed) {
+                viewModel.saveAlarmPrayerTime(
+                    isFajrAdhanActive = null,
+                    isDhuhrAdhanActive = null,
+                    isAsrAdhanActive = null,
+                    isMaghribAdhanActive = null,
+                    isIshaAdhanActive = checked
+                )
+
+                if (checked) {
+                    scheduleAlarmByPrayerTimeType(
+                        PrayerTimeType.ISHA,
+                        prayerDate = alarmPrayerTimeModel.isha.date,
+                        prayerTime = alarmPrayerTimeModel.isha.time,
+                        prayerDateTime = alarmPrayerTimeModel.isha.dateTime,
+                    )
+                } else {
+                    cancelAlarmByPrayerTimeType(PrayerTimeType.ISHA)
+                }
+            }
         }
     }
 
