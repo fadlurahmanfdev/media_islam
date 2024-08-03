@@ -236,8 +236,9 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                             )
                             var message: String
                             result.triggerDateTime.let { date ->
-                                message = "success set alarm at $date"
-                                setAlarm(date.time, result.id ?: 0)
+                                message = "success set alarm of $prayerTimeType at $date"
+                                setAlarm(date.time, result.triggerTime, result.id ?: 0)
+                                Log.d(ScheduleAlarmWorker::class.java.simpleName, message)
                             }
                             Result.success(workDataOf("message" to message))
                         }
@@ -287,12 +288,13 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
                         prayerTimeLocalDatasource.insert(alarmEntity).map { result ->
                             Log.d(
                                 ScheduleAlarmWorker::class.java.simpleName,
-                                "success insert entity of $alarmEntity"
+                                "success insert entity of $result"
                             )
                             var message: String
                             result.triggerDateTime.let { date ->
-                                message = "success set alarm at $date"
-                                setAlarm(date.time, result.id ?: 0)
+                                message = "success set alarm of $prayerTimeType at $date"
+                                setAlarm(date.time, result.triggerTime, result.id ?: 0)
+                                Log.d(ScheduleAlarmWorker::class.java.simpleName, message)
                             }
                             Result.success(workDataOf("message" to message))
                         }
@@ -307,12 +309,13 @@ class ScheduleAlarmWorker(val context: Context, workerParameters: WorkerParamete
         }
     }
 
-    private fun setAlarm(timemillis: Long, requestCode: Int) {
+    private fun setAlarm(timemillis: Long, prayerTime: String, requestCode: Int) {
         val pendingIntent = FeatureAlarmReceiver.getPendingIntentSetAlarm(
             context,
             requestCode = requestCode,
             bundle = Bundle().apply {
                 putString(AlarmReceiver.PARAM_PRAYER_TIME_TYPE, prayerTimeType.name)
+                putString(AlarmReceiver.PARAM_PRAYER_TIME, prayerTime)
             },
             clazz = AlarmReceiver::class.java
         )

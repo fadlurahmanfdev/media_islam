@@ -28,6 +28,7 @@ class AlarmService : FeatureAlarmService() {
     }
 
     override fun onAlarmNotification(context: Context, bundle: Bundle?): Notification {
+        val prayerTime = bundle?.getString(AlarmReceiver.PARAM_PRAYER_TIME)
         val prayerTimeTypeString = bundle?.getString(AlarmReceiver.PARAM_PRAYER_TIME_TYPE)
         val prayerTimeType: PrayerTimeType = try {
             PrayerTimeType.valueOf(prayerTimeTypeString ?: "")
@@ -51,7 +52,13 @@ class AlarmService : FeatureAlarmService() {
             PrayerTimeType.ISHA -> "Sudah waktunya sholat Isya. Selesaikan malam Anda dengan kedamaian."
         }
 
-        val fullScreenIntent = Intent(this, AlarmNotificationActivity::class.java)
+        val fullScreenIntent = Intent(this, AlarmNotificationActivity::class.java).apply {
+            putExtra(AlarmNotificationActivity.PARAM_TEXT_TIME, prayerTime)
+            putExtra(
+                AlarmNotificationActivity.PARAM_DESCRIPTION,
+                "$titleNotification/n$textNotification"
+            )
+        }
         val fullScreenPendingIntent =
             PendingIntent.getActivity(context, 0, fullScreenIntent, getFlagPendingIntent())
         val dismissPendingIntent =

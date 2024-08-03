@@ -148,7 +148,7 @@ dependencies {
     implementation("com.github.fadlurahmanfdev:kotlin_feature_network:v0.0.7-beta")
 
     // alarm
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_alarm:v0.0.15-beta")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_alarm:v0.0.16-beta")
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
@@ -181,5 +181,6 @@ dependencies {
 
     val workVersion = "2.9.0"
     implementation("androidx.work:work-rxjava2:$workVersion")
-//    implementation("androidx.work:work-runtime-ktx:$workVersion")
+
+    implementation("com.ncorti:slidetoact:0.11.0")
 }

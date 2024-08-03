@@ -5,6 +5,43 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/il_background_alarm"
     tools:context=".alarm.presentation.AlarmNotificationActivity">
+
+    <TextView
+        android:id="@+id/tv_alarm_time"
+        style="@style/Font.SemiBold.45"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:text="20:00"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        style="@style/Font.Regular.20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waktu Sholat Subuh"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_alarm_time" />
+
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:elevation="4dp"
+        app:inner_color="@color/orange"
+        app:layout_constraintTop_toBottomOf="@id/tv_desc"
+        app:outer_color="@color/white"
+        app:text="Matikan Alarm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

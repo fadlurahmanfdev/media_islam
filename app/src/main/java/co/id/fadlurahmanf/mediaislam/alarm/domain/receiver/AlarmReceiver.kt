@@ -13,6 +13,7 @@ class AlarmReceiver : FeatureAlarmReceiver() {
 
     companion object {
         const val PARAM_PRAYER_TIME_TYPE = "PARAM_PRAYER_TIME_TYPE"
+        const val PARAM_PRAYER_TIME = "PARAM_PRAYER_TIME"
     }
 
     override fun onReceiveActionSetAlarm(context: Context, intent: Intent, extras: Bundle?) {

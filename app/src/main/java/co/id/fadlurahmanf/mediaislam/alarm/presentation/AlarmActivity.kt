@@ -17,9 +17,9 @@ import co.id.fadlurahmanf.mediaislam.R
 import co.id.fadlurahmanf.mediaislam.alarm.BaseAlarmActivity
 import co.id.fadlurahmanf.mediaislam.alarm.data.state.AlarmActivityState
 import co.id.fadlurahmanf.mediaislam.alarm.domain.worker.CancelAlarmWorker
-import co.id.fadlurahmanf.mediaislam.databinding.ActivityAlarmBinding
 import co.id.fadlurahmanf.mediaislam.alarm.domain.worker.ScheduleAlarmWorker
 import co.id.fadlurahmanf.mediaislam.core.enums.PrayerTimeType
+import co.id.fadlurahmanf.mediaislam.databinding.ActivityAlarmBinding
 import co.id.fadlurahmanf.mediaislam.main.data.dto.model.AlarmPrayerTimeModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -76,7 +76,25 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
         viewModel.prayerTimeEntityModelLive.observe(this) { state ->
             when (state) {
                 is AlarmActivityState.SUCCESS -> {
-//                    scheduleAlarm()
+                    if (state.data.isFajrAdhanAlarmActive) {
+                        observeWorker(PrayerTimeType.FAJR)
+                    }
+
+                    if (state.data.isDhuhrAdhanAlarmActive) {
+                        observeWorker(PrayerTimeType.DHUHR)
+                    }
+
+                    if (state.data.isAsrAdhanAlarmActive) {
+                        observeWorker(PrayerTimeType.ASR)
+                    }
+
+                    if (state.data.isMaghribAdhanAlarmActive) {
+                        observeWorker(PrayerTimeType.MAGHRIB)
+                    }
+
+                    if (state.data.isIshaAdhanAlarmActive) {
+                        observeWorker(PrayerTimeType.ISHA)
+                    }
                 }
 
                 else -> {
@@ -84,6 +102,29 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
                 }
             }
         }
+    }
+
+    private fun observeWorker(type: PrayerTimeType) {
+//        workManager.getWorkInfosForUniqueWorkLiveData(getUniqueWorkByPrayerTimeType(type))
+//            .observe(this) { workInfos ->
+//                if (workInfos.isNotEmpty()) {
+//                    val workInfo = workInfos.first()
+//                    println("MASUK_ UNIQUE WORK NAME: ${getUniqueWorkByPrayerTimeType(type)}")
+//                    println("MASUK_ STATE -> ${workInfo.state.name}")
+//                    println("MASUK_ OUTPUT DATA -> ${workInfo.outputData}")
+//                    println("MASUK_ CONSTRAINT -> ${workInfo.constraints}")
+//                    println("MASUK_ PERIODIC INFO -> ${workInfo.periodicityInfo}")
+//                    println("MASUK_ PROGRESS -> ${workInfo.progress}")
+//                    println(
+//                        "MASUK_ NEXT SCHEDULE -> ${
+//                            Calendar.getInstance().apply {
+//                                timeInMillis = workInfo.nextScheduleTimeMillis
+//                            }.time
+//                        }"
+//                    )
+//                    println("MASUK_ RUN ATTEMPT COUNT -> ${workInfo.runAttemptCount}")
+//                }
+//            }
     }
 
     private lateinit var alarmManager: AlarmManager
@@ -240,15 +281,6 @@ class AlarmActivity : BaseAlarmActivity<ActivityAlarmBinding>(ActivityAlarmBindi
             ExistingPeriodicWorkPolicy.UPDATE,
             alarmWorkRequest
         )
-
-        workManager.getWorkInfosForUniqueWorkLiveData(uniqueWorkName)
-            .observe(this) { workInfo ->
-                println("MASUK_ LISTEN SIZE -> ${workInfo.size}")
-                if (workInfo.isNotEmpty()) {
-                    println("MASUK_ LISTEN STATE -> ${workInfo.first().state}")
-                    println("MASUK_ LISTEN OUTPUT -> ${workInfo.first().outputData}")
-                }
-            }
     }
 
 
