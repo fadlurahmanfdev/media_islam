@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="Hanya hari ini"
+                android:visibility="gone"
                 android:textColor="@color/orange"
                 android:textSize="12sp" />
 
