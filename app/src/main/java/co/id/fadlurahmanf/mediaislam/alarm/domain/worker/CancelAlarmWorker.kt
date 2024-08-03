@@ -118,6 +118,7 @@ class CancelAlarmWorker(val context: Context, workerParameters: WorkerParameters
                                 FeatureAlarmReceiver.getPendingIntentSetAlarm(
                                     context,
                                     requestCode = entity.id ?: 0,
+                                    bundle = null,
                                     clazz = AlarmReceiver::class.java,
                                 )
                             )
