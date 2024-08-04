@@ -30,7 +30,7 @@ android {
         applicationId = "co.id.fadlurahmanf.mediaislam"
         minSdk = 21
         targetSdk = 34
-        versionCode = 6
+        versionCode = 7
         versionName = "0.0.1"
 
         buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/api/\"")
