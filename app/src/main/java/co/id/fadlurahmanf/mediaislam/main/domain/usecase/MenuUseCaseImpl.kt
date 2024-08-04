@@ -27,16 +27,12 @@ class MenuUseCaseImpl @Inject constructor(
     override fun getMainMenus(): Observable<List<ItemMainMenuModel>> {
         return Observable.create<List<ItemMainMenuModel>> { emitter ->
             firebaseRemoteConfig.reset().addOnSuccessListener {
-                println("INIT SUCCESS RESET")
                 firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener {
                     val mainMenuString = firebaseRemoteConfig.getString("MAIN_MENU")
-                    println("MASUK mainMenuString: $mainMenuString")
                     val rawResponseMainMenus =
                         Gson().fromJson(mainMenuString, mutableListOf<Map<String, Any>>().javaClass)
                     val mainMenus = arrayListOf<ItemMainMenuModel>()
-                    println("MASUK rawResponseMainMenus: $rawResponseMainMenus")
                     rawResponseMainMenus.filter { element ->
-                        println("MASUK ELEMENT: $element")
                         val itemMenuResponse = Gson().fromJson<ItemMenuResponse>(Gson().toJsonTree(element), ItemMenuResponse::class.java)
                         itemMenuResponse.visible
                     }.forEach { element ->
@@ -51,20 +47,11 @@ class MenuUseCaseImpl @Inject constructor(
                         )
                     }
                     emitter.onNext(mainMenus.toList())
-                    println("SUCCESS ON NEXT FETCH ACTIVATE")
                 }.addOnFailureListener {
-                    println("ERROR FETCH ACTIVATE")
-//                    emitter.onError(it)
+                    emitter.onError(it)
                 }.addOnCompleteListener {
-                    println("COMPLETE FETCH ACTIVATE")
-//                    emitter.onComplete()
+                    emitter.onComplete()
                 }
-            }.addOnFailureListener {
-                println("ERROR RESET")
-//                emitter.onError(it)
-            }.addOnCompleteListener {
-                println("COMPLETE RESET")
-//                emitter.onComplete()
             }
         }
     }
