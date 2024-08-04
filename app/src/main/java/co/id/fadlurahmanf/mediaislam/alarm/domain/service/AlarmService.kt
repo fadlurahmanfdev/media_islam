@@ -56,7 +56,7 @@ class AlarmService : FeatureAlarmService() {
             putExtra(AlarmNotificationActivity.PARAM_TEXT_TIME, prayerTime)
             putExtra(
                 AlarmNotificationActivity.PARAM_DESCRIPTION,
-                "$titleNotification/n$textNotification"
+                titleNotification
             )
         }
         val fullScreenPendingIntent =
