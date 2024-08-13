@@ -53,8 +53,13 @@ class MainViewModel @Inject constructor(
     val progressBarVisible: LiveData<Boolean> = _progressBarVisible
 
     private fun setProgressBar() {
-        _progressBarVisible.value =
-            listSurahLive.value is EQuranNetworkState.LOADING || prayersTimeLive.value is AladhanNetworkState.LOADING || articleNetworkLive.value is ArticleNetworkState.LOADING
+        if (isPermissionLocatonEnabled) {
+            _progressBarVisible.value =
+                listSurahLive.value is EQuranNetworkState.LOADING || prayersTimeLive.value is AladhanNetworkState.LOADING || articleNetworkLive.value is ArticleNetworkState.LOADING
+        } else {
+            _progressBarVisible.value =
+                listSurahLive.value is EQuranNetworkState.LOADING || articleNetworkLive.value is ArticleNetworkState.LOADING
+        }
     }
 
     private val _listSurahLive = MutableLiveData<EQuranNetworkState<List<SurahModel>>>()
@@ -84,6 +89,11 @@ class MainViewModel @Inject constructor(
     private val _prayersTimeLive =
         MutableLiveData<AladhanNetworkState<PrayersTimeModel>>(AladhanNetworkState.IDLE)
     val prayersTimeLive: LiveData<AladhanNetworkState<PrayersTimeModel>> = _prayersTimeLive
+
+    private var isPermissionLocatonEnabled = false
+    fun setPermissionLocation(isEnabled: Boolean) {
+        isPermissionLocatonEnabled = isEnabled
+    }
 
     fun getPrayerTime() {
         if (_prayersTimeLive.value == AladhanNetworkState.IDLE) {

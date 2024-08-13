@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.IntentSenderRequest
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import co.id.fadlurahmanf.mediaislam.article.presentation.ArticleListActivity
@@ -26,12 +27,14 @@ import co.id.fadlurahmanf.mediaislam.quran.presentation.audio.ListAudioActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.DetailSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.ListSurahActivity
 import co.id.fadlurahmanf.mediaislam.quran.presentation.surah.adapter.ListSurahAdapter
+import co.id.fadlurahmanfdev.kotlin_core_platform.domain.plugin.CorePlatformLocationManager
 import com.google.firebase.analytics.FirebaseAnalytics.Event
 import com.google.firebase.analytics.FirebaseAnalytics.Param
 import javax.inject.Inject
 
 class MainActivity :
     BaseMainActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+    private lateinit var corePlatformLocationManager: CorePlatformLocationManager
 
     @Inject
     lateinit var viewModel: MainViewModel
@@ -41,11 +44,15 @@ class MainActivity :
     }
 
     override fun onBaseMainCreate(savedInstanceState: Bundle?) {
+        setOnApplyWindowInsetsListener(binding.main)
+        setAppearanceLightStatusBar(false)
+
         firebaseAnalytics.logEvent(Event.SCREEN_VIEW, Bundle().apply {
             putString(Param.VALUE, MainActivity::class.java.simpleName)
         })
-        setOnApplyWindowInsetsListener(binding.main)
-        setAppearanceLightStatusBar(false)
+
+        corePlatformLocationManager = CorePlatformLocationManager(this)
+
         initAppBar()
         initMenuAdapter()
         initSurahAdapter()
@@ -54,12 +61,27 @@ class MainActivity :
         initAction()
 
         viewModel.getMainMenu()
-        if (ContextCompat.checkSelfPermission(
+        val isPermissionEnabled = ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        if (isPermissionEnabled) {
+            corePlatformLocationManager.requestLocationService(
                 this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            viewModel.getPrayerTime()
+                object : CorePlatformLocationManager.RequestLocationServiceCallback {
+                    override fun onFailure(exception: Exception) {}
+
+                    override fun onLocationServiceEnabled(enabled: Boolean) {
+                        viewModel.setPermissionLocation(enabled)
+                        if (enabled) {
+                            viewModel.getPrayerTime()
+                        }
+                    }
+
+                    override fun onShouldShowPromptServiceDialog(intentSenderRequest: IntentSenderRequest) {
+                        
+                    }
+                })
         }
         viewModel.getFirst10Surah()
         viewModel.getTop3Article()
@@ -73,7 +95,10 @@ class MainActivity :
         }
 
         binding.ivAlarm.setOnClickListener {
-            val intent = Intent(this, Class.forName("co.id.fadlurahmanf.mediaislam.alarm.presentation.AlarmActivity"))
+            val intent = Intent(
+                this,
+                Class.forName("co.id.fadlurahmanf.mediaislam.alarm.presentation.AlarmActivity")
+            )
             startActivity(intent)
         }
 
@@ -141,7 +166,10 @@ class MainActivity :
                             putString(AnalyticParam.MENU, "adhan")
                             putString(AnalyticParam.FROM, "main_menu")
                         })
-                        val intent = Intent(this@MainActivity, Class.forName("co.id.fadlurahmanf.mediaislam.alarm.presentation.AlarmActivity"))
+                        val intent = Intent(
+                            this@MainActivity,
+                            Class.forName("co.id.fadlurahmanf.mediaislam.alarm.presentation.AlarmActivity")
+                        )
                         startActivity(intent)
                     }
                 }

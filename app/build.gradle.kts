@@ -30,7 +30,7 @@ android {
         applicationId = "co.id.fadlurahmanf.mediaislam"
         minSdk = 21
         targetSdk = 34
-        versionCode = 4
+        versionCode = 8
         versionName = "0.0.1"
 
         buildConfigField("String", "EQURAN_BASE_URL", "\"https://equran.id/api/\"")
@@ -106,12 +106,6 @@ android {
                 serviceCredentialsFile =
                     (firebaseAppDistributionDev["googleCredentialFilePath"] as String?) ?: ""
             }
-        }
-
-        create("staging") {
-            dimension = "environment"
-            applicationIdSuffix = ".staging"
-            resValue("string", "app_name", "Media Islam Staging")
         }
 
         create("prod") {

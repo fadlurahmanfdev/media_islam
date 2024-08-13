@@ -1,70 +1,13 @@
 {
   "project_info": {
-    "project_number": "304260921320",
-    "project_id": "media-islam-5e8c4",
-    "storage_bucket": "media-islam-5e8c4.appspot.com"
+    "project_number": "949372908237",
+    "project_id": "media-islam-prod",
+    "storage_bucket": "media-islam-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:304260921320:android:a216b57710a5a7c750965d",
-        "android_client_info": {
-          "package_name": "co.id.fadlurahmanf.mediaislam.fake"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCVewT-UqnP60SFrNhR01gomWtuMe4Z1Ck"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:304260921320:android:a216b57710a5a7c750965d",
-        "android_client_info": {
-          "package_name": "co.id.fadlurahmanf.mediaislam.dev"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCVewT-UqnP60SFrNhR01gomWtuMe4Z1Ck"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:304260921320:android:a216b57710a5a7c750965d",
-        "android_client_info": {
-          "package_name": "co.id.fadlurahmanf.mediaislam.staging"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCVewT-UqnP60SFrNhR01gomWtuMe4Z1Ck"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:304260921320:android:a216b57710a5a7c750965d",
+        "mobilesdk_app_id": "1:949372908237:android:282bd59b2ca6d672a4af84",
         "android_client_info": {
           "package_name": "co.id.fadlurahmanf.mediaislam"
         }
@@ -72,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCVewT-UqnP60SFrNhR01gomWtuMe4Z1Ck"
+          "current_key": "AIzaSyA1aLZ3x0f-0e0KFOCyx6Gy2E3vwGCWHT4"
         }
       ],
       "services": {
