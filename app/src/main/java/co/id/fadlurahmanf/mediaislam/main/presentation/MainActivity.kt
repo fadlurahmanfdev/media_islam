@@ -101,7 +101,7 @@ class MainActivity :
 
     private fun initAction() {
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.getPrayerTime()
+            getPrayerTime()
             viewModel.getFirst10Surah()
             viewModel.getTop3Article()
         }
