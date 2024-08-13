@@ -81,9 +81,10 @@
                         <ImageView
                             android:id="@+id/iv_alarm"
                             android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/round_access_alarm_24"
+                            android:visibility="gone"
                             app:tint="@color/white" />
 
                     </LinearLayout>
@@ -110,6 +111,44 @@
                         android:gravity="start"
                         android:text="Location"
                         android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_info_location_permission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="10dp">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/il_traveler" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Font.Regular.14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hmm, kayaknya GPS atau akses lokasinya belum nyala. Aktifkan dulu, yuk, biar bisa lanjut."
+                            android:textColor="@color/black" />
+
+                        <co.id.fadlurahmanf.mediaislam.core.ui.button.ButtonCustomFilled
+                            android:layout_width="match_parent"
+                            android:id="@+id/btn_go_to_setting"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            app:text="Ke Pengaturan" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

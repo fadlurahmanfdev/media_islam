@@ -2,7 +2,9 @@ package co.id.fadlurahmanf.mediaislam.main.presentation
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import androidx.activity.result.IntentSenderRequest
 import androidx.core.content.ContextCompat
@@ -31,6 +33,7 @@ import co.id.fadlurahmanfdev.kotlin_core_platform.domain.plugin.CorePlatformLoca
 import com.google.firebase.analytics.FirebaseAnalytics.Event
 import com.google.firebase.analytics.FirebaseAnalytics.Param
 import javax.inject.Inject
+
 
 class MainActivity :
     BaseMainActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -61,6 +64,12 @@ class MainActivity :
         initAction()
 
         viewModel.getMainMenu()
+        getPrayerTime()
+        viewModel.getFirst10Surah()
+        viewModel.getTop3Article()
+    }
+
+    private fun getPrayerTime() {
         val isPermissionEnabled = ContextCompat.checkSelfPermission(
             this,
             android.Manifest.permission.ACCESS_COARSE_LOCATION
@@ -74,17 +83,20 @@ class MainActivity :
                     override fun onLocationServiceEnabled(enabled: Boolean) {
                         viewModel.setPermissionLocation(enabled)
                         if (enabled) {
+                            binding.llInfoLocationPermission.visibility = View.GONE
                             viewModel.getPrayerTime()
+                        } else {
+                            binding.llInfoLocationPermission.visibility = View.VISIBLE
                         }
                     }
 
                     override fun onShouldShowPromptServiceDialog(intentSenderRequest: IntentSenderRequest) {
-                        
+
                     }
                 })
+        } else {
+            binding.llInfoLocationPermission.visibility = View.VISIBLE
         }
-        viewModel.getFirst10Surah()
-        viewModel.getTop3Article()
     }
 
     private fun initAction() {
@@ -115,6 +127,13 @@ class MainActivity :
                 putString(AnalyticParam.MENU, "article")
             })
             val intent = Intent(this@MainActivity, ArticleListActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnGoToSetting.setOnClickListener {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.setData(uri)
             startActivity(intent)
         }
     }
